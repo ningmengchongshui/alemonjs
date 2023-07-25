@@ -55,6 +55,7 @@ prompts([
     choices: [
       { title: "Alemon-qq @频道机器人", value: "0" },
       { title: "Alemon-mys @别野机器人", value: "1" },
+      { title: "Alemon-dc @公会机器人", value: "2" },
     ],
     initial: 0,
   },
@@ -78,6 +79,7 @@ prompts([
     const SourceMap = {
       0: "template-qq",
       1: "mys",
+      2: "dc",
     };
 
     try {
