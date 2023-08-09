@@ -1,6 +1,6 @@
 {
   "name": "alemon-cli",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "alemon脚手架",
   "main": "bin/cli.js",
   "scripts": {
@@ -10,9 +10,8 @@
   "files": [
     "bin/cli.js",
     "commands/install.js",
-    "commands/template",
-    "commands/template/.gitignore",
-    "commands/template/.npmrc",
+    "commands/template/*",
+    "commands/template/.*",
     "package.json",
     "README.md"
   ],
