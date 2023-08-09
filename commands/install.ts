@@ -55,19 +55,13 @@ prompts([
     console.log(`\n`);
 
     const currentFilePath = fileURLToPath(import.meta.url);
-    console.log("currentFilePath", currentFilePath);
     const currentDirPath = dirname(currentFilePath);
-    console.log("currentDirPath", currentDirPath);
     try {
       const alemonCliPath = resolve(currentDirPath);
-      console.log("alemonCliPath", alemonCliPath);
       const templatePath = join(alemonCliPath, "template");
-      console.log("templatePath", templatePath);
       await copy(templatePath, dirPath);
-
       process.chdir(dirPath);
       await runNpmCommand("npm", ["install"]);
-
       console.log(`------------------------------------`);
       console.log("---alemon-Bot cloned successfully!--");
       console.log(`------------------------------------`);
