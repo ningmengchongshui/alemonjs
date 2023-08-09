@@ -1,5 +1,5 @@
 node_modules
-*.js
 *.logs
 *.log
-dist
+/bin/*.js
+/commands/*.js

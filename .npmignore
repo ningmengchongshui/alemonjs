@@ -1,4 +1,6 @@
+/bin/*.ts
+/commands/*.ts
 node_modules
-*.ts
-tsconfig.json
 .gitignore
+doc.md
+tsconfig.json
