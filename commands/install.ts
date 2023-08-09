@@ -1,16 +1,15 @@
+#!/usr/bin/env node
+
 import prompts from "prompts";
 import { existsSync, mkdirSync } from "fs";
+import { copy } from "fs-extra";
 import { spawn } from "child_process";
-/**
- * 执行指令
- * @param command  指令
- * @param args  参数
- * @param options 选项
- * @returns
- */
-function runCommand(command: string, args: string[], options: any) {
+import { resolve, join, dirname } from "path";
+import { fileURLToPath } from "node:url";
+
+async function runNpmCommand(command, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, options);
+    const child = spawn(command, args, { shell: true });
 
     child.stdout.on("data", (data) => {
       console.log(data.toString());
@@ -28,18 +27,17 @@ function runCommand(command: string, args: string[], options: any) {
       if (code !== 0) {
         reject(new Error(`Command "${command}" failed with exit code ${code}`));
       } else {
-        resolve("ok");
+        resolve("");
       }
     });
   });
 }
 
-//
 prompts([
   {
     type: "text",
     name: "name",
-    message: "robot name :",
+    message: "robot name:",
     validate: async (value: any) => {
       if (existsSync(`./${value}`)) return "Robot name already exists!";
       return /^[a-z][0-9a-z_-]{0,}$/.test(value)
@@ -48,84 +46,40 @@ prompts([
     },
     initial: process.argv[3] ? process.argv[3] : "alemon-bot",
   },
-  {
-    type: "select",
-    name: "source",
-    message: "Choose an installation bot :",
-    choices: [
-      { title: "Alemon-qq @频道机器人", value: "0" },
-      { title: "Alemon-mys @别野机器人", value: "1" },
-      { title: "Alemon-dc @公会机器人", value: "2" },
-    ],
-    initial: 0,
-  },
-  {
-    type: "select",
-    name: "isPlugin",
-    message: "Do you want to install plugins ?",
-    choices: [
-      { title: "yes", value: "0" },
-      { title: "no", value: "1" },
-    ],
-    initial: 0,
-  },
 ])
-  .then(async ({ name, isPlugin, source }) => {
+  .then(async ({ name }) => {
     // 强制退出错误
-    if (!name || !isPlugin || !source) process.exit();
+    if (!name) process.exit();
     const dirPath = `./${name}`;
     mkdirSync(dirPath);
     console.log(`\n`);
-    const SourceMap = {
-      0: "template-qq",
-      1: "mys",
-      2: "dc",
-    };
 
+    const currentFilePath = fileURLToPath(import.meta.url);
+    console.log("currentFilePath", currentFilePath);
+    const currentDirPath = dirname(currentFilePath);
+    console.log("currentDirPath", currentDirPath);
     try {
-      await runCommand(
-        "git",
-        [
-          "clone",
-          "--depth=1",
-          "-b",
-          SourceMap[source],
-          "https://gitee.com/ningmengchongshui/alemon.git",
-          dirPath,
-        ],
-        { cwd: process.cwd() }
-      );
+      const alemonCliPath = resolve(currentDirPath);
+      console.log("alemonCliPath", alemonCliPath);
+      const templatePath = join(alemonCliPath, "template");
+      console.log("templatePath", templatePath);
+      await copy(templatePath, dirPath);
+
+      process.chdir(dirPath);
+      await runNpmCommand("npm", ["install"]);
+
+      console.log(`------------------------------------`);
+      console.log("---alemon-Bot cloned successfully!--");
+      console.log(`------------------------------------`);
+      console.log(`cd ${name}      #Entering`);
+      console.log(`npm run app:qq     #启动qq频道机器人`);
+      console.log(`npm run app:dc     #启动discord机器人`);
+      console.log(`npm run app:mys    #启动大别野机器人`);
+      console.log(`------------------------------------`);
     } catch (error) {
-      console.log(`alemon-Bot ${error}`);
+      console.log(`${name} ${error}`);
       return;
     }
-
-    if (isPlugin == "0") {
-      try {
-        await runCommand(
-          "git",
-          [
-            "clone",
-            "--depth=1",
-            "-b",
-            "plugin",
-            "https://gitee.com/ningmengchongshui/alemon.git",
-            `${dirPath}/plugins/alemon-plugin`,
-          ],
-          { cwd: process.cwd() }
-        );
-      } catch (error) {
-        console.log(`alemon-Plugin installation failed!`);
-      }
-    }
-
-    console.log(`------------------------------------`);
-    console.log("---alemon-Bot cloned successfully!--");
-    console.log(`------------------------------------`);
-    console.log(`cd ${name}      #Entering`);
-    console.log(`npm install     #Load`);
-    console.log(`npm run app     #Firing`);
-    console.log(`------------------------------------`);
   })
   .catch((err) => {
     console.log(err);

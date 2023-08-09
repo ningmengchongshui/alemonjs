@@ -1,9 +1,9 @@
 # alemon 脚手架
 
 ```
-npm install alemon-cli -g
+npm install alemon-cli@latest -g
 ```
 
 ```
-alemon-install
+alemon-cli install
 ```

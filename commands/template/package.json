@@ -1,0 +1,73 @@
+{
+  "name": "alemon-bot",
+  "version": "1.0.0",
+  "description": "阿柠檬机器人",
+  "author": "ningmengchongshui",
+  "license": "GPL-2.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon  index.ts",
+    "app:qq": "ts-node index-qq.ts",
+    "app:dc": "ts-node index-dc.ts",
+    "app:mys": "ts-node index-mys.ts",
+    "login:qq": "ts-node index-qq.ts login",
+    "login:dc": "ts-node index-dc.ts login",
+    "login:mys": "ts-node index-mys.ts login",
+    "start:qq": "pm2 startOrRestart pm2-qq.json",
+    "start:dc": "pm2 startOrRestart pm2-dc.json",
+    "start:mys": "pm2 startOrRestart pm2-mys.json",
+    "stop:qq": "pm2 stop pm2-qq.json",
+    "stop:dc": "pm2 stop pm2-dc.json",
+    "stop:mys": "pm2 stop pm2-mys.json",
+    "delete:qq": "pm2 delete pm2-qq.json",
+    "delete:dc": "pm2 delete pm2-dc.json",
+    "delete:mys": "pm2 delete pm2-mys.json",
+    "logs:qq": "pm2 logs al-qq",
+    "logs:dc": "pm2 logs al-dc",
+    "logs:mys": "pm2 logs al-mys",
+    "monit": "pm2 monit",
+    "kill": "pm2 kill",
+    "update": "pm2 update",
+    "pull:l": "find . -type d -name '.git' -execdir git pull --all \\;",
+    "pull:w": "git pull && cd plugins && for /d %i in (*) do (echo Updating %i && cd %i && git pull && cd ..)",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "alemon-dc": "1.0.0",
+    "alemon-qq": "1.1.0",
+    "alemon-mys": "1.0.1",
+    "alemon-redis": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/ws": "^8.5.5",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "pm2": "^5.3.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
+    "typescript": ">=5.0.4 <5.1.0"
+  },
+  "pre-commit": [
+    "lint",
+    "format"
+  ],
+  "workspaces": [
+    "example",
+    "plugins/*"
+  ],
+  "engines": {
+    "node": ">=16.3.0"
+  },
+  "keywords": [
+    "alemon-redis",
+    "alemon"
+  ]
+}

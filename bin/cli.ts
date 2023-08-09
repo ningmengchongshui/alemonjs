@@ -2,25 +2,25 @@
 
 import { Command } from "commander";
 const program = new Command();
+
 // 版本号
 program.version("1.0.0");
-/**
- * 响应指令install
- */
+
+// 响应指令install
 program.command("install").action(async () => {
   await import("../commands/install.js");
 });
-/**
- * 响应指令i
- */
+
+// 响应指令i
 program.command("i").action(async () => {
   await import("../commands/install.js");
 });
+
 /**
  * 说明控制
  * @returns
  */
-program.helpInformation = function () {
+program.helpInformation = () => {
   return `
 Options:
     -h, --help         display help for command

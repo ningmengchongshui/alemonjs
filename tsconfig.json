@@ -10,5 +10,5 @@
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["bin"],
-  "exclude": ["node_modules", "alemon"]
+  "exclude": ["node_modules", "commands/template"]
 }
