@@ -1,7 +1,11 @@
 /* 实例 */
-import { Sequelize, DataTypes, Model } from 'sequelize'
+import { Sequelize } from 'sequelize'
 /* 配置 */
-import { database, user, password, host, port } from './config.js'
+export const host = 'localhost' //地址
+export const port = 3306 //端口
+export const user = 'root' //用户名
+export const password = '' //密码
+export const database = 'alement' //数据库名
 export const sequelize = new Sequelize(database, user, password, { host, port, dialect: 'mysql' })
 /* 测试 */
 export const mysqlInit = async () => {
@@ -15,4 +19,3 @@ export const mysqlInit = async () => {
     console.error(`[mysql] ${error}`)
   }
 }
-export { DataTypes, Model }

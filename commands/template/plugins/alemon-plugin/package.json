@@ -1,7 +1,7 @@
 {
   "name": "alemon-plugin",
   "version": "1.0.0",
-  "description": "alemon插件",
+  "description": "阿柠檬测试插件",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
   "private": true,
@@ -10,7 +10,6 @@
     "img": "node devimg/index.js"
   },
   "devDependencies": {
-    "yaml": "^2.3.1",
     "art-template": "^4.13.2",
     "express": "^4.18.2"
   }
