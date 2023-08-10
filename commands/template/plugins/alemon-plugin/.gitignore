@@ -12,6 +12,7 @@ dist
 /types/
 /default/
 /example/
+/plugins/
 /*-player/
 /*-data/
 /data-*/

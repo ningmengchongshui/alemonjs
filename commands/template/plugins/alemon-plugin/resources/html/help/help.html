@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  </head>
+
+  <body>
+    <div
+      class="body-top"
+    >
+    </div>
+      {{each body val}}
+        <div class="body-point">
+          <div class="body-point-font">
+            {{val.group}}
+          </div>
+        </div>
+        {{each val.list item}}
+          <div class="body-box">
+            <div class="body-box-font-title">{{item.title}}</div>
+            <div class="body-box-font-desc">{{item.desc}}</div>
+          </div>
+        {{/each}}
+      {{/each}}
+    <div class="body-buttom">
+    </div>
+  </body>
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .body-top{
+      height: 480px;
+      background: url('{{RootDirectory}}/resources/assets/img/help/top.jpg') ;
+      background-size: 100% 100%;
+    }
+
+    .body-point{
+      height:100px;
+      background: url('{{RootDirectory}}/resources/assets/img/help/point.jpg') ;
+      background-size: 100% 100%;
+    }
+
+    .body-point-font{
+      padding-left: 145px;
+      padding-top: 33px;
+      font-size: 27px;
+      color: #ffffff;
+      font-family: serif;
+    }
+
+    .body-box{
+      height:190px;
+      background: url('{{RootDirectory}}/resources/assets/img/help/box.jpg') ;
+      background-size: 100% 100%;
+    }
+
+
+    .body-box-font-title{
+      padding-left: 219px;
+    padding-top: 10px;
+    font-size: 45px;
+    font-weight: 700;
+    font-family: serif;
+    }
+
+    .body-box-font-desc{
+      padding-left: 155px;
+      padding-top: 29px;
+      font-size: 28px;
+      font-family: serif;
+    }
+
+    .body-buttom{
+      height: 120px;
+      background: url('{{RootDirectory}}/resources/assets/img/help/buttom.jpg') ;
+      background-size: 100% 100%;
+    }
+
+  </style>
+</html>
