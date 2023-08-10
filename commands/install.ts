@@ -59,17 +59,17 @@ prompts([
     try {
       const alemonCliPath = resolve(currentDirPath);
       const templatePath = join(alemonCliPath, "template");
+      console.log("Copying template...");
       await copy(templatePath, dirPath);
       process.chdir(dirPath);
+      console.log("Loading dependencies...");
       await runNpmCommand("npm", ["install"]);
-      console.log(`------------------------------------`);
-      console.log("---alemon-Bot cloned successfully!--");
+      console.log("Alemon-Bot cloned successfully!");
       console.log(`------------------------------------`);
       console.log(`cd ${name}      #Entering`);
       console.log(`npm run app:qq     #启动qq频道机器人`);
       console.log(`npm run app:dc     #启动discord机器人`);
       console.log(`npm run app:mys    #启动大别野机器人`);
-      console.log(`------------------------------------`);
     } catch (error) {
       console.log(`${name} ${error}`);
       return;

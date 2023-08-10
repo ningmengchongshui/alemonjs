@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
-import { MyDirPath } from '../../app.config.js'
+import { DirPath } from '../../app.config.js'
 /* 配置地址 */
-const PathConfig = `${MyDirPath}/resources/defset`
+const PathConfig = `${DirPath}/resources/defset`
 /* 得到指定配置的数据 */
 export const getJson = (name: string) =>
   JSON.parse(readFileSync(`${PathConfig}/${name}.json`, 'utf8'))

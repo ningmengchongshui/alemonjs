@@ -1,9 +1,9 @@
 import { dealTpl } from './puppeteer/puppeteer.js'
 import { getConfig } from './defset/defset.js'
-import { MyDirPath } from '../app.config.js'
+import { DirPath } from '../app.config.js'
 
 /* 选择调试文件并重启 */
-const tplFile = `${MyDirPath}/resources/html/help/help.html`
+const tplFile = `${DirPath}/resources/html/help/help.html`
 
 const data = getConfig('help')
 

@@ -7,6 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "dev:img": "nodemon --exec ts-node plugins/alemon-plugin/devimg/index.ts",
     "app:qq": "ts-node index-qq.ts",
     "app:dc": "ts-node index-dc.ts",
     "app:mys": "ts-node index-mys.ts",

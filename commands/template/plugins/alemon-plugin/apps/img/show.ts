@@ -1,5 +1,5 @@
 import { plugin, Messagetype, createQrcode, segment } from 'alemon'
-import { obtainingImages, Config } from '../../api.js'
+import { obtainingImages, getJson, getJsonPath } from '../../api.js'
 export class show extends plugin {
   constructor() {
     super({
@@ -25,8 +25,8 @@ export class show extends plugin {
    * @returns
    */
   async getHelp(e: Messagetype): Promise<boolean> {
-    const HelpData = Config.getJson('help')
-    const PData = Config.getJsonPath('package', process.cwd().replace(/\\/g, '/'))
+    const HelpData = getJson('help')
+    const PData = getJsonPath('package', process.cwd().replace(/\\/g, '/'))
     const data = {
       body: HelpData,
       name: PData['name'],
