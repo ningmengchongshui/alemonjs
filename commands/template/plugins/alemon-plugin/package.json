@@ -5,12 +5,5 @@
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
   "private": true,
-  "type": "module",
-  "scripts": {
-    "img": "node devimg/index.js"
-  },
-  "devDependencies": {
-    "art-template": "^4.13.2",
-    "express": "^4.18.2"
-  }
+  "type": "module"
 }
