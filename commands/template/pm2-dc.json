@@ -12,7 +12,7 @@
       "autodump": true,
       "merge_logs": true,
       "error_file": "./logs/al-dc.log",
-      "out_file": "./logs/al.log",
+      "out_file": "./logs/al-dc.log",
       "log_max_size": "10M",
       "log_rotate_interval": "daily",
       "log_date_format": "YYYY-MM-DD HH:mm:ss",
