@@ -37,7 +37,7 @@
   "dependencies": {
     "alemon-dc": "^1.0.1",
     "alemon-qq": "^1.1.0",
-    "alemon-mys": "^1.0.4",
+    "alemon-mys": "^1.0.5",
     "alemon-redis": "^1.0.2",
     "art-template": "^4.13.2",
     "image-size": "^1.0.2",
