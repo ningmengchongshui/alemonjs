@@ -69,7 +69,8 @@ prompts([
       console.log(`cd ${name}      #Entering`);
       console.log(`npm run app:qq     #启动qq频道机器人`);
       console.log(`npm run app:dc     #启动discord机器人`);
-      console.log(`npm run app:mys    #启动大别野机器人`);
+      console.log(`npm run app:mys    #启动villa机器人`);
+      console.log(`npm run app:kook    #启动KOOK机器人`);
     } catch (error) {
       console.log(`${name} ${error}`);
       return;
