@@ -3,8 +3,6 @@ import puppeteer, {
   PuppeteerLaunchOptions,
   ScreenshotOptions,
 } from "puppeteer";
-// 导出集成模块
-export * from "puppeteer";
 
 //截图记录
 let pic: number = 0;
@@ -19,29 +17,14 @@ let browser: Browser;
 let isBrowser: boolean = false;
 
 //实例配置
-let LaunchCfg: PuppeteerLaunchOptions = {
-  headless: "new",
-  timeout: 30000,
-  args: [
-    "--disable-gpu",
-    "--disable-dev-shm-usage",
-    "--disable-setuid-sandbox",
-    "--no-first-run",
-    "--no-sandbox",
-    "--no-zygote",
-    "--single-process",
-  ],
-};
+let LaunchCfg: PuppeteerLaunchOptions;
 
 /**
  * 配置浏览器参数
  * @param val
  */
 export function setLanchConfig(val: PuppeteerLaunchOptions) {
-  LaunchCfg = {
-    ...LaunchCfg,
-    ...val,
-  };
+  LaunchCfg = val;
 }
 
 /**
@@ -101,15 +84,15 @@ export async function startPage(
       if (!(await startChrom())) return false;
     }
     console.log("[puppeteer]开始截图");
-    // 实例化
+    /* 实例化 */
     const page = await browser.newPage();
-    /// 挂载网页
+    /* 挂载网页 */
     await page.goto(`file://${htmlPath}`, {
       timeout,
     });
-    // 获取元素
+    /* 获取元素 */
     const body = await page.$(tab);
-    // 得到图片
+    /* 得到图片 */
     console.info("[puppeteer]截图成功");
     return await body.screenshot(SOptions).catch((err) => {
       console.log(err);

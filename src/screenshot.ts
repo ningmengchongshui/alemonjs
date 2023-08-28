@@ -4,14 +4,13 @@ import { ScreenshotOptions } from "puppeteer";
 import template from "art-template";
 import lodash from "lodash";
 
-// 非依赖引用
+/* 非依赖引用 */
 import { screenshot } from "./puppeteer.js";
-// 模板缓存
-const html = {};
-// 监听器
-const watcher = {};
-//
-const AdressCache = {};
+/*模板缓存*/
+let html = {};
+
+/*监听器*/
+let watcher = {};
 
 /**
  * 缓存监听
@@ -34,6 +33,8 @@ function watchCT(tplFile: string) {
     });
 }
 
+let AdressCache = {};
+
 /**
  * 插件截图
  * @param AppName 插件名
@@ -52,13 +53,13 @@ export async function createPicture(
   data: object = {},
   SOptions: ScreenshotOptions = { type: "jpeg", quality: 90 }
 ): Promise<string | false | Buffer> {
-  // 创建目录地址
+  /** 创建目录地址 */
   const PathHtml = join(process.cwd(), "data", AppName, "html", directory);
-  // 创建文件地址
+  /* 创建文件地址 */
   const AdressHtml = join(PathHtml, `/${PageName}.html`);
-  // 确保目录存在
+  /* 确保目录存在 */
   mkdirSync(PathHtml, { recursive: true });
-  // 判断初始模板是否改变
+  /* 判断初始模板是否改变 */
   let T = false;
   if (!html[tplFile]) {
     try {
@@ -85,7 +86,7 @@ export async function createPicture(
     );
     console.info("[HTML][CREATE]", AdressHtml);
   }
-  // 截图
+  /* 截图 */
   return await screenshot(AdressHtml, SOptions).catch((err: any) => {
     console.error(err);
     return false;

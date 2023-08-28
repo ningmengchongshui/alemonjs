@@ -1,54 +1,40 @@
 import { existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import lodash from "lodash";
-
 // 非依赖引用
+import { AlemonMessage, CmdType, EventEnum } from "./types.js";
 import { getApp, delApp, getMessage, getAppKey } from "./message.js";
 import { conversationHandlers, getConversationState } from "./dialogue.js";
-import { EventEnum, MessageEvent } from "./typings.js";
 
-// 指令类型
-export interface CmdType {
-  [key: string]: Array<any>;
-}
-
-// 指令合集
+/* 指令合集 */
 let Command: CmdType;
-// 插件名集合
 let ExampleArr = [];
 let PluginsArr = [];
 
 /**
  * 应用挂载
  * @param AppsObj
- * @param AppName
+ * @param appname
  * @param belong
  */
-async function synthesis(AppsObj: object, AppName: string) {
+async function synthesis(AppsObj: object, appname: string, belong: string) {
   for (const item in AppsObj) {
-    const keys = new AppsObj[item]();
-    // 归属和指令数组都不在,是错误类
-    if (!keys["belong"] || !keys["rule"]) continue;
-    // 指令数组
+    let keys = new AppsObj[item]();
+    if (!keys["event"] || !keys["rule"]) continue;
     keys["rule"].forEach((key: any) => {
-      // 收集指令
-      Command[keys["belong"]].push({
-        // 指令
+      Command[keys["event"]].push({
         reg: key["reg"],
-        // 优先级
         priority: keys["priority"],
-        // 说明
-        dsc: keys["dsc"],
-        // 归属
-        belong: keys["belong"],
-        // 类型
-        type: keys["type"],
-        // 插件名
-        AppName,
-        // 方法名
-        fncName: key["fnc"],
-        // 函数
-        fnc: keys[key["fnc"]],
+        data: {
+          event: keys["event"],
+          eventType: keys["eventType"],
+          belong,
+          AppName: appname,
+          name: item,
+          dsc: keys["dsc"],
+          fncName: key["fnc"],
+          fnc: keys[key["fnc"]],
+        },
       });
     });
   }
@@ -60,11 +46,12 @@ async function synthesis(AppsObj: object, AppName: string) {
  * @param dir
  */
 async function loadExample(dir: string) {
-  // 初始化
+  const belong = "example";
+  /* 初始化 */
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  // 读取文件
+  /* 读取文件 */
   const readDir = readdirSync(dir);
-  // 正则匹配ts文件并返回
+  /* 正则匹配ts文件并返回 */
   const flies = readDir.filter((item) => /.(ts|js)$/.test(item));
   for (let appname of flies) {
     if (!existsSync(`${dir}/${appname}`)) {
@@ -87,7 +74,7 @@ async function loadExample(dir: string) {
         console.error(`[非class export]  ${item}`);
       }
     }
-    await synthesis(apps, AppName);
+    await synthesis(apps, AppName, belong);
     ExampleArr.push(AppName);
   }
   return;
@@ -98,9 +85,10 @@ async function loadExample(dir: string) {
  * @param dir
  */
 async function loadPlugins(dir: string) {
+  const belong = "plugins";
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   let flies = readdirSync(dir);
-  // 识别并执行插件
+  //识别并执行插件
   for await (let appname of flies) {
     // 优先考虑ts
     if (existsSync(`${dir}/${appname}/index.ts`)) {
@@ -120,54 +108,45 @@ async function loadPlugins(dir: string) {
     }
   }
   const APPARR = getAppKey();
-  // 获取插件方法
+  //获取插件方法
   for await (let item of APPARR) {
     const apps = getApp(item);
-    await synthesis(apps, item);
+    await synthesis(apps, item, belong);
     PluginsArr.push(item);
     delApp(item);
   }
   return;
 }
 
-// 初始化应用
+/**
+ * 初始化应用
+ */
 function dataInit() {
   ExampleArr = [];
   PluginsArr = [];
   Command = {
-    // 频道|别野消息
-    [EventEnum.GUILD_MESSAGE]: [],
-    // 子频道|房间消息
-    [EventEnum.CHANNEL_MESSAGE]: [],
-    // 成员进出消息
-    [EventEnum.MEMBER_MESSAGE]: [],
-    // 审核消息
-    [EventEnum.AUDIT_MESSAGE]: [],
-    // 会话消息
-    [EventEnum.MESSAGES]: [],
-    // 会话消息
-    [EventEnum.message]: [],
-    // 私聊会话消息
-    [EventEnum.PRIVATE_MESSAGE]: [],
-    // 论坛主题
-    [EventEnum.FORUMS_THREAD]: [],
-    // 论坛POST
-    [EventEnum.FORUMS_POST]: [],
-    // 论坛评论
-    [EventEnum.FORUMS_REPLY]: [],
-    // 表态消息
-    [EventEnum.REACTIONS_MESSAGE]: [],
-    // 音频事件
     [EventEnum.AUDIO_FREQUENCY]: [],
-    // 麦克风事件
     [EventEnum.AUDIO_MICROPHONE]: [],
-    // 兼容但不响应
-    "notice.*.poke": [],
+    [EventEnum.CHANNEL]: [],
+    [EventEnum.DIRECT_MESSAGE]: [],
+    [EventEnum.FORUMS_THREAD]: [],
+    [EventEnum.FORUMS_POST]: [],
+    [EventEnum.FORUMS_REPLY]: [],
+    [EventEnum.GUILD]: [],
+    [EventEnum.GUILD_MEMBERS]: [],
+    [EventEnum.MESSAGES]: [],
+    [EventEnum.MESSAGE_AUDIT]: [],
+    [EventEnum.INTERACTION]: [],
+    [EventEnum.GUILD_MESSAGE_REACTIONS]: [],
+    [EventEnum.message]: [],
+    "notice.*.poke": [], // 兼容但不响应
   };
   return;
 }
 
-// 启动加载
+/**
+ * 启动加载
+ */
 export async function cmdInit() {
   dataInit();
   await loadPlugins(join(process.cwd(), "/plugins"));
@@ -181,12 +160,12 @@ export async function cmdInit() {
   return;
 }
 
-// 插件类型
+/**
+ * 插件类型
+ */
 export enum AppsType {
-  // 简单插件
-  example = "example",
-  // 应用插件
-  plugins = "plugins",
+  example = "example", // 简单插件
+  plugins = "plugins", //  应用插件
 }
 
 /**
@@ -201,69 +180,65 @@ export async function getLoadMsg(key: AppsType) {
   }[key];
 }
 
-// 指令匹配
-export async function InstructionMatching(e: MessageEvent) {
-  // 是撤回,直接返回
-  if (e.message.recall) return true;
-  // 找不到归属
-  if (!Command[e.event.belong]) return true;
+/* 指令匹配 */
+export async function InstructionMatching(e: AlemonMessage) {
+  if (e.isRecall) return true;
+  // 匹配不到事件
+  if (!Command[e.event]) return true;
 
-  // 子频道对话机
-  const stateChannel = await getConversationState(e.channel.id);
-  const handlerChannel = conversationHandlers.get(e.channel.id);
-  if (handlerChannel && stateChannel) {
-    await handlerChannel(e, stateChannel);
+  /* 获取对话状态 */
+  const state = await getConversationState(e.msg.author.id);
+  /* 获取对话处理函数 */
+  const handler = conversationHandlers.get(e.msg.author.id);
+  if (handler && state) {
+    /* 如果用户处于对话状态，则调用对话处理函数 */
+    await handler(e, state);
     return true;
-  } else {
-    // 没有子频道对话机的时候,单用户对话机才能生效
-    // 单用户对话机
-    const stateUser = await getConversationState(e.user.id);
-    const handlerUser = conversationHandlers.get(e.user.id);
-    if (handlerUser && stateUser) {
-      await handlerUser(e, stateUser);
-      return true;
-    }
   }
 
   // 消息类型兼容层
   const msgarr = ["MESSAGES"];
-  if (e.event.belong == "MESSAGES") {
+  if (e.event == "MESSAGES") {
     msgarr.push("message");
   }
+
   for await (let item of msgarr) {
     // 发现有message  eventType需要变为undefined
     if (item == "message") {
-      e.event.belong = EventEnum.message;
-      e.event.type = undefined;
+      e.event = EventEnum.message;
+      e.eventType = undefined;
     }
-    // 循环所有指令
-    for await (let val of Command[e.event.belong]) {
-      const { reg, belong, type, AppName, fncName, fnc } = val;
+    /* 循环所有指令 */
+    for await (let val of Command[e.event]) {
+      const { reg, data } = val;
       if (reg === undefined) continue;
-      if (!new RegExp(reg).test(e.message.text)) continue;
-      // 类型不同
-      if (e.event.type != type) continue;
+      if (!new RegExp(reg).test(e.cmd_msg)) continue;
+      if (e.eventType != data.eventType) continue;
       try {
+        const { fnc, AppName } = data;
         const AppFnc = getMessage(AppName);
         if (typeof AppFnc == "function") e = AppFnc(e);
         const res = await fnc(e)
           .then((res: boolean) => {
             console.info(
-              `[${belong}][${type}][${AppName}][${fncName}][${true}]`
+              `[${data.event}][${data.belong}][${data.AppName}][${
+                data.fncName
+              }][${true}]`
             );
             return res;
           })
           .catch((err: any) => {
             console.error(
-              `[${belong}][${type}][${AppName}][${fncName}][${false}]`
+              `[${data.event}][${data.belong}][${data.AppName}][${
+                data.fncName
+              }][${false}]`
             );
             console.error(err);
             return false;
           });
         if (res) break;
       } catch (err) {
-        console.error(`[${belong}][${type}][${AppName}][${fncName}][${false}]`);
-        console.error(err);
+        logErr(err, data);
         return false;
       }
     }
@@ -276,33 +251,52 @@ export async function InstructionMatching(e: MessageEvent) {
  * @param e
  * @returns
  */
-export async function typeMessage(e: MessageEvent) {
-  // 找不到归属
-  if (!Command[e.event.belong]) return true;
-  for (const val of Command[e.event.belong]) {
-    const { belong, type, AppName, fncName, fnc } = val;
-    // 类型不同
-    if (e.event.type != type) continue;
+export async function typeMessage(e: AlemonMessage) {
+  if (!Command[e.event]) return true;
+  for (const val of Command[e.event]) {
+    const { data } = val;
+    if (e.eventType != data.eventType) continue;
     try {
+      const { fnc, AppName } = data;
       const AppFnc = getMessage(AppName);
       if (typeof AppFnc == "function") e = AppFnc(e);
       const res = await fnc(e)
         .then((res: boolean) => {
-          console.info(`[${belong}][${type}][${AppName}][${fncName}][${true}]`);
+          console.info(
+            `[${data.event}][${data.belong}][${data.AppName}][${
+              data.fncName
+            }][${true}]`
+          );
           return res;
         })
         .catch((err: any) => {
           console.error(
-            `[${belong}][${type}][${AppName}][${fncName}][${false}]`
+            `[${data.event}][${data.belong}][${data.AppName}][${
+              data.fncName
+            }][${false}]`
           );
           console.error(err);
           return false;
         });
       if (res) break;
     } catch (err) {
-      console.error(`[${belong}][${type}][${AppName}][${fncName}][${false}]`);
-      console.error(err);
+      logErr(err, data);
       return false;
     }
   }
+}
+
+/**
+ * 错误信息反馈
+ * @param err
+ * @param data
+ */
+function logErr(err: any, data: any) {
+  console.error(
+    `[${data.event}][${data.belong}][${data.AppName}][${
+      data.fncName
+    }][${false}]`
+  );
+  console.error(err);
+  return;
 }

@@ -1,7 +1,5 @@
 import { readdirSync, mkdirSync } from "fs";
 import { join } from "path";
-
-// 非依赖引用
 import { setApp, setMessage } from "./message.js";
 
 /**
@@ -9,16 +7,14 @@ import { setApp, setMessage } from "./message.js";
  * @param dirPath 指定目录下
  * @returns
  */
-export function getAllJsAndTsFilesSync(dirPath: string) {
-  const files = [];
+export function getAllJsAndTsFilesSync(dirPath) {
+  const files: any = [];
   const entries = readdirSync(dirPath, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = join(dirPath, entry.name);
     if (entry.isDirectory()) {
-      // 递归获取子目录中的文件路径
       files.push(...getAllJsAndTsFilesSync(fullPath));
     } else if (entry.isFile() && /\.(js|ts)$/i.test(entry.name)) {
-      // 如果是以 .js 或 .ts 结尾的文件，则将其路径保存到数组中
       files.push(fullPath);
     }
   }
@@ -26,56 +22,73 @@ export function getAllJsAndTsFilesSync(dirPath: string) {
 }
 
 /**
+ * 集成工程
+ * @param AppName
+ * @param DirName
+ * @returns
+ */
+export const integration = async (AppName: string, DirName = "apps") => {
+  // 根目录锁定
+  const RootPath = join(process.cwd(), "plugins", AppName);
+  // 集成
+  const apps = {};
+  // 重名控制器
+  let acount = 0;
+  try {
+    const filepath = join(RootPath, DirName);
+    mkdirSync(filepath, { recursive: true });
+    const arr = getAllJsAndTsFilesSync(filepath);
+    // 重名控制器
+    for await (const AppDir of arr) {
+      //文件对象:对象中有多个class
+      const dirObject = await import(`file://${AppDir}`).catch((err) => {
+        console.error(AppName);
+        console.error(AppDir);
+        console.error(err);
+        return {};
+      });
+      for (const item in dirObject) {
+        //如果该导出是class
+        if (dirObject[item].prototype) {
+          if (!Object.prototype.hasOwnProperty.call(apps, item)) {
+            // 不重名
+            apps[item] = dirObject[item];
+          }
+          while (true) {
+            let keyName = `${item}$${acount}`;
+            if (!Object.prototype.hasOwnProperty.call(apps, keyName)) {
+              // 不重名
+              apps[keyName] = dirObject[item];
+              // 重置为0
+              acount = 0;
+              continue;
+            } else {
+              // 加1
+              acount++;
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return apps;
+};
+
+/**
  * 创建应用对象
  * @param AppName
  * @returns
  */
 export function createApp(AppName: string) {
-  /** 根目录锁定 */
-  const RootPath = join(process.cwd(), "plugins", AppName);
-  /**  集成 */
   const apps: object = {};
+  // 重名控制器
+  let acount = 0;
   return {
     setMessage: (fnc: Function) => {
       try {
         setMessage(AppName, fnc);
-        return true;
-      } catch (err) {
-        console.log(err);
-        return false;
-      }
-    },
-    /**
-     * 加载应用
-     * @param DirName
-     * @returns
-     */
-    create: async (DirName: string) => {
-      try {
-        const filepath = join(RootPath, DirName);
-        mkdirSync(filepath, { recursive: true });
-        const arr = getAllJsAndTsFilesSync(filepath);
-        for await (let AppDir of arr) {
-          //文件对象:对象中有多个class
-          const dirObject = await import(`file://${AppDir}`).catch((err) => {
-            console.error(AppName);
-            console.error(AppDir);
-            console.error(err);
-            return {};
-          });
-          for (let item in dirObject) {
-            //如果该导出是class
-            if (dirObject[item].prototype) {
-              //如果没发现有
-              if (apps.hasOwnProperty(item)) {
-                console.error(`[同名class export]  ${AppDir}`);
-              }
-              apps[item] = dirObject[item];
-            } else {
-              console.error(`[非class export]  ${AppDir}`);
-            }
-          }
-        }
         return true;
       } catch (err) {
         console.log(err);
@@ -91,13 +104,23 @@ export function createApp(AppName: string) {
         for (let item in dirObject) {
           //如果该导出是class
           if (dirObject[item].prototype) {
-            //如果没发现有
-            if (apps.hasOwnProperty(item)) {
-              console.error(`[同名class export]  ${item}`);
+            if (!Object.prototype.hasOwnProperty.call(apps, item)) {
+              // 不重名
+              apps[item] = dirObject[item];
             }
-            apps[item] = dirObject[item];
-          } else {
-            console.error(`[非class export]  ${item}`);
+            while (true) {
+              let keyName = `${item}$${acount}`;
+              if (!Object.prototype.hasOwnProperty.call(apps, keyName)) {
+                // 不重名
+                apps[keyName] = dirObject[item];
+                // 重置为0
+                acount = 0;
+                continue;
+              } else {
+                // 加1
+                acount++;
+              }
+            }
           }
         }
         return true;
@@ -120,46 +143,4 @@ export function createApp(AppName: string) {
       }
     },
   };
-}
-
-/**
- * 集成工程
- * @param AppName
- * @param DirName
- * @returns
- */
-export async function integration(AppName: string, DirName = "apps") {
-  /** 根目录锁定 */
-  const RootPath = join(process.cwd(), "plugins", AppName);
-  /**  集成 */
-  const apps = {};
-  try {
-    const filepath = join(RootPath, DirName);
-    mkdirSync(filepath, { recursive: true });
-    const arr = getAllJsAndTsFilesSync(filepath);
-    for await (const AppDir of arr) {
-      //文件对象:对象中有多个class
-      const dirObject = await import(`file://${AppDir}`).catch((err) => {
-        console.error(AppName);
-        console.error(AppDir);
-        console.error(err);
-        return {};
-      });
-      for (const item in dirObject) {
-        //如果该导出是class
-        if (dirObject[item].prototype) {
-          //如果没发现有
-          if (Object.prototype.hasOwnProperty.call(apps, item)) {
-            console.error(`[同名class export]  ${AppDir}`);
-          }
-          apps[item] = dirObject[item];
-        } else {
-          console.error(`[非class export]  ${AppDir}`);
-        }
-      }
-    }
-  } catch (err) {
-    console.error(err);
-  }
-  return apps;
 }

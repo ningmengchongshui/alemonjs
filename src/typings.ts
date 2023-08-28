@@ -1,328 +1,395 @@
-// 消息对象
-export interface MessageEvent
-  extends ReactionController,
-    MuteController,
-    UserController,
-    IdentityGroupController,
-    ChannelController,
-    GuildController,
-    ReplyController,
-    WithdrawController,
-    InteractiveController {
-  guild: GuildBasice
-  channel: ChannelBasice
-  user: UserBasice
-  robot: RobotBasice
-  message: MessageBasice
-  event: EventBasice
-}
+import {
+  IMessage,
+  MessageReference,
+  IUser,
+  IMember,
+  ReactionObj,
+  IGuild,
+  IChannel,
+} from "./qq-types.js";
 
-// 事件枚举
+import { segmentType } from "./segment.js";
+
+/* 对话处理函数类型 */
+export interface SockesType {
+  [key: string]: any;
+}
+/**
+ *
+ */
+export type ConversationHandler = (
+  e: AlemonMessage,
+  state: ConversationState
+) => Promise<void>;
+/**
+ * 玩家信息
+ */
+export interface UserType {
+  //编号
+  id: string;
+  //用户名
+  username: string;
+  //状态
+  status: number;
+  //是否是机器
+  bot: boolean;
+}
+/**
+ * 截图文件类型
+ */
+export enum ScreenshotType {
+  JPEG = "jpeg",
+  PNG = "png",
+  WEBP = "webp",
+}
+/**
+ * 消息类型
+ */
 export enum EventEnum {
-  // 频道|别野消息
-  GUILD_MESSAGE = 'GUILD_MESSAGE',
-  // 子频道|房间消息
-  CHANNEL_MESSAGE = 'CHANNEL_MESSAGE',
-  // 成员进出消息
-  MEMBER_MESSAGE = 'MEMBER_MESSAGE',
-  // 审核消息
-  AUDIT_MESSAGE = 'AUDIT_MESSAGE',
-  // 会话消息
-  MESSAGES = 'MESSAGES',
-  // 会话消息
-  message = 'message',
-  // 私聊会话消息
-  PRIVATE_MESSAGE = 'PRIVATE_MESSAGE',
-  // 论坛主题
-  FORUMS_THREAD = 'FORUMS_THREAD',
-  // 论坛推送
-  FORUMS_POST = 'FORUMS_POST',
-  // 论坛评论
-  FORUMS_REPLY = 'FORUMS_REPLY',
-  // 表态消息
-  REACTIONS_MESSAGE = 'REACTIONS_MESSAGE',
-  // 音频事件
-  AUDIO_FREQUENCY = 'AUDIO_FREQUENCY',
-  // 麦克风事件
-  AUDIO_MICROPHONE = 'AUDIO_MICROPHONE'
+  /* 频道消息 */
+  GUILD = "GUILD",
+  /* 子频道消息 */
+  CHANNEL = "CHANNEL",
+  /* 成员频道进出变动消息 */
+  GUILD_MEMBERS = "GUILD_MEMBERS",
+  /* 审核消息 */
+  MESSAGE_AUDIT = "MESSAGE_AUDIT",
+  /* 私聊会话消息 */
+  DIRECT_MESSAGE = "DIRECT_MESSAGE",
+  // 论坛消息:公私合并
+  FORUMS_THREAD = "FORUMS_THREAD", //主题
+  FORUMS_POST = "FORUMS_POST", //POST
+  FORUMS_REPLY = "FORUMS_REPLY", //评论
+  // 会话消息:公私合并
+  MESSAGES = "MESSAGES",
+  // 小写兼容层
+  message = "message",
+  /* 频道表情点击会话消息 */
+  GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
+  /* 互动事件监听 */
+  INTERACTION = "INTERACTION",
+  /* 音频事件 */
+  AUDIO_FREQUENCY = "AUDIO_FREQUENCY",
+  /* 麦克风事件 */
+  AUDIO_MICROPHONE = "AUDIO_MICROPHONE",
+}
+/**
+ * 消息判断
+ */
+export enum EventType {
+  CREATE = "CREATE",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE",
+}
+/**
+ * 应用类型
+ */
+export interface AppType {
+  [key: string]: object;
+}
+/**
+ * 指令类型
+ */
+export interface CmdType {
+  [key: string]: Array<any>;
+}
+/**
+ * 机器人信息
+ */
+export interface BotType {
+  version: number;
+  session_id: string;
+  user: UserType; //机器人信息
+  shard: Array<number>; //分发建议
 }
 
-// 事件类型
-export enum EventTypeEnum {
-  // 创建|增加| 推送
-  CREATE = 'CREATE',
-  // 更新|变更
-  UPDATE = 'UPDATE',
-  // 删除|移除
-  DELETE = 'DELETE'
+/** 消息类型  */
+export interface MsgType extends IMessage {
+  /* 机器人 */
+  version: number;
+  session_id: string;
+  user: UserType; //机器人信息
+  shard: Array<number>; //分发建议
+  /* 用户 */
+  message_reference: MessageReference; //引用消息
+  author: IUser; //消息作者
+  channel_name: string; //子频道名称
+  channel_id: string; //子频道号
+  content: string; //消息内容
+  guild_name: string; //频道名
+  owner_id: string; //频道主 // 删除
+  guild_id: string; //频道号
+  id: string; //消息id
+  member: IMember; //消息用户
+  mentions: Array<IUser>; //ai消息对象数组
+  seq: number; //消息间的排序,已废弃
+  seq_in_channel: string; //消息间的排序,仅限于子频道
+  timestamp: string; //消息时间
 }
 
-// 子频道基础信息
-export interface ChannelBasice {
-  // 子频道编号
-  id: string
-  // 子频道名
-  name: string
-  // 子频道类ing
-  type: string
+/** 权限类型 */
+export interface PermissionsType {
+  //子频道权限
+  state: boolean;
+  //可查看
+  look: boolean;
+  //可管理
+  manage: boolean;
+  //可发言
+  speak: boolean;
+  //可直播
+  broadcast: boolean;
+  //权限权重
+  botmiss: number;
 }
 
-// 频道基础信息
-export interface GuildBasice {
-  // 频道编号
-  id: string
-  // 频道名
-  name: string
-  // 频道头像
-  icon: string
+/* 身份类型 */
+export interface IdentityType {
+  //频道主人
+  master: boolean;
+  //成员
+  member: boolean;
+  //等级
+  grade: string;
+  //管理员
+  admins: boolean;
+  //子频道管理也
+  wardens: boolean;
 }
 
-// 用户基础信息
-export interface UserBasice {
-  // 编号
-  id: string
-  // 昵称
-  name: string
-  // 是机器人？
-  bot: boolean
-  // 头像地址
-  avatar: string
-  // 主人？
-  master: boolean
-}
-
-// 机器人基础信息
-export interface RobotBasice {
-  // 编号
-  id: string
-  // 昵称
-  name: string
-  // 是机器人？
-  bot: boolean
-  // 头像地址
-  avatar?: string
-}
-
-// 消息基础信息
-export interface MessageBasice {
-  // 编号
-  id: string
-  // 发送时间
-  time: string
-  // 公域
-  publicSphere: boolean
-  // 私域
-  privateSphere: boolean
-  // 是群聊(房间/子频道)
-  groupChat: boolean
-  // 是艾特？  注：机器人@不算@
-  at?: boolean
-  // @得到的UID集
-  atuid?: Array<string>
-  // 是撤回？
-  recall?: boolean
-  // 被处理后的消息内容
-  content?: string
-  // 消息原文本
-  text?: string
-}
-
-// 事件基础信息
-export interface EventBasice {
-  // 事件编号
-  id: string
-  // 事件归属
-  belong: EventEnum
-  // 创建/更新/删除
-  type: EventTypeEnum | undefined
-}
-
-// 回复控制器
-export interface ReplyController {
+/* 对话状态类型 */
+export type ConversationState = {
   /**
-   * 字符消息
-   * @param msg 消息文本
-   * @param img 图片元素
+   * 会话次数
+   */
+  step: number;
+  /**
+   * 携带的数据
+   */
+  data: Array<any> | string | number | object;
+  /**
+   * 携带的方法
+   */
+  fnc: Function;
+};
+
+/* e消息对象类型 */
+export interface AlemonMessage {
+  segment: segmentType;
+  /**
+   * 消息事件
+   */
+  eventId: string;
+  /**
+   * 事件类型
+   */
+  event: EventEnum;
+  /**
+   * 消息类型
+   */
+  eventType: EventType;
+  /**
+   * 消息对象
+   */
+  msg: MsgType;
+  /**
+   * 是否是私域
+   */
+  isPrivate: boolean;
+  /**
+   *是否是群聊
+   */
+  isGroup: boolean;
+  /**
+   * 是否是撤回
+   */
+  isRecall: boolean;
+  /**
+   * 艾特得到的qq
+   */
+  atuid: IUser[];
+  /**
+   * 是否是艾特
+   */
+  at: boolean;
+  /**
+   * 是否是机器人主人
+   */
+  isMaster: boolean;
+  /**
+   * 身份(触发该消息的用户的身份)
+   */
+  identity: IdentityType; // 可以计算得出
+  /**
+   * 去除了艾特后的消息
+   */
+  cmd_msg: string;
+
+  /**
+   * 消息发送机制
+   * @param content 消息 | buffer
+   * @param obj  消息对象 | buffer
    * @returns
    */
-  reply: (msg: string | Buffer, img: Buffer) => Promise<string | boolean>
+  reply: (
+    content?: string | object | Array<string> | Buffer,
+    obj?: object | Buffer
+  ) => Promise<boolean>;
+
   /**
-   * 图片消息
-   * @param msg
-   * @param obj
+   * 发送本地图片
+   * @param file_image 本地地址
+   * @param content
    * @returns
    */
-  replyImage: (
-    // 消息文本
-    msg:
-      | string
-      | {
-          // url地址
-          image: string
-        },
-    obj: {
-      // url 地址
-      image: string
-    }
-  ) => Promise<string | boolean>
+  sendImage: (
+    file_image: string | Buffer | URL,
+    content?: string
+  ) => Promise<boolean>;
+
   /**
-   * 卡片消息
-   * @param obj
+   * 发送截图
+   * @param file_image buffer
+   * @param content 附带内容
    * @returns
    */
-  replyCard: (obj: object) => Promise<string | boolean>
+  postImage: (
+    file_image: string | Buffer | URL,
+    content?: string
+  ) => Promise<boolean>;
+
   /**
-   * 链接消息
-   * @param obj
+   * 删除表态
+   * @param boj 表情对象
    * @returns
    */
-  replyLink: (obj: object) => Promise<string | boolean>
+  deleteEmoji: (boj: ReactionObj) => Promise<boolean>;
+
   /**
-   * 标题消息
-   * @param obj
+   * 发送表态
+   * @param boj 表情对象
    * @returns
    */
-  replyTitle: (obj: object) => Promise<string | boolean>
+  postEmoji: (boj: ReactionObj) => Promise<boolean>;
+
   /**
-   * 转发消息
-   * @param obj
+   * 公信转私信
+   * @param content 内容 | buffer
+   * @param obj 消息对象 | buffer
    * @returns
    */
-  replyForward: (obj: object) => Promise<string | boolean>
+  replyPrivate: (
+    content?: string | object | Array<string> | Buffer,
+    obj?: object | Buffer
+  ) => Promise<boolean>;
+
   /**
-   * 通知消息
-   * @param obj
+   * 查询机器人权限
+   * @param channel_id 子频道编号
+   * @param id  用户编号
    * @returns
    */
-  replyNotice: (obj: object) => Promise<string | boolean>
+  searchBotPermissions: (
+    channel_id: any,
+    id: any
+  ) => Promise<{
+    botmiss: any;
+    look: boolean;
+    manage: boolean;
+    speak: boolean;
+    broadcast: boolean;
+    state: boolean;
+  }>;
+
   /**
-   * 按钮消息
-   * @param obj
+   * 查询用户权限
+   * @param channel_id 子频道编号
+   * @param id  用户编号
    * @returns
    */
-  replyButton: (obj: object) => Promise<string | boolean>
+  searchUerPermissions: (
+    channel_id: any,
+    id: any
+  ) => Promise<{
+    botmiss: any;
+    look: boolean;
+    manage: boolean;
+    speak: boolean;
+    broadcast: boolean;
+    state: boolean;
+  }>;
+
   /**
-   * 引用消息
-   * @param obj
+   * 获取当前用户下的所有频道列表
    * @returns
    */
-  replyQuote: (obj: object) => Promise<string | boolean>
+  getGuildList: () => Promise<boolean | IGuild[]>;
+
   /**
-   * 表态消息
-   * @param mid 消息编号
-   * @param obj 表情对象
+   * 获取频道详情
+   * @param guildId 频道编号
    * @returns
    */
-  replyReaction: (mid: string, obj: object) => Promise<string | boolean>
+  getGuildMsg: (guildId: string) => Promise<boolean | IGuild>;
+
   /**
-   * 回复消息
-   * @param mid  消息编号
-   * @param msg 消息内容
+   * 获取子频道列表
+   * @param guildId 频道编号
    * @returns
    */
-  replyMsg: (mid: string, msg: string) => Promise<string | boolean>
+  getChannels: (guildId: string) => Promise<boolean | IChannel[]>;
+
+  /**
+   * 获取子频道详情
+   * @param channelId 子频道编号
+   * @returns
+   */
+  getChannel: (channelId: string) => Promise<boolean | IChannel>;
+
+  /**
+   * 获取频道下指定成员的信息
+   * @param guildId 频道
+   * @param userId 用户
+   * @returns
+   */
+  getGuildMemberMsg: (
+    guildId: string,
+    userId: string
+  ) => Promise<boolean | IMember>;
+
+  /**
+   * 撤回指定消息
+   * @param channelID 频道编号
+   * @param messageID 消息编号
+   * @param hideTip 是否隐藏
+   * @returns
+   */
+  deleteMsg: (
+    channelID: string,
+    messageID: string,
+    hideTip: boolean
+  ) => Promise<any>;
 }
 
-// 特殊消息交互控制器
-export interface InteractiveController {
-  // 艾特用户
-  interactiveAt: (uid: string) => string
-  // 艾特全体
-  interactiveAtAll: () => string
-  // 引用频道
-  interactiveChannel: (nid: string) => string
-  // 系统表情
-  interactiveFace: (obj: object) => string
-}
-
-// 撤回控制器
-export interface WithdrawController {
-  // 撤回消息
-  withdraw: Function
-  // 撤回表态
-  withdrawReaction: Function
-}
-
-// 频道控制器
-export interface GuildController {
-  // 得到频道列表
-  getGuild: Function
-  // 得到指定频道信息
-  getGuildMsg: Function
-  // 得到指定频道用户
-  getGuildUsers: Function
-  // 删除指定频道用户
-  deleteGuildUser: Function
-  // 创建频道公告
-  createGuildAnnounce: Function
-  // 删除频道公告
-  deleteGuildAnnounce: Function
-}
-
-// 子频道控制器
-export interface ChannelController {
-  // 得到子频道列表
-  getChannel: Function
-  // 得到子频道信息
-  getChannelMsg: Function
-  // 创建子频道
-  createChannel: Function
-  // 更新子频道
-  updateChannel: Function
-  // 删除子频道
-  deleteChannel: Function
-  // 得到子频道权限
-  getChannelPermissions: Function
-  // 更新子频道权限
-  updateChannelPermissions: Function
-  // 创建子频道精华
-  createChannelAnnounce: Function
-  // 创建子频道精华
-  deleteChannelAnnounce: Function
-  // 创建
-  createChannelEssence: Function
-  // 得到
-  getChannelEssence: Function
-  // 删除
-  deleteChannelEssence: Function
-}
-
-// 身分组控制器
-export interface IdentityGroupController {
-  // 得到身分组
-  getIdentityGroup: Function
-  // 得到身分组信息
-  getIdentityGroupMsg: Function
-  // 创建身分组
-  createIdentityGroup: Function
-  // 更新身分组
-  updateIdentityGroup: Function
-  // 删除身分组
-  deleteIdentityGroup: Function
-  // 得到身分组权限
-  getIdentityGroupPermissions: Function
-  // 更新身份组权限
-  updateIdentityGroupPermissions: Function
-}
-
-// 用户控制器
-export interface UserController {
-  // 得到用户信息
-  getUserMsg: Function
-}
-
-// 禁言控制器
-export interface MuteController {
-  // 全体禁言
-  muteAll: Function
-  // 成员禁言
-  muteMember: Function
-  // 部分成员禁言
-  muteMembers: Function
-}
-
-// 表态控制器
-export interface ReactionController {
-  // 得到表态列表
-  getReaction: Function
+/**
+ * 父类属性
+ * @param name 类名
+ * @param dsc 类说明
+ * @param event 事件响应
+ * @param eventType 事件类型
+ * @param priority 正则指令匹配数组
+ * @param rule 事件类型
+ */
+export interface SuperType {
+  name?: string;
+  dsc?: string;
+  event?: EventEnum;
+  eventType?: EventType;
+  priority?: number;
+  rule?: Array<{
+    //正则
+    reg?: RegExp | string;
+    //方法(函数)
+    fnc: string;
+  }>;
 }
