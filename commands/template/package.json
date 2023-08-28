@@ -45,7 +45,7 @@
     "alemon-dc": "^1.0.3",
     "alemon-mys": "^1.0.6",
     "alemon-kook": "^1.0.1",
-    "alemon-redis": "^1.0.2",
+    "alemon-redis": "^1.0.3",
     "art-template": "^4.13.2",
     "image-size": "^1.0.2",
     "sequelize": "^6.32.1",

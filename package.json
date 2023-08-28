@@ -1,6 +1,6 @@
 {
   "name": "alemon-cli",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "alemon脚手架",
   "main": "bin/cli.js",
   "scripts": {
