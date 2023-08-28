@@ -1,6 +1,7 @@
 import { readdirSync, mkdirSync } from "fs";
 import { join } from "path";
-import { setApp, setMessage } from "./message.js";
+import { setMessage } from "./message.js";
+import { setApp } from "./app.js";
 
 /**
  * 递归得到所有js/ts文件绝对路径

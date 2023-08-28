@@ -178,12 +178,12 @@ export function embed(
   };
 }
 
-export interface BtValType {
+interface BtValType {
   desc: string;
   link?: string;
 }
 
-export interface BtObjType {
+interface BtObjType {
   key: string;
   value: string;
 }

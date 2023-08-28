@@ -10,17 +10,6 @@ import {
 
 import { segmentType } from "./segment.js";
 
-/* 对话处理函数类型 */
-export interface SockesType {
-  [key: string]: any;
-}
-/**
- *
- */
-export type ConversationHandler = (
-  e: AlemonMessage,
-  state: ConversationState
-) => Promise<void>;
 /**
  * 玩家信息
  */
@@ -157,24 +146,8 @@ export interface IdentityType {
   wardens: boolean;
 }
 
-/* 对话状态类型 */
-export type ConversationState = {
-  /**
-   * 会话次数
-   */
-  step: number;
-  /**
-   * 携带的数据
-   */
-  data: Array<any> | string | number | object;
-  /**
-   * 携带的方法
-   */
-  fnc: Function;
-};
-
 /* e消息对象类型 */
-export interface AlemonMessage {
+export interface AMessage {
   segment: segmentType;
   /**
    * 消息事件

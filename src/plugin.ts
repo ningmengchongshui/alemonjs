@@ -1,16 +1,16 @@
-import { EventEnum, SuperType, EventType } from "./types.js";
+import { EventEnum, SuperType, EventType } from "./typings.js";
 class plugin {
   name?: string;
   dsc?: string;
   event?: EventEnum;
   eventType?: EventType;
   priority?: number;
-  rule?: Array<{
+  rule?: {
     //正则
     reg?: RegExp | string;
     //方法(函数)
     fnc: string;
-  }>;
+  }[];
   /**
    * @param name 类名标记  用于特殊需要时的唯一标记
    * @param dsc 类名描述   用于描述该类的主要作用

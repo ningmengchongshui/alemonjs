@@ -2,8 +2,9 @@ import { existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import lodash from "lodash";
 // 非依赖引用
-import { AlemonMessage, CmdType, EventEnum } from "./types.js";
-import { getApp, delApp, getMessage, getAppKey } from "./message.js";
+import { AMessage, CmdType, EventEnum } from "./typings.js";
+import { getMessage } from "./message.js";
+import { getApp, delApp, getAppKey } from "./app.js";
 import { conversationHandlers, getConversationState } from "./dialogue.js";
 
 /* 指令合集 */
@@ -181,7 +182,7 @@ export async function getLoadMsg(key: AppsType) {
 }
 
 /* 指令匹配 */
-export async function InstructionMatching(e: AlemonMessage) {
+export async function InstructionMatching(e: AMessage) {
   if (e.isRecall) return true;
   // 匹配不到事件
   if (!Command[e.event]) return true;
@@ -251,7 +252,7 @@ export async function InstructionMatching(e: AlemonMessage) {
  * @param e
  * @returns
  */
-export async function typeMessage(e: AlemonMessage) {
+export async function typeMessage(e: AMessage) {
   if (!Command[e.event]) return true;
   for (const val of Command[e.event]) {
     const { data } = val;

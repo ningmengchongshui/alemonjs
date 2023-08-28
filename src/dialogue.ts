@@ -1,5 +1,34 @@
 // 非依赖引用
-import { ConversationState, ConversationHandler, SockesType } from "./types.js";
+import { AMessage } from "./typings.js";
+
+/* 对话处理函数类型 */
+export interface SockesType {
+  [key: string]: any;
+}
+/**
+ *
+ */
+export type ConversationHandler = (
+  e: AMessage,
+  state: ConversationState
+) => Promise<void>;
+
+/* 对话状态类型 */
+export type ConversationState = {
+  /**
+   * 会话次数
+   */
+  step: number;
+  /**
+   * 携带的数据
+   */
+  data: Array<any> | string | number | object;
+  /**
+   * 携带的方法
+   */
+  fnc: Function;
+};
+
 /**
  *
  */

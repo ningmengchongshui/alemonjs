@@ -10,8 +10,6 @@ export interface IUser {
   avatar: string;
   // 是否是机器人
   bot: boolean;
-  union_openid: string;
-  union_user_account: string;
 }
 /**
  * 成员
