@@ -29,7 +29,7 @@
     "README.md"
   ],
   "bin": {
-    "create-alemonc": "bin/index.js"
+    "create-alemon": "bin/index.js"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
