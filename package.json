@@ -1,6 +1,6 @@
 {
   "name": "create-alemon",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "alemon-cli",
   "main": "bin/index.js",
   "scripts": {
