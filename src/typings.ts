@@ -7,12 +7,9 @@ import {
   IGuild,
   IChannel,
 } from "./qq-types.js";
-
 import { segmentType } from "./segment.js";
 
-/**
- * 玩家信息
- */
+// 玩家信息
 export interface UserType {
   //编号
   id: string;
@@ -23,17 +20,15 @@ export interface UserType {
   //是否是机器
   bot: boolean;
 }
-/**
- * 截图文件类型
- */
+
+// 截图文件类型
 export enum ScreenshotType {
   JPEG = "jpeg",
   PNG = "png",
   WEBP = "webp",
 }
-/**
- * 消息类型
- */
+
+// 消息类型
 export enum EventEnum {
   /* 频道消息 */
   GUILD = "GUILD",
@@ -45,13 +40,13 @@ export enum EventEnum {
   MESSAGE_AUDIT = "MESSAGE_AUDIT",
   /* 私聊会话消息 */
   DIRECT_MESSAGE = "DIRECT_MESSAGE",
-  // 论坛消息:公私合并
+  /* 论坛消息:公私合并 */
   FORUMS_THREAD = "FORUMS_THREAD", //主题
   FORUMS_POST = "FORUMS_POST", //POST
   FORUMS_REPLY = "FORUMS_REPLY", //评论
-  // 会话消息:公私合并
+  /* 会话消息:公私合并 */
   MESSAGES = "MESSAGES",
-  // 小写兼容层
+  /* 小写兼容层 */
   message = "message",
   /* 频道表情点击会话消息 */
   GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
@@ -62,29 +57,25 @@ export enum EventEnum {
   /* 麦克风事件 */
   AUDIO_MICROPHONE = "AUDIO_MICROPHONE",
 }
-/**
- * 消息判断
- */
+
+// 消息判断
 export enum EventType {
   CREATE = "CREATE",
   UPDATE = "UPDATE",
   DELETE = "DELETE",
 }
-/**
- * 应用类型
- */
+
+// 应用类型
 export interface AppType {
   [key: string]: object;
 }
-/**
- * 指令类型
- */
+
+// 指令类型
 export interface CmdType {
   [key: string]: any[];
 }
-/**
- * 机器人信息
- */
+
+// 机器人信息
 export interface BotType {
   version: number;
   session_id: string;
@@ -92,14 +83,14 @@ export interface BotType {
   shard: number[]; //分发建议
 }
 
-/** 消息类型  */
+// 消息类型
 export interface MsgType extends IMessage {
-  /* 机器人 */
+  // 机器人
   version: number;
   session_id: string;
   user: UserType; //机器人信息
   shard: number[]; //分发建议
-  /* 用户 */
+  // 用户
   message_reference: MessageReference; //引用消息
   author: IUser; //消息作者
   channel_name: string; //子频道名称
@@ -116,7 +107,7 @@ export interface MsgType extends IMessage {
   timestamp: string; //消息时间
 }
 
-/** 权限类型 */
+// 权限类型
 export interface PermissionsType {
   //子频道权限
   state: boolean;
@@ -132,7 +123,7 @@ export interface PermissionsType {
   botmiss: number;
 }
 
-/* 身份类型 */
+// 身份类型
 export interface IdentityType {
   //频道主人
   master: boolean;
@@ -146,56 +137,32 @@ export interface IdentityType {
   wardens: boolean;
 }
 
-/* e消息对象类型 */
+// 消息对象类型
 export interface AMessage {
   segment: segmentType;
-  /**
-   * 消息事件
-   */
+  // 消息事件
   eventId: string;
-  /**
-   * 事件类型
-   */
+  // 事件类型
   event: EventEnum;
-  /**
-   * 消息类型
-   */
+  // 消息类型
   eventType: EventType;
-  /**
-   * 消息对象
-   */
+  // 消息对象
   msg: MsgType;
-  /**
-   * 是否是私域
-   */
+  // 是否是私域
   isPrivate: boolean;
-  /**
-   *是否是群聊
-   */
+  // 是否是群聊
   isGroup: boolean;
-  /**
-   * 是否是撤回
-   */
+  // 是否是撤回
   isRecall: boolean;
-  /**
-   * 艾特得到的qq
-   */
+  // 艾特得到的qq
   atuid: IUser[];
-  /**
-   * 是否是艾特
-   */
+  // 是否是艾特
   at: boolean;
-  /**
-   * 是否是机器人主人
-   */
+  // 是否是机器人主人
   isMaster: boolean;
-  /**
-   * 身份(触发该消息的用户的身份)
-   */
+  // 身份(触发该消息的用户的身份)
   identity: IdentityType; // 可以计算得出
-  /**
-   * 去除了艾特后的消息
-   */
+  // 去除了艾特后的消息
   cmd_msg: string;
 
   /**
@@ -204,10 +171,10 @@ export interface AMessage {
    * @param obj  消息对象 | buffer
    * @returns
    */
-  reply: (
+  reply(
     content?: string | object | string[] | Buffer,
     obj?: object | Buffer
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
 
   /**
    * 发送本地图片
@@ -215,10 +182,10 @@ export interface AMessage {
    * @param content
    * @returns
    */
-  sendImage: (
+  sendImage(
     file_image: string | Buffer | URL,
     content?: string
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
 
   /**
    * 发送截图
@@ -226,24 +193,24 @@ export interface AMessage {
    * @param content 附带内容
    * @returns
    */
-  postImage: (
+  postImage(
     file_image: string | Buffer | URL,
     content?: string
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
 
   /**
    * 删除表态
    * @param boj 表情对象
    * @returns
    */
-  deleteEmoji: (boj: ReactionObj) => Promise<boolean>;
+  deleteEmoji(boj: ReactionObj): Promise<boolean>;
 
   /**
    * 发送表态
    * @param boj 表情对象
    * @returns
    */
-  postEmoji: (boj: ReactionObj) => Promise<boolean>;
+  postEmoji(boj: ReactionObj): Promise<boolean>;
 
   /**
    * 公信转私信
@@ -251,10 +218,10 @@ export interface AMessage {
    * @param obj 消息对象 | buffer
    * @returns
    */
-  replyPrivate: (
+  replyPrivate(
     content?: string | object | string[] | Buffer,
     obj?: object | Buffer
-  ) => Promise<boolean>;
+  ): Promise<boolean>;
 
   /**
    * 查询机器人权限
@@ -262,10 +229,10 @@ export interface AMessage {
    * @param id  用户编号
    * @returns
    */
-  searchBotPermissions: (
+  searchBotPermissions(
     channel_id: any,
     id: any
-  ) => Promise<{
+  ): Promise<{
     botmiss: any;
     look: boolean;
     manage: boolean;
@@ -280,10 +247,10 @@ export interface AMessage {
    * @param id  用户编号
    * @returns
    */
-  searchUerPermissions: (
+  searchUerPermissions(
     channel_id: any,
     id: any
-  ) => Promise<{
+  ): Promise<{
     botmiss: any;
     look: boolean;
     manage: boolean;
@@ -296,28 +263,28 @@ export interface AMessage {
    * 获取当前用户下的所有频道列表
    * @returns
    */
-  getGuildList: () => Promise<boolean | IGuild[]>;
+  getGuildList(): Promise<boolean | IGuild[]>;
 
   /**
    * 获取频道详情
    * @param guildId 频道编号
    * @returns
    */
-  getGuildMsg: (guildId: string) => Promise<boolean | IGuild>;
+  getGuildMsg(guildId: string): Promise<boolean | IGuild>;
 
   /**
    * 获取子频道列表
    * @param guildId 频道编号
    * @returns
    */
-  getChannels: (guildId: string) => Promise<boolean | IChannel[]>;
+  getChannels(guildId: string): Promise<boolean | IChannel[]>;
 
   /**
    * 获取子频道详情
    * @param channelId 子频道编号
    * @returns
    */
-  getChannel: (channelId: string) => Promise<boolean | IChannel>;
+  getChannel(channelId: string): Promise<boolean | IChannel>;
 
   /**
    * 获取频道下指定成员的信息
@@ -325,10 +292,10 @@ export interface AMessage {
    * @param userId 用户
    * @returns
    */
-  getGuildMemberMsg: (
+  getGuildMemberMsg(
     guildId: string,
     userId: string
-  ) => Promise<boolean | IMember>;
+  ): Promise<boolean | IMember>;
 
   /**
    * 撤回指定消息
@@ -337,11 +304,11 @@ export interface AMessage {
    * @param hideTip 是否隐藏
    * @returns
    */
-  deleteMsg: (
+  deleteMsg(
     channelID: string,
     messageID: string,
     hideTip: boolean
-  ) => Promise<any>;
+  ): Promise<any>;
 }
 
 /**

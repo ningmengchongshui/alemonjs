@@ -11,7 +11,7 @@ export const permissions = {
   broadcast: 8,
 };
 
-/** 权限模板  */
+// 权限模板
 export const not_permissions = {
   state: false,
   look: false,

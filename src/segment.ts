@@ -83,6 +83,7 @@ export function buffer(path: string): Buffer {
   const BufferImage = Buffer.from(image);
   return BufferImage;
 }
+
 /**
  * 回复指定消息
  * @param msg_id
@@ -93,6 +94,7 @@ export function reply(msg_id: string): {
 } {
   return { message_reference: { message_id: msg_id } };
 }
+
 /**
  * 艾特某人
  * @param uid
@@ -101,6 +103,7 @@ export function reply(msg_id: string): {
 export function at(uid: string): string {
   return `<@!${uid}>`;
 }
+
 /**
  * 艾特全体
  * @returns
@@ -117,6 +120,7 @@ export function atall(): string {
 export function face(id: number): string {
   return `<emoji:${id}>`;
 }
+
 /**
  * 子频道引用
  * @param channel_id
@@ -125,6 +129,7 @@ export function face(id: number): string {
 export function channel(channel_id: string): string {
   return `<#${channel_id}>`;
 }
+
 /**
  * 加载url图片
  * @param url
@@ -135,6 +140,7 @@ export function image(url: string): { image: string } {
     image: url,
   };
 }
+
 /**
  * 卡片消息
  * @param title

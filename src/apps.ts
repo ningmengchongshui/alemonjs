@@ -4,7 +4,7 @@ import { setMessage } from "./message.js";
 import { setApp } from "./app.js";
 
 /**
- * 递归得到所有js/ts文件绝对路径
+ * 递归得到所有文件绝对路径
  * @param dirPath 指定目录下
  * @returns
  */

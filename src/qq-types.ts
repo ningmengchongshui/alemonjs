@@ -1,6 +1,4 @@
-/**
- * 用户
- */
+// 用户
 export interface IUser {
   // 用户编号
   id: string;
@@ -11,9 +9,7 @@ export interface IUser {
   // 是否是机器人
   bot: boolean;
 }
-/**
- * 成员
- */
+// 成员
 export interface IMember {
   // 频道编号
   guild_id: string;
@@ -24,7 +20,7 @@ export interface IMember {
   deaf: boolean;
   mute: boolean;
 }
-/** 消息类型 */
+// 消息类型
 export interface IMessage {
   // 消息编号
   id: string;
@@ -45,39 +41,41 @@ export interface IMessage {
     url: string;
   }[];
   //
-  embeds: {
-    title: string;
-    description?: string;
-    prompt?: string;
-    thumbnail?: {
-      url: string;
-    };
-    fields?: {
-      name: string;
-    }[];
-  }[];
+  embeds: EmbedsType[];
   mentions: IUser[];
   //
-  ark: {
-    template_id: string;
-    kv: {
-      key: string;
-      value: string;
-      obj: {
-        obj_kv: {
-          key: string;
-          value: string;
-        }[];
-      }[];
-    }[];
-  };
+  ark: ArkType;
   seq?: number;
   seq_in_channel?: string;
 }
 
-/**
- * 表态
- */
+export interface EmbedsType {
+  title: string;
+  description?: string;
+  prompt?: string;
+  thumbnail?: {
+    url: string;
+  };
+  fields?: {
+    name: string;
+  }[];
+}
+
+export interface ArkType {
+  template_id: string;
+  kv: {
+    key: string;
+    value: string;
+    obj: {
+      obj_kv: {
+        key: string;
+        value: string;
+      }[];
+    }[];
+  }[];
+}
+
+// 表态
 export interface ReactionObj {
   // 消息编号
   message_id: string;
@@ -87,9 +85,7 @@ export interface ReactionObj {
   emoji_id: string;
 }
 
-/**
- * ws配置
- */
+// ws配置
 export interface GetWsParam {
   // 应用编号
   appID: string;
@@ -104,17 +100,14 @@ export interface GetWsParam {
   //
   maxRetry?: number;
 }
-/**
- * 引用类型
- */
+
+// 引用类型
 export interface MessageReference {
   message_id: string;
   ignore_get_message_error?: boolean;
 }
 
-/**
- * qq-guiles
- */
+// guiles
 export enum AvailableIntentsEventsEnum {
   // 频道
   GUILDS = "GUILDS",
@@ -138,6 +131,7 @@ export enum AvailableIntentsEventsEnum {
   INTERACTION = "INTERACTION",
 }
 
+//
 export interface IGuild {
   id: string;
   name: string;
@@ -153,6 +147,7 @@ export interface IGuild {
   union_org_id: string;
 }
 
+//
 export interface IChannel extends PostChannelObj {
   id: string;
   guild_id: string;
@@ -161,6 +156,7 @@ export interface IChannel extends PostChannelObj {
   application_id?: string;
 }
 
+//
 interface PostChannelObj {
   name: string;
   type: ChannelType;

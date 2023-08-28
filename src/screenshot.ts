@@ -3,15 +3,16 @@ import { join } from "path";
 import { ScreenshotOptions } from "puppeteer";
 import template from "art-template";
 import lodash from "lodash";
-
-/* 非依赖引用 */
 import { screenshot } from "./puppeteer.js";
 
-/*模板缓存*/
+// 模板缓存
 let html = {};
 
-/*监听器*/
+// 监听器
 let watcher = {};
+
+//
+let AdressCache = {};
 
 /**
  * 缓存监听
@@ -33,8 +34,6 @@ function watchCT(tplFile: string) {
       delete watcher[tplFile];
     });
 }
-
-let AdressCache = {};
 
 /**
  * 插件截图

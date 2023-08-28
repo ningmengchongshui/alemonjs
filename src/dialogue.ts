@@ -1,38 +1,33 @@
 // 非依赖引用
 import { AMessage } from "./typings.js";
 
-/* 对话处理函数类型 */
+// 对话处理函数类型
 export interface SockesType {
   [key: string]: any;
 }
-/**
- *
- */
+
+//
 export type ConversationHandler = (
   e: AMessage,
   state: ConversationState
 ) => Promise<void>;
 
-/* 对话状态类型 */
+// 对话状态类型
 export type ConversationState = {
-  /**
-   * 会话次数
-   */
+  // 会话次数
   step: number;
-  /**
-   * 携带的数据
-   */
+  // 携带的数据
   data: any;
-  /**
-   * 携带的方法
-   */
+  // 携带的方法
   fnc: Function;
 };
 
-/**
- *
- */
+//
+export type conversationHandlersMap = Map<string, ConversationHandler>;
+
+//
 const Sockes: SockesType = {};
+
 /**
  *
  * @param key
@@ -41,6 +36,7 @@ const Sockes: SockesType = {};
 const getAsync = async (key: string) => {
   return Sockes[key];
 };
+
 /**
  *
  * @param key
@@ -50,6 +46,7 @@ const setAsync = async (key: string, val: any) => {
   Sockes[key] = val;
   return;
 };
+
 /**
  *
  * @param key
@@ -59,8 +56,8 @@ const delAsync = async (key: string) => {
   return;
 };
 
-/* 注册对话处理器 */
-export const conversationHandlers: Map<string, ConversationHandler> = new Map();
+// 注册对话处理器
+export const conversationHandlers: conversationHandlersMap = new Map();
 
 /**
  * 获取对话状态
@@ -74,7 +71,12 @@ export const getConversationState = async (
   return state ? JSON.parse(state) : null;
 };
 
-/* 保存对话状态 */
+/**
+ * 保存对话状态
+ * @param userId
+ * @param state
+ * @returns
+ */
 export const setConversationState = async (
   userId: string,
   state: ConversationState
@@ -84,7 +86,11 @@ export const setConversationState = async (
   return;
 };
 
-/* 删除对话状态 */
+/**
+ * 删除对话状态
+ * @param userId
+ * @returns
+ */
 export const deleteConversationState = async (
   userId: string
 ): Promise<void> => {
