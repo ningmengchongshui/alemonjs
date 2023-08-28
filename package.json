@@ -1,7 +1,7 @@
 {
-  "name": "alemon-cli",
-  "version": "1.3.4",
-  "description": "alemon脚手架",
+  "name": "create-alemon",
+  "version": "1.0.0",
+  "description": "alemon-cli",
   "main": "bin/cli.js",
   "scripts": {
     "dev": "node bin/cli.js",
@@ -24,7 +24,7 @@
     "prompts": "^2.4.2"
   },
   "bin": {
-    "alemon-cli": "bin/cli.js"
+    "create-alemon": "bin/cli.js"
   },
   "devDependencies": {
     "@types/prompts": "^2.4.4",

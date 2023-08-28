@@ -1,41 +1,82 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
-const program = new Command();
+import prompts from "prompts";
+import { existsSync, mkdirSync } from "fs";
+import { copy } from "fs-extra";
+import { spawn } from "child_process";
+import { resolve, join, dirname } from "path";
+import { fileURLToPath } from "node:url";
 
-// 版本号
-program.version("1.0.0");
+async function runNpmCommand(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, { shell: true });
 
-// 响应指令install
-program.command("install").action(async () => {
-  await import("../commands/install.js");
-});
+    child.stdout.on("data", (data) => {
+      console.log(data.toString());
+    });
 
-// 响应指令i
-program.command("i").action(async () => {
-  await import("../commands/install.js");
-});
+    child.stderr.on("data", (data) => {
+      console.error(data.toString());
+    });
 
-/**
- * 说明控制
- * @returns
- */
-program.helpInformation = () => {
-  return `
-Options:
-    -h, --help         display help for command
-    -V, --version      output the version number
+    child.on("error", (error) => {
+      reject(error);
+    });
 
-Commands:
-    install    #初始化
-    i          #初始化
+    child.on("close", (code) => {
+      if (code !== 0) {
+        reject(new Error(`Command "${command}" failed with exit code ${code}`));
+      } else {
+        resolve("");
+      }
+    });
+  });
+}
 
-Usage: 
-$ alemon-cli [command] [options]
+prompts([
+  {
+    type: "text",
+    name: "name",
+    message: "robot name:",
+    validate: async (value: any) => {
+      if (existsSync(`./${value}`)) return "Robot name already exists!";
+      return /^[a-z][0-9a-z_-]{0,}$/.test(value)
+        ? true
+        : "首字母小写,可选符号数字、小写字母、_和-";
+    },
+    initial: process.argv[3] ? process.argv[3] : "alemon-bot",
+  },
+])
+  .then(async ({ name }) => {
+    // 强制退出错误
+    if (!name) process.exit();
+    const dirPath = `./${name}`;
+    mkdirSync(dirPath);
+    console.log(`\n`);
 
-Examples:
-$ alemon-cli install        # 创建启动模板
-$ alemon-cli create         # 创建插件模板
-`;
-};
-program.parse(process.argv);
+    const currentFilePath = fileURLToPath(import.meta.url);
+    const currentDirPath = dirname(currentFilePath);
+    try {
+      const alemonCliPath = resolve(currentDirPath);
+      const templatePath = join(alemonCliPath, "template");
+      console.log("Copying template...");
+      await copy(templatePath, dirPath);
+      process.chdir(dirPath);
+      console.log("Loading dependencies...");
+      await runNpmCommand("npm", ["install"]);
+      console.log("Alemon-Bot cloned successfully!");
+      console.log(`------------------------------------`);
+      console.log(`cd ${name}      #Entering`);
+      console.log(`npm run app:qq     #启动qq频道机器人`);
+      console.log(`npm run app:dc     #启动discord机器人`);
+      console.log(`npm run app:mys    #启动villa机器人`);
+      console.log(`npm run app:kook    #启动KOOK机器人`);
+    } catch (error) {
+      console.log(`${name} ${error}`);
+      return;
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+    return;
+  });

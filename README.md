@@ -3,13 +3,7 @@
 安装
 
 ```
-npm install alemon-cli@latest -g
-```
-
-部署
-
-```
-alemon-cli install
+npm init alemon@latest
 ```
 
 进入
@@ -28,10 +22,4 @@ npm run app:qq
 
 ```
 npm run start:qq
-```
-
-启动图片开发
-
-```
-npm run dev:img
 ```
