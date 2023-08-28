@@ -22,7 +22,7 @@ export type ConversationState = {
   /**
    * 携带的数据
    */
-  data: Array<any> | string | number | object;
+  data: any;
   /**
    * 携带的方法
    */

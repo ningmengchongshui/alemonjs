@@ -15,7 +15,7 @@ export interface segmentType {
     title: string,
     prompt: string,
     url: string,
-    arr: Array<any>
+    arr: any[]
   ): {
     embed: {
       title: string;
@@ -147,7 +147,7 @@ export function embed(
   title: string,
   prompt: string,
   url: string,
-  arr: Array<any>
+  arr: any[]
 ): {
   embed: {
     title: string;

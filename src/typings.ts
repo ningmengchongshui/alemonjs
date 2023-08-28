@@ -80,7 +80,7 @@ export interface AppType {
  * 指令类型
  */
 export interface CmdType {
-  [key: string]: Array<any>;
+  [key: string]: any[];
 }
 /**
  * 机器人信息
@@ -89,7 +89,7 @@ export interface BotType {
   version: number;
   session_id: string;
   user: UserType; //机器人信息
-  shard: Array<number>; //分发建议
+  shard: number[]; //分发建议
 }
 
 /** 消息类型  */
@@ -98,7 +98,7 @@ export interface MsgType extends IMessage {
   version: number;
   session_id: string;
   user: UserType; //机器人信息
-  shard: Array<number>; //分发建议
+  shard: number[]; //分发建议
   /* 用户 */
   message_reference: MessageReference; //引用消息
   author: IUser; //消息作者
@@ -110,7 +110,7 @@ export interface MsgType extends IMessage {
   guild_id: string; //频道号
   id: string; //消息id
   member: IMember; //消息用户
-  mentions: Array<IUser>; //ai消息对象数组
+  mentions: IUser[]; //ai消息对象数组
   seq: number; //消息间的排序,已废弃
   seq_in_channel: string; //消息间的排序,仅限于子频道
   timestamp: string; //消息时间
@@ -205,7 +205,7 @@ export interface AMessage {
    * @returns
    */
   reply: (
-    content?: string | object | Array<string> | Buffer,
+    content?: string | object | string[] | Buffer,
     obj?: object | Buffer
   ) => Promise<boolean>;
 
@@ -252,7 +252,7 @@ export interface AMessage {
    * @returns
    */
   replyPrivate: (
-    content?: string | object | Array<string> | Buffer,
+    content?: string | object | string[] | Buffer,
     obj?: object | Buffer
   ) => Promise<boolean>;
 
@@ -359,10 +359,10 @@ export interface SuperType {
   event?: EventEnum;
   eventType?: EventType;
   priority?: number;
-  rule?: Array<{
+  rule?: {
     //正则
     reg?: RegExp | string;
     //方法(函数)
     fnc: string;
-  }>;
+  }[];
 }

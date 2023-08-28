@@ -98,9 +98,9 @@ export interface GetWsParam {
   // 是否是沙河环境
   sandbox?: boolean;
   // 分发推荐
-  shards?: Array<number>;
+  shards?: number[];
   //事件响应
-  intents?: Array<AvailableIntentsEventsEnum>;
+  intents?: AvailableIntentsEventsEnum[];
   //
   maxRetry?: number;
 }
