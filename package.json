@@ -1,11 +1,24 @@
 {
   "name": "create-alemon",
   "version": "1.0.0",
-  "description": "alemon-cli",
+  "description": "alemon",
+  "author": "ningmengchongshui",
   "main": "bin/index.js",
+  "license": "GPL-2.0",
+  "type": "module",
   "scripts": {
     "dev": "node bin/index.js",
     "format": "npx prettier --write ."
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "fs-extra": "^11.1.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/prompts": "^2.4.4",
+    "@types/node": "^20.2.5",
+    "prettier": "^2.8.8"
   },
   "files": [
     "bin/install.js",
@@ -15,21 +28,11 @@
     "LICENSE",
     "README.md"
   ],
-  "type": "module",
-  "author": "ningmengchongshui",
-  "license": "GPL-2.0",
-  "dependencies": {
-    "commander": "^10.0.1",
-    "fs-extra": "^11.1.1",
-    "prompts": "^2.4.2"
-  },
   "bin": {
-    "create-alemon": "bin/index.js"
+    "create-alemonc": "bin/index.js"
   },
-  "devDependencies": {
-    "@types/prompts": "^2.4.4",
-    "@types/node": "^20.2.5",
-    "prettier": "^2.8.8"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
   "keywords": [
     "alemon"
