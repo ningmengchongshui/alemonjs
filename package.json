@@ -1,18 +1,18 @@
 {
   "name": "create-alemon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "alemon-cli",
-  "main": "bin/cli.js",
+  "main": "bin/index.js",
   "scripts": {
-    "dev": "node bin/cli.js",
+    "dev": "node bin/index.js",
     "format": "npx prettier --write ."
   },
   "files": [
-    "bin/cli.js",
-    "commands/install.js",
-    "commands/template/*",
-    "commands/template/.*",
+    "bin/install.js",
+    "bin/template/*",
+    "bin/template/.*",
     "package.json",
+    "LICENSE",
     "README.md"
   ],
   "type": "module",
@@ -24,7 +24,7 @@
     "prompts": "^2.4.2"
   },
   "bin": {
-    "create-alemon": "bin/cli.js"
+    "create-alemon": "bin/index.js"
   },
   "devDependencies": {
     "@types/prompts": "^2.4.4",
