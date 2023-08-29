@@ -1,26 +1,12 @@
-☞[English document](./README_English.md)
+
 
 ## Almeon 阿柠檬跨平台开发框架
 
 [☞Alemon 官网](https://www.alemonjs.com/alemon)
 
-[☞点击链接加入QQ频道](https://pd.qq.com/s/h1o84u58q)
-
-[☞点击链接加入Discord](https://discord.gg/8dHrVvp3Ad)
-
-[☞点击链接加入米游社别野](https://dby.miyoushe.com/chat/2142/33641)
-
-| 分支  | 类型  | 说明  |
-| ---- | ---- | ---- |
-| main | 核心  | almeon核心处理块   |
-| qq   | 机器人| alemon-qq机器人实例      |
-| mys  | 机器人| alemon-mys机器人实例   |
-| dc   | 机器人| alemon-dc机器人实例      |
-| kook   | 机器人| alemon-kook机器人实例      |
-| redis| 依赖  | 特殊连接独立  |
-| cli  | 脚手架| 开发模板脚手架    |
-| web  | 网站  | 共享平台插件贡献地址|
-
+```
+npm init almeon@latest -y
+```
 
 ### 共享平台
 
