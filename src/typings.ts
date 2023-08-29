@@ -376,11 +376,22 @@ export interface AMessage {
   // 消息编号
   msg_id: string;
 
+  /**
+   * @deprecated 已废弃,请使用 msg
+   */
+  cmd_msg: string;
+
   // 消息创建时间
   createTime: number;
 
-  // 去除了艾特后的消息
+  // 原始消息内容
+  txt: string;
+
+  /**
+   * @deprecated QQ频道插件请使用 EMessage 该属性已被占用为指令消息
+   */
   msg: string;
+
   // 用户编号
   user_id: string;
   // 用户名

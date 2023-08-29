@@ -53,6 +53,7 @@ export interface segmentType {
  * 异步请求图片
  * @param url
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function url(url: string): Promise<Buffer> {
   return new Promise((resolve, reject) => {
@@ -75,6 +76,7 @@ export function url(url: string): Promise<Buffer> {
  * 读取绝对路径并返回为buffer
  * @param path
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function buffer(path: string): Buffer {
   // 读取本地图片
@@ -88,6 +90,7 @@ export function buffer(path: string): Buffer {
  * 回复指定消息
  * @param msg_id
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function reply(msg_id: string): {
   message_reference: { message_id: string };
@@ -99,6 +102,7 @@ export function reply(msg_id: string): {
  * 艾特某人
  * @param uid
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function at(uid: string): string {
   return `<@!${uid}>`;
@@ -107,6 +111,7 @@ export function at(uid: string): string {
 /**
  * 艾特全体
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function atall(): string {
   return `<@!everyone>`;
@@ -116,6 +121,7 @@ export function atall(): string {
  * 系统表情
  * @param id
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function face(id: number): string {
   return `<emoji:${id}>`;
@@ -124,6 +130,7 @@ export function face(id: number): string {
 /**
  * 子频道引用
  * @param channel_id
+ * @deprecated 已废弃,推荐使用e.segment
  * @returns
  */
 export function channel(channel_id: string): string {
@@ -134,6 +141,7 @@ export function channel(channel_id: string): string {
  * 加载url图片
  * @param url
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function image(url: string): { image: string } {
   return {
@@ -148,6 +156,7 @@ export function image(url: string): { image: string } {
  * @param url
  * @param arr
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function embed(
   title: string,
@@ -198,6 +207,7 @@ interface BtObjType {
  * 按钮消息
  * @param arr
  * @returns
+ * @deprecated 已废弃,推荐使用e.segment
  */
 export function button(arr: BtValType[]): {
   ark: {
