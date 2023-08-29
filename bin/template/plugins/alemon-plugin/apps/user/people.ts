@@ -1,9 +1,9 @@
-import { plugin, Messagetype, EventType, EType } from 'alemon'
+import { plugin, AMessage, EventType, EventEnum } from 'alemon'
 export class People extends plugin {
   constructor() {
     super({
       dsc: '成员加入',
-      event: EType.GUILD_MEMBERS,
+      event: EventEnum.GUILD_MEMBERS,
       eventType: EventType.CREATE,
       rule: [
         {
@@ -16,7 +16,7 @@ export class People extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleAdd(e: Messagetype): Promise<boolean> {
+  async peopleAdd(e: AMessage): Promise<boolean> {
     console.log(e.event, '成员加入')
     return false
   }
@@ -26,7 +26,7 @@ export class PeopleDelete extends plugin {
   constructor() {
     super({
       dsc: '成员更新',
-      event: EType.GUILD_MEMBERS,
+      event: EventEnum.GUILD_MEMBERS,
       eventType: EventType.UPDATE,
       rule: [
         {
@@ -39,7 +39,7 @@ export class PeopleDelete extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleDelete(e: Messagetype): Promise<boolean> {
+  async peopleDelete(e: AMessage): Promise<boolean> {
     console.log(e.event, '成员更新')
     return false
   }
@@ -49,7 +49,7 @@ export class PeopleUpdata extends plugin {
   constructor() {
     super({
       dsc: '成员退出',
-      event: EType.GUILD_MEMBERS,
+      event: EventEnum.GUILD_MEMBERS,
       eventType: EventType.DELETE,
       rule: [
         {
@@ -62,7 +62,7 @@ export class PeopleUpdata extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleUpdata(e: Messagetype): Promise<boolean> {
+  async peopleUpdata(e: AMessage): Promise<boolean> {
     console.log(e.event, '成员退出')
     return false
   }

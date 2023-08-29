@@ -1,4 +1,4 @@
-import { plugin, Messagetype, segment } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 export class testcmd extends plugin {
   constructor() {
     super({
@@ -29,9 +29,9 @@ export class testcmd extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async replyCat(e: Messagetype): Promise<boolean> {
+  async replyCat(e: AMessage): Promise<boolean> {
     /* 封装好的消息发送机制 */
-    e.reply(`😂 不要急嘛~`, segment.reply(e.msg.id)).catch(err => {
+    e.replyByMid(e.msg_id, `😂 不要急嘛~`).catch(err => {
       console.log(err)
     })
     return false
@@ -40,24 +40,21 @@ export class testcmd extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async userCark(e: Messagetype): Promise<boolean> {
-    e.reply(
-      segment.embed(e.msg.author.username, '个人卡片', e.msg.author.avatar, [
-        '编号',
-        e.msg.author.id
-      ])
-    ).catch(err => {
-      console.log(err)
-    })
+  async userCark(e: AMessage): Promise<boolean> {
+    e.replyCard(e.segment.embed(e.user_name, '个人卡片', e.user_avatar, ['编号', e.user_id])).catch(
+      err => {
+        console.log(err)
+      }
+    )
     return false
   }
   /**
    * @param e 消息对象
    * @returns
    */
-  async ontest(e: Messagetype): Promise<boolean> {
+  async ontest(e: AMessage): Promise<boolean> {
     /* 封装好的消息发送机制 */
-    e.reply(`😂 你干嘛,哎哟~`, segment.reply(e.msg.id)).catch(err => {
+    e.replyByMid(e.msg_id, `😂 你干嘛,哎哟~`).catch(err => {
       console.log(err)
     })
     return false
@@ -66,9 +63,9 @@ export class testcmd extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async getCool(e: Messagetype): Promise<boolean> {
-    e.reply(
-      segment.embed(
+  async getCool(e: AMessage): Promise<boolean> {
+    e.replyCard(
+      e.segment.embed(
         '新人任务',
         '一库一库',
         'http://tva1.sinaimg.cn/bmiddle/6af89bc8gw1f8ub7pm00oj202k022t8i.jpg',

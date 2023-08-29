@@ -1,4 +1,4 @@
-import { plugin, Messagetype } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 export class msg extends plugin {
   constructor() {
     super({
@@ -16,7 +16,7 @@ export class msg extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async getArrMsg(e: Messagetype): Promise<boolean> {
+  async getArrMsg(e: AMessage): Promise<boolean> {
     /* 消息发送机制 */
     e.reply(['123\n', '456', '789']).catch(err => {
       console.log(err)

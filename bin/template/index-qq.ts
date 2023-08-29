@@ -1,4 +1,6 @@
 import { createAlemon } from 'alemon-qq'
+// import ffmpegDownload from 'alemon-ffmpeg'
+// await ffmpegDownload()
 await createAlemon().catch(err => {
   console.log('启动失败~', err)
   return

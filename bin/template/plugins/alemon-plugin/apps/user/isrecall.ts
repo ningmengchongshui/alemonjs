@@ -1,4 +1,4 @@
-import { plugin, Messagetype, EventType } from 'alemon'
+import { plugin, AMessage, EventType } from 'alemon'
 export class isrecall extends plugin {
   constructor() {
     super({
@@ -15,7 +15,7 @@ export class isrecall extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async onrecall(e: Messagetype): Promise<boolean> {
+  async onrecall(e: AMessage): Promise<boolean> {
     console.info(e.eventType, '触发撤回消息')
     return false
   }

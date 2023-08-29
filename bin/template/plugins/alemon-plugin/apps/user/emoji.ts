@@ -1,4 +1,4 @@
-import { plugin, Messagetype } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 export class emoji extends plugin {
   constructor() {
     super({
@@ -15,9 +15,9 @@ export class emoji extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async onrecall(e: Messagetype): Promise<boolean> {
-    e.postEmoji({
-      message_id: e.msg.id,
+  async onrecall(e: AMessage): Promise<boolean> {
+    e.replyEmoji(e.msg_id, {
+      message_id: e.msg_id,
       emoji_type: 1,
       emoji_id: '4'
     }).catch(err => {

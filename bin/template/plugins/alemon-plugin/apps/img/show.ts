@@ -1,4 +1,4 @@
-import { plugin, Messagetype, createQrcode, segment } from 'alemon'
+import { plugin, AMessage, createQrcode } from 'alemon'
 import { obtainingImages, getJson, getJsonPath } from '../../api.js'
 export class show extends plugin {
   constructor() {
@@ -24,7 +24,7 @@ export class show extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async getHelp(e: Messagetype): Promise<boolean> {
+  async getHelp(e: AMessage): Promise<boolean> {
     const HelpData = getJson('help')
     const PData = getJsonPath('package', process.cwd().replace(/\\/g, '/'))
     const data = {
@@ -36,34 +36,38 @@ export class show extends plugin {
       console.log(err)
       return '未知错误'
     })
-    if (img) e.reply(img).catch(err => console.log(err))
+    if (img) {
+      e.reply(img).catch(err => console.log(err))
+    }
     return false
   }
   /**
    * @param e 消息对象
    * @returns
    */
-  async baidu(e: Messagetype): Promise<boolean> {
-    const img = await createQrcode('https://www.baidu.com/').catch(err => {
+  async baidu(e: AMessage): Promise<boolean> {
+    const img: false | Buffer = await createQrcode('https://www.baidu.com/').catch(err => {
       console.log(err)
-      return {}
+      return false
     })
-    if (img)
+    if (img) {
       e.reply('百度一下,你就知道', img).catch(err => {
         console.log(err)
       })
+    }
     return false
   }
   /**
    * @param e 消息对象
    * @returns
    */
-  async sculpture(e: Messagetype): Promise<boolean> {
-    const img = segment.buffer('./plugins/alemon-plugin/resources/assets/img/help/icon.png')
-    if (img)
+  async sculpture(e: AMessage): Promise<boolean> {
+    const img = e.segment.buffer('./plugins/alemon-plugin/resources/assets/img/help/icon.png')
+    if (img) {
       e.reply(img).catch(err => {
         console.log(err)
       })
+    }
     return false
   }
 }

@@ -1,4 +1,4 @@
-import { plugin, Messagetype } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 /**
  * 当私聊机器人超过三次时,
  * 机器人仍未回复消息,立即会被频道禁止
@@ -24,7 +24,7 @@ export class groupme extends plugin {
    * @param e 消息对象
    * @returns
    */
-  async isGroup(e: Messagetype): Promise<boolean> {
+  async isGroup(e: AMessage): Promise<boolean> {
     /* 公信转私信 */
     const is = await e.replyPrivate('私聊你了哟~').catch(err => {
       console.log(err)
