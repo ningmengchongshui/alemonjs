@@ -148,8 +148,6 @@ export interface AMessage {
   event: EventEnum;
   // 消息类型
   eventType: EventType;
-  // 消息对象
-  EMessage: EMessageType;
   // 是否是私域
   isPrivate: boolean;
   // 是否是群聊
@@ -164,12 +162,20 @@ export interface AMessage {
   isMaster: boolean;
   // 身份(触发该消息的用户的身份)
   identity: IdentityType; // 可以计算得出
+
+  // do 2023-8-29
+
+  // 消息对象
+  EMessage: EMessageType;
   // 去除了艾特后的消息
   msg: string;
   // 用户编号
   user_id: string;
+  // 用户名
+  user_name: string;
   // 用户头像
   user_avatar: string;
+
   /**
    * 消息发送机制
    * @param content 消息 | buffer

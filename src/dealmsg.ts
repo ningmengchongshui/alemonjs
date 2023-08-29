@@ -190,10 +190,6 @@ export async function InstructionMatching(e) {
   if (e.isRecall) return true;
   // 匹配不到事件
   if (!Command[e.event]) return true;
-  // 兼容性字段
-  e.user_id = e.message?.author?.id ?? e.user_id;
-  //
-  e.user_avatar = e.message?.author?.avatar ?? e.user_avatar;
 
   // 获取对话状态
   const state = await getConversationState(e.user_id);
