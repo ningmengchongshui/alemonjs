@@ -1,17 +1,5 @@
 import { segmentType } from "./segment.js";
 
-// 玩家信息
-export interface UserType {
-  //编号
-  id: string;
-  //用户名
-  name: string;
-  //状态
-  status: number;
-  //是否是机器
-  bot: boolean;
-}
-
 // 截图文件类型
 export enum ScreenshotType {
   JPEG = "jpeg",
@@ -198,14 +186,24 @@ export interface AMessage {
    * 发送卡片
    * @param obj
    */
-  replyCard(obj?: object): Promise<boolean>;
+  replyCard?(obj?: object): Promise<boolean>;
 
   /**
    * 回复消息
    * @param obj
    */
-  replyMsg(
-    mid?: string,
+  replyByMid?(
+    mid: string,
+    content?: string | string[] | Buffer,
+    img?: Buffer
+  ): Promise<boolean>;
+
+  /**
+   * 回复消息
+   * @param obj
+   */
+  replyByMidCard?(
+    mid: string,
     content?: string | string[] | Buffer,
     img?: Buffer
   ): Promise<boolean>;
@@ -214,14 +212,14 @@ export interface AMessage {
    * 发送表态
    * @param boj
    */
-  replyEmoji(boj: any): Promise<boolean>;
+  replyEmoji?(mid: string, boj: any): Promise<boolean>;
 
   /**
    * 删除表态
    * @param boj 表情对象
    * @returns
    */
-  deleteEmoji(boj: any): Promise<boolean>;
+  deleteEmoji?(mid: string, boj: any): Promise<boolean>;
 
   /**
    * 公信转私信
@@ -229,7 +227,7 @@ export interface AMessage {
    * @param obj 消息对象 | buffer
    * @returns
    */
-  replyPrivate(
+  replyPrivate?(
     content?: string | string[] | Buffer,
     obj?: Buffer
   ): Promise<boolean>;
@@ -238,28 +236,28 @@ export interface AMessage {
    * 获取当前用户下的所有频道列表
    * @returns
    */
-  getGuildList(): Promise<boolean | any[]>;
+  getGuildList?(): Promise<boolean | any[]>;
 
   /**
    * 获取频道详情
    * @param gid 频道编号
    * @returns
    */
-  getGuildMsg(gid: string): Promise<boolean | any>;
+  getGuildMsg?(gid: string): Promise<boolean | any>;
 
   /**
    * 获取子频道列表
    * @param gid 频道编号
    * @returns
    */
-  getChannels(gid: string): Promise<boolean | any[]>;
+  getChannels?(gid: string): Promise<boolean | any[]>;
 
   /**
    * 获取子频道详情
    * @param cid 子频道编号
    * @returns
    */
-  getChannel(cid: string): Promise<boolean | any>;
+  getChannel?(cid: string): Promise<boolean | any>;
 
   /**
    * 获取频道下指定成员的信息
@@ -267,7 +265,7 @@ export interface AMessage {
    * @param uid 用户
    * @returns
    */
-  getGuildMemberMsg(gid: string, uid: string): Promise<boolean | any>;
+  getGuildMemberMsg?(gid: string, uid: string): Promise<boolean | any>;
 
   /**
    * 撤回指定消息
@@ -276,12 +274,12 @@ export interface AMessage {
    * @param hideTip 是否隐藏
    * @returns
    */
-  deleteMsg(cid: string, mid: string, hideTip: boolean): Promise<any>;
+  deleteMsg?(cid: string, mid: string, hideTip: boolean): Promise<any>;
 
   /**
    * 权限api
    */
-  permissions: {
+  permissions?: {
     /**
      * 查询机器人权限
      * @param channel_id 子频道编号
