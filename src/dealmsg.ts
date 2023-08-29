@@ -119,7 +119,7 @@ async function loadPlugins(dir: string) {
       });
     }
     // js的写法也是允许的
-    if (existsSync(`${dir}/${appname}/index.js`)) {
+    else if (existsSync(`${dir}/${appname}/index.js`)) {
       await import(`file://${dir}/${appname}/index.js`).catch((error) => {
         console.error(appname);
         console.error(error);

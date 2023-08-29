@@ -1,13 +1,194 @@
-import {
-  IMessage,
-  MessageReference,
-  IUser,
-  IMember,
-  ReactionObj,
-  IGuild,
-  IChannel,
-} from "./qq-types.js";
 import { segmentType } from "./segment.js";
+
+/**
+ * qq-types 不能导出
+ */
+
+// 用户
+interface IUser {
+  // 用户编号
+  id: string;
+  // 用户名称
+  username: string;
+  // 用户头像地址
+  avatar: string;
+  // 是否是机器人
+  bot: boolean;
+}
+
+// 成员
+interface IMember {
+  // 频道编号
+  guild_id: string;
+  joined_at: string;
+  nick: string;
+  user: IUser;
+  roles: string[];
+  deaf: boolean;
+  mute: boolean;
+}
+// 消息类型
+interface IMessage {
+  // 消息编号
+  id: string;
+  // 子频道编号
+  channel_id: string;
+  // 频道编号
+  guild_id: string;
+  // 消息内容
+  content: string;
+  timestamp: string;
+  edited_timestamp: string;
+  mention_everyone: boolean;
+  // 消息创建者
+  author: IUser;
+  //
+  member: IMember;
+  attachments: {
+    url: string;
+  }[];
+  //
+  embeds: EmbedsType[];
+  mentions: IUser[];
+  //
+  ark: ArkType;
+  seq?: number;
+  seq_in_channel?: string;
+}
+
+interface EmbedsType {
+  title: string;
+  description?: string;
+  prompt?: string;
+  thumbnail?: {
+    url: string;
+  };
+  fields?: {
+    name: string;
+  }[];
+}
+
+interface ArkType {
+  template_id: string;
+  kv: {
+    key: string;
+    value: string;
+    obj: {
+      obj_kv: {
+        key: string;
+        value: string;
+      }[];
+    }[];
+  }[];
+}
+
+// 表态
+interface ReactionObj {
+  // 消息编号
+  message_id: string;
+  // 表情类型
+  emoji_type: number;
+  // 表情编号
+  emoji_id: string;
+}
+
+// ws配置
+interface GetWsParam {
+  // 应用编号
+  appID: string;
+  // 机器令牌
+  token: string;
+  // 是否是沙河环境
+  sandbox?: boolean;
+  // 分发推荐
+  shards?: number[];
+  //事件响应
+  intents?: AvailableIntentsEventsEnum[];
+  //
+  maxRetry?: number;
+}
+
+// 引用类型
+interface MessageReference {
+  message_id: string;
+  ignore_get_message_error?: boolean;
+}
+
+// guiles
+enum AvailableIntentsEventsEnum {
+  // 频道
+  GUILDS = "GUILDS",
+  // 频道消息
+  GUILD_MEMBERS = "GUILD_MEMBERS",
+  // 私域消息
+  GUILD_MESSAGES = "GUILD_MESSAGES",
+  //
+  GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
+  //
+  DIRECT_MESSAGE = "DIRECT_MESSAGE",
+  //
+  FORUMS_EVENT = "FORUMS_EVENT",
+  // 音频and麦克风消息
+  AUDIO_ACTION = "AUDIO_ACTION",
+  // 公域消息
+  PUBLIC_GUILD_MESSAGES = "PUBLIC_GUILD_MESSAGES",
+  //
+  MESSAGE_AUDIT = "MESSAGE_AUDIT",
+  //
+  INTERACTION = "INTERACTION",
+}
+
+//
+interface IGuild {
+  id: string;
+  name: string;
+  icon: string;
+  owner_id: string;
+  owner: boolean;
+  member_count: number;
+  max_members: number;
+  description: string;
+  joined_at: number;
+  channels: IChannel[];
+  unionworld_id: string;
+  union_org_id: string;
+}
+
+//
+interface IChannel extends PostChannelObj {
+  id: string;
+  guild_id: string;
+  owner_id: string;
+  speak_permission?: number;
+  application_id?: string;
+}
+
+//
+interface PostChannelObj {
+  name: string;
+  type: ChannelType;
+  sub_type?: ChannelSubType;
+  position: number;
+  parent_id: string;
+  private_type?: number;
+  private_user_ids?: string[];
+  permissions?: string;
+}
+
+type ChannelType = 0 | 1 | 2 | 3 | 4 | 10005;
+type ChannelSubType = 0 | 1 | 2 | 3;
+
+/**
+ * alemon-types  可以导出
+ *
+ *
+ * api需要什么就保留什么
+ *
+ * 交互信息用到什么就保留什么
+ *
+ * 其他的数据都清除,减少e消息数据包大小
+ *
+ */
 
 // 玩家信息
 export interface UserType {
@@ -104,7 +285,7 @@ export interface EMessageType extends IMessage {
   id: string; //消息id
   member: IMember; //消息用户
   mentions: IUser[]; //ai消息对象数组
-  seq: number; //消息间的排序,已废弃
+  seq?: number; //消息间的排序,已废弃
   seq_in_channel: string; //消息间的排序,仅限于子频道
   timestamp: string; //消息时间
 }
@@ -139,6 +320,17 @@ export interface IdentityType {
   wardens: boolean;
 }
 
+export interface UserType {
+  // 用户编号
+  id: string;
+  // 用户名称
+  name: string;
+  // 用户头像地址
+  avatar: string;
+  // 是否是机器人
+  bot: boolean;
+}
+
 // 消息对象类型
 export interface AMessage {
   segment: segmentType;
@@ -155,18 +347,38 @@ export interface AMessage {
   // 是否是撤回
   isRecall: boolean;
   // 艾特得到的qq
-  atuid: IUser[];
+  atuid: UserType[];
   // 是否是艾特
   at: boolean;
+
+  // 子频道编号
+  channel_id: string;
+
+  // 频道编号
+  guild_id: string;
+
   // 是否是机器人主人
   isMaster: boolean;
-  // 身份(触发该消息的用户的身份)
-  identity: IdentityType; // 可以计算得出
 
-  // do 2023-8-29
+  // 当前机器人的信息
+  bot?: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+
+  // 身份(触发该消息的用户的身份)
+  identity?: IdentityType; // 可以计算得出
 
   // 消息对象
-  EMessage: EMessageType;
+  EMessage?: EMessageType;
+
+  // 消息编号
+  msg_id: string;
+
+  // 消息创建时间
+  createTime: number;
+
   // 去除了艾特后的消息
   msg: string;
   // 用户编号
@@ -179,35 +391,32 @@ export interface AMessage {
   /**
    * 消息发送机制
    * @param content 消息 | buffer
-   * @param obj  消息对象 | buffer
+   * @param img  消息 | buffer
    * @returns
    */
-  reply(
-    content?: string | object | string[] | Buffer,
-    obj?: object | Buffer
+  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
+
+  /**
+   * 发送卡片
+   * @param obj
+   */
+  replyCard(obj?: object): Promise<boolean>;
+
+  /**
+   * 回复消息
+   * @param obj
+   */
+  replyMsg(
+    mid?: string,
+    content?: string | string[] | Buffer,
+    img?: Buffer
   ): Promise<boolean>;
 
   /**
-   * 发送本地图片
-   * @param file_image 本地地址
-   * @param content
-   * @returns
+   * 发送表态
+   * @param boj
    */
-  sendImage(
-    file_image: string | Buffer | URL,
-    content?: string
-  ): Promise<boolean>;
-
-  /**
-   * 发送截图
-   * @param file_image buffer
-   * @param content 附带内容
-   * @returns
-   */
-  postImage(
-    file_image: string | Buffer | URL,
-    content?: string
-  ): Promise<boolean>;
+  replyEmoji(boj: ReactionObj): Promise<boolean>;
 
   /**
    * 删除表态
@@ -217,58 +426,15 @@ export interface AMessage {
   deleteEmoji(boj: ReactionObj): Promise<boolean>;
 
   /**
-   * 发送表态
-   * @param boj 表情对象
-   * @returns
-   */
-  postEmoji(boj: ReactionObj): Promise<boolean>;
-
-  /**
    * 公信转私信
    * @param content 内容 | buffer
    * @param obj 消息对象 | buffer
    * @returns
    */
   replyPrivate(
-    content?: string | object | string[] | Buffer,
-    obj?: object | Buffer
+    content?: string | string[] | Buffer,
+    obj?: Buffer
   ): Promise<boolean>;
-
-  /**
-   * 查询机器人权限
-   * @param channel_id 子频道编号
-   * @param id  用户编号
-   * @returns
-   */
-  searchBotPermissions(
-    channel_id: any,
-    id: any
-  ): Promise<{
-    botmiss: any;
-    look: boolean;
-    manage: boolean;
-    speak: boolean;
-    broadcast: boolean;
-    state: boolean;
-  }>;
-
-  /**
-   * 查询用户权限
-   * @param channel_id 子频道编号
-   * @param id  用户编号
-   * @returns
-   */
-  searchUerPermissions(
-    channel_id: any,
-    id: any
-  ): Promise<{
-    botmiss: any;
-    look: boolean;
-    manage: boolean;
-    speak: boolean;
-    broadcast: boolean;
-    state: boolean;
-  }>;
 
   /**
    * 获取当前用户下的所有频道列表
@@ -278,48 +444,82 @@ export interface AMessage {
 
   /**
    * 获取频道详情
-   * @param guildId 频道编号
+   * @param gid 频道编号
    * @returns
    */
-  getGuildMsg(guildId: string): Promise<boolean | IGuild>;
+  getGuildMsg(gid: string): Promise<boolean | IGuild>;
 
   /**
    * 获取子频道列表
-   * @param guildId 频道编号
+   * @param gid 频道编号
    * @returns
    */
-  getChannels(guildId: string): Promise<boolean | IChannel[]>;
+  getChannels(gid: string): Promise<boolean | IChannel[]>;
 
   /**
    * 获取子频道详情
-   * @param channelId 子频道编号
+   * @param cid 子频道编号
    * @returns
    */
-  getChannel(channelId: string): Promise<boolean | IChannel>;
+  getChannel(cid: string): Promise<boolean | IChannel>;
 
   /**
    * 获取频道下指定成员的信息
-   * @param guildId 频道
-   * @param userId 用户
+   * @param gid 频道
+   * @param uid 用户
    * @returns
    */
-  getGuildMemberMsg(
-    guildId: string,
-    userId: string
-  ): Promise<boolean | IMember>;
+  getGuildMemberMsg(gid: string, uid: string): Promise<boolean | IMember>;
 
   /**
    * 撤回指定消息
-   * @param channelID 频道编号
-   * @param messageID 消息编号
+   * @param cid 频道编号
+   * @param mid 消息编号
    * @param hideTip 是否隐藏
    * @returns
    */
-  deleteMsg(
-    channelID: string,
-    messageID: string,
-    hideTip: boolean
-  ): Promise<any>;
+  deleteMsg(cid: string, mid: string, hideTip: boolean): Promise<any>;
+
+  /**
+   * 权限api
+   */
+  permissions: {
+    /**
+     * 查询机器人权限
+     * @param channel_id 子频道编号
+     * @param id  用户编号
+     * @returns
+     */
+    searchByBot(
+      channel_id: any,
+      id: any
+    ): Promise<{
+      botmiss: any;
+      look: boolean;
+      manage: boolean;
+      speak: boolean;
+      broadcast: boolean;
+      state: boolean;
+    }>;
+
+    /**
+     * 查询用户权限
+     * @param channel_id 子频道编号
+     * @param id  用户编号
+     * @returns
+     */
+    searchByUer(
+      channel_id: any,
+      id: any
+    ): Promise<{
+      botmiss: any;
+      look: boolean;
+      manage: boolean;
+      speak: boolean;
+      broadcast: boolean;
+      state: boolean;
+    }>;
+  };
 }
 
 /**
