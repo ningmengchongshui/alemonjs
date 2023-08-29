@@ -56,6 +56,8 @@ export enum EventEnum {
   AUDIO_FREQUENCY = "AUDIO_FREQUENCY",
   /* 麦克风事件 */
   AUDIO_MICROPHONE = "AUDIO_MICROPHONE",
+  // 兼容不响应
+  "notice.*.poke" = "notice.*.poke",
 }
 
 // 消息判断
@@ -71,9 +73,9 @@ export interface AppType {
 }
 
 // 指令类型
-export interface CmdType {
-  [key: string]: any[];
-}
+export type CmdType = {
+  [Event in EventEnum]: CmdItemType[];
+};
 
 // 机器人信息
 export interface BotType {
@@ -84,7 +86,7 @@ export interface BotType {
 }
 
 // 消息类型
-export interface MsgType extends IMessage {
+export interface EMessageType extends IMessage {
   // 机器人
   version: number;
   session_id: string;
@@ -147,7 +149,7 @@ export interface AMessage {
   // 消息类型
   eventType: EventType;
   // 消息对象
-  msg: MsgType;
+  EMessage: EMessageType;
   // 是否是私域
   isPrivate: boolean;
   // 是否是群聊
@@ -163,8 +165,11 @@ export interface AMessage {
   // 身份(触发该消息的用户的身份)
   identity: IdentityType; // 可以计算得出
   // 去除了艾特后的消息
-  cmd_msg: string;
-
+  msg: string;
+  // 用户编号
+  user_id: string;
+  // 用户头像
+  user_avatar: string;
   /**
    * 消息发送机制
    * @param content 消息 | buffer
@@ -332,4 +337,16 @@ export interface SuperType {
     //方法(函数)
     fnc: string;
   }[];
+}
+
+export interface CmdItemType {
+  reg: RegExp | string;
+  priority: number;
+  event: EventEnum;
+  eventType: EventType;
+  belong: "plugins" | "example";
+  AppName: string;
+  fncName: string;
+  fnc: Function;
+  dsc: string;
 }

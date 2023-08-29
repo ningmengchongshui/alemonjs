@@ -2,13 +2,13 @@ import { existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import lodash from "lodash";
 // 非依赖引用
-import { AMessage, CmdType, EventEnum } from "./typings.js";
+import { AMessage, CmdType, CmdItemType, EventEnum } from "./typings.js";
 import { getMessage } from "./message.js";
 import { getApp, delApp, getAppKey } from "./app.js";
 import { conversationHandlers, getConversationState } from "./dialogue.js";
 
-/* 指令合集 */
-let Command: CmdType;
+// 指令合集
+const Command: CmdType = {} as CmdType;
 let ExampleArr = [];
 let PluginsArr = [];
 
@@ -21,23 +21,47 @@ let PluginsArr = [];
 async function synthesis(AppsObj: object, appname: string, belong: string) {
   for (const item in AppsObj) {
     let keys = new AppsObj[item]();
-    if (!keys["event"] || !keys["rule"]) continue;
-    keys["rule"].forEach((key: any) => {
-      Command[keys["event"]].push({
-        reg: key["reg"],
-        priority: keys["priority"],
-        data: {
-          event: keys["event"],
-          eventType: keys["eventType"],
+    // 不合法
+    if (
+      !keys["rule"] ||
+      !Array.isArray(keys["rule"]) ||
+      keys["rule"].length == 0
+    ) {
+      continue;
+    }
+    // 指令不存在
+    for await (const key of keys["rule"]) {
+      if (
+        !key["fnc"] ||
+        !key["reg"] ||
+        typeof keys[key["fnc"]] !== "function"
+      ) {
+        // 函数指定不存在,正则不存在
+        // 得到的不是函数
+        continue;
+      }
+      if (typeof key["reg"] === "string" || key["reg"] instanceof RegExp) {
+        const event = keys["event"] ?? "MESSAGE";
+        const eventType = keys["eventType"] ?? "CREATE";
+        const dsc = keys["dsc"] ?? "";
+        const priority = keys["priority"] ?? 9999;
+        const fncName = key["fnc"];
+        const fnc = keys[fncName];
+        const reg = key["reg"];
+        // 推送
+        Command[event].push({
           belong,
+          event: event,
+          eventType: eventType,
+          reg,
+          priority,
+          dsc,
+          fncName,
+          fnc,
           AppName: appname,
-          name: item,
-          dsc: keys["dsc"],
-          fncName: key["fnc"],
-          fnc: keys[key["fnc"]],
-        },
-      });
-    });
+        });
+      }
+    }
   }
   return;
 }
@@ -47,18 +71,19 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
  * @param dir
  */
 async function loadExample(dir: string) {
-  const belong = "example";
   /* 初始化 */
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   /* 读取文件 */
   const readDir = readdirSync(dir);
   /* 正则匹配ts文件并返回 */
   const flies = readDir.filter((item) => /.(ts|js)$/.test(item));
-  for (let appname of flies) {
+  // 所有的子插件集成
+  for await (let appname of flies) {
     if (!existsSync(`${dir}/${appname}`)) {
       continue;
     }
-    const AppName = appname.replace(/\.(ts|js)$/, () => "");
+    // 得到插件名
+    const AppName = appname.replace(/\.(ts|js)$/, "");
     const apps = {};
     const Program = await import(`file://${dir}/${appname}`).catch((err) => {
       console.error(AppName);
@@ -67,15 +92,10 @@ async function loadExample(dir: string) {
     });
     for (const item in Program) {
       if (Program[item].prototype) {
-        if (apps.hasOwnProperty(item)) {
-          console.error(`[同名class export]  ${item}`);
-        }
         apps[item] = Program[item];
-      } else {
-        console.error(`[非class export]  ${item}`);
       }
     }
-    await synthesis(apps, AppName, belong);
+    await synthesis(apps, AppName, "example");
     ExampleArr.push(AppName);
   }
   return;
@@ -86,7 +106,6 @@ async function loadExample(dir: string) {
  * @param dir
  */
 async function loadPlugins(dir: string) {
-  const belong = "plugins";
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   let flies = readdirSync(dir);
   //识别并执行插件
@@ -99,8 +118,8 @@ async function loadPlugins(dir: string) {
         process.exit();
       });
     }
-    // 发现是js
-    else if (existsSync(`${dir}/${appname}/index.js`)) {
+    // js的写法也是允许的
+    if (existsSync(`${dir}/${appname}/index.js`)) {
       await import(`file://${dir}/${appname}/index.js`).catch((error) => {
         console.error(appname);
         console.error(error);
@@ -112,7 +131,7 @@ async function loadPlugins(dir: string) {
   //获取插件方法
   for await (let item of APPARR) {
     const apps = getApp(item);
-    await synthesis(apps, item, belong);
+    await synthesis(apps, item, "plugins");
     PluginsArr.push(item);
     delApp(item);
   }
@@ -125,23 +144,11 @@ async function loadPlugins(dir: string) {
 function dataInit() {
   ExampleArr = [];
   PluginsArr = [];
-  Command = {
-    [EventEnum.AUDIO_FREQUENCY]: [],
-    [EventEnum.AUDIO_MICROPHONE]: [],
-    [EventEnum.CHANNEL]: [],
-    [EventEnum.DIRECT_MESSAGE]: [],
-    [EventEnum.FORUMS_THREAD]: [],
-    [EventEnum.FORUMS_POST]: [],
-    [EventEnum.FORUMS_REPLY]: [],
-    [EventEnum.GUILD]: [],
-    [EventEnum.GUILD_MEMBERS]: [],
-    [EventEnum.MESSAGES]: [],
-    [EventEnum.MESSAGE_AUDIT]: [],
-    [EventEnum.INTERACTION]: [],
-    [EventEnum.GUILD_MESSAGE_REACTIONS]: [],
-    [EventEnum.message]: [],
-    "notice.*.poke": [], // 兼容但不响应
-  };
+  for (const item in EventEnum) {
+    if (isNaN(Number(item))) {
+      Command[item] = [];
+    }
+  }
   return;
 }
 
@@ -152,6 +159,7 @@ export async function cmdInit() {
   dataInit();
   await loadPlugins(join(process.cwd(), "/plugins"));
   await loadExample(join(process.cwd(), "/example"));
+  // 排序
   for (let val in Command) {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
@@ -162,35 +170,36 @@ export async function cmdInit() {
 }
 
 /**
- * 插件类型
- */
-export enum AppsType {
-  example = "example", // 简单插件
-  plugins = "plugins", //  应用插件
-}
-
-/**
  * 得到插件信息
  * @param key 插件类型
  * @returns
  */
-export async function getLoadMsg(key: AppsType) {
+export async function getLoadMsg(key: "example" | "plugins") {
   return {
     example: () => ExampleArr,
-    plugins: () => ExampleArr,
+    plugins: () => PluginsArr,
   }[key];
 }
 
-/* 指令匹配 */
-export async function InstructionMatching(e: AMessage) {
+/**
+ * 指令匹配
+ * @param e
+ * @returns
+ */
+export async function InstructionMatching(e) {
   if (e.isRecall) return true;
   // 匹配不到事件
   if (!Command[e.event]) return true;
+  // 兼容性字段
+  e.user_id = e.message?.author?.id ?? e.user_id;
+  //
+  e.user_avatar = e.message?.author?.avatar ?? e.user_avatar;
 
-  /* 获取对话状态 */
-  const state = await getConversationState(e.msg.author.id);
-  /* 获取对话处理函数 */
-  const handler = conversationHandlers.get(e.msg.author.id);
+  // 获取对话状态
+  const state = await getConversationState(e.user_id);
+
+  // 获取对话处理函数
+  const handler = conversationHandlers.get(e.user_id);
   if (handler && state) {
     /* 如果用户处于对话状态，则调用对话处理函数 */
     await handler(e, state);
@@ -210,10 +219,9 @@ export async function InstructionMatching(e: AMessage) {
       e.eventType = undefined;
     }
     /* 循环所有指令 */
-    for await (let val of Command[e.event]) {
-      const { reg, data } = val;
-      if (reg === undefined) continue;
-      if (!new RegExp(reg).test(e.cmd_msg)) continue;
+    for await (let data of Command[e.event]) {
+      if (data.reg === undefined) continue;
+      if (!new RegExp(data.reg).test(e.msg)) continue;
       if (e.eventType != data.eventType) continue;
       try {
         const { fnc, AppName } = data;
@@ -244,6 +252,8 @@ export async function InstructionMatching(e: AMessage) {
       }
     }
   }
+
+  return true;
 }
 
 /**
@@ -254,8 +264,7 @@ export async function InstructionMatching(e: AMessage) {
  */
 export async function typeMessage(e: AMessage) {
   if (!Command[e.event]) return true;
-  for (const val of Command[e.event]) {
-    const { data } = val;
+  for (const data of Command[e.event]) {
     if (e.eventType != data.eventType) continue;
     try {
       const { fnc, AppName } = data;
@@ -285,6 +294,7 @@ export async function typeMessage(e: AMessage) {
       return false;
     }
   }
+  return true;
 }
 
 /**
@@ -292,12 +302,12 @@ export async function typeMessage(e: AMessage) {
  * @param err
  * @param data
  */
-function logErr(err: any, data: any) {
+function logErr(err: any, data: CmdItemType) {
+  console.error(err);
   console.error(
     `[${data.event}][${data.belong}][${data.AppName}][${
       data.fncName
     }][${false}]`
   );
-  console.error(err);
   return;
 }
