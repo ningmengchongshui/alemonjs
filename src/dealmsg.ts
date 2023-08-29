@@ -86,7 +86,7 @@ async function loadExample(dir: string) {
     const AppName = appname.replace(/\.(ts|js)$/, "");
     const apps = {};
     const Program = await import(`file://${dir}/${appname}`).catch((err) => {
-      console.error(AppName);
+      console.error(`file://${dir}/${appname}`);
       console.error(err);
       return {};
     });
@@ -113,7 +113,7 @@ async function loadPlugins(dir: string) {
     // 优先考虑ts
     if (existsSync(`${dir}/${appname}/index.ts`)) {
       await import(`file://${dir}/${appname}/index.ts`).catch((err) => {
-        console.error(appname);
+        console.error(`file://${dir}/${appname}/index.ts`);
         console.error(err);
         process.exit();
       });
@@ -121,7 +121,7 @@ async function loadPlugins(dir: string) {
     // js的写法也是允许的
     else if (existsSync(`${dir}/${appname}/index.js`)) {
       await import(`file://${dir}/${appname}/index.js`).catch((error) => {
-        console.error(appname);
+        console.error(`file://${dir}/${appname}/index.js`);
         console.error(error);
         process.exit();
       });
@@ -163,7 +163,7 @@ export async function cmdInit() {
   for (let val in Command) {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
-  console.log(
+  console.info(
     `[LOAD] Plugins*${PluginsArr.length} Example*${ExampleArr.length}`
   );
   return;

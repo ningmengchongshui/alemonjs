@@ -43,7 +43,6 @@ export const integration = async (AppName: string, DirName = "apps") => {
     for await (const AppDir of arr) {
       //文件对象:对象中有多个class
       const dirObject = await import(`file://${AppDir}`).catch((err) => {
-        console.error(AppName);
         console.error(AppDir);
         console.error(err);
         return {};
@@ -54,6 +53,7 @@ export const integration = async (AppName: string, DirName = "apps") => {
           if (!Object.prototype.hasOwnProperty.call(apps, item)) {
             // 不重名
             apps[item] = dirObject[item];
+            continue;
           }
           while (true) {
             let keyName = `${item}$${acount}`;
@@ -92,7 +92,7 @@ export function createApp(AppName: string) {
         setMessage(AppName, fnc);
         return true;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     },
@@ -108,6 +108,7 @@ export function createApp(AppName: string) {
             if (!Object.prototype.hasOwnProperty.call(apps, item)) {
               // 不重名
               apps[item] = dirObject[item];
+              continue;
             }
             while (true) {
               let keyName = `${item}$${acount}`;
@@ -126,7 +127,7 @@ export function createApp(AppName: string) {
         }
         return true;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     },
@@ -139,7 +140,7 @@ export function createApp(AppName: string) {
         setApp(AppName, apps);
         return true;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     },
@@ -166,7 +167,7 @@ export const createApps = async (
   for await (let AppDir of arr) {
     //文件对象:对象中有多个class
     const dirObject = await import(`file://${AppDir}`).catch((err) => {
-      console.error(AppName);
+      console.error(AppDir);
       console.error(err);
       return {};
     });
@@ -176,6 +177,7 @@ export const createApps = async (
         if (!Object.prototype.hasOwnProperty.call(apps, item)) {
           // 不重名
           apps[item] = dirObject[item];
+          continue;
         }
         while (true) {
           let keyName = `${item}$${acount}`;

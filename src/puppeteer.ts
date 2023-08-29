@@ -59,7 +59,7 @@ export async function screenshot(
     pic++;
   }
   return await startPage(htmlPath, SOptions, tab, timeout).catch((err) => {
-    console.log(err);
+    console.error(err);
     return false;
   });
 }
@@ -83,7 +83,7 @@ export async function startPage(
       console.info("[puppeteer]实例启动");
       if (!(await startChrom())) return false;
     }
-    console.log("[puppeteer]开始截图");
+    console.info("[puppeteer]开始截图");
     /* 实例化 */
     const page = await browser.newPage();
     /* 挂载网页 */
@@ -95,7 +95,7 @@ export async function startPage(
     /* 得到图片 */
     console.info("[puppeteer]截图成功");
     return await body.screenshot(SOptions).catch((err) => {
-      console.log(err);
+      console.error(err);
       return false;
     });
   } catch (err) {
@@ -117,7 +117,7 @@ export async function startChrom(): Promise<boolean> {
   } catch (err) {
     console.error(err);
     isBrowser = false;
-    console.info("[puppeteer]启动失败");
+    console.error("[puppeteer]启动失败");
     return false;
   }
 }
