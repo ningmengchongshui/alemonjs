@@ -62,7 +62,7 @@ export const integration = async (AppName: string, DirName = "apps") => {
               apps[keyName] = dirObject[item];
               // 重置为0
               acount = 0;
-              continue;
+              break;
             } else {
               // 加1
               acount++;
@@ -116,7 +116,7 @@ export function createApp(AppName: string) {
                 apps[keyName] = dirObject[item];
                 // 重置为0
                 acount = 0;
-                continue;
+                break;
               } else {
                 // 加1
                 acount++;
@@ -184,7 +184,7 @@ export const createApps = async (
             apps[keyName] = dirObject[item];
             // 重置为0
             acount = 0;
-            continue;
+            break;
           } else {
             // 加1
             acount++;
