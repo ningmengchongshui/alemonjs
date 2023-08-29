@@ -377,7 +377,7 @@ export interface AMessage {
   msg_id: string;
 
   /**
-   * @deprecated 已废弃,请使用 msg
+   * @deprecated 已废弃,请使用msg
    */
   cmd_msg: string;
 
@@ -387,9 +387,7 @@ export interface AMessage {
   // 原始消息内容
   txt: string;
 
-  /**
-   * @deprecated QQ频道插件请使用 EMessage 该属性已被占用为指令消息
-   */
+  // 消息
   msg: string;
 
   // 用户编号
