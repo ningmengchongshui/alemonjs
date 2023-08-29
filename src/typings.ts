@@ -1,201 +1,11 @@
 import { segmentType } from "./segment.js";
 
-/**
- * qq-types 不能导出
- */
-
-// 用户
-interface IUser {
-  // 用户编号
-  id: string;
-  // 用户名称
-  username: string;
-  // 用户头像地址
-  avatar: string;
-  // 是否是机器人
-  bot: boolean;
-}
-
-// 成员
-interface IMember {
-  // 频道编号
-  guild_id: string;
-  joined_at: string;
-  nick: string;
-  user: IUser;
-  roles: string[];
-  deaf: boolean;
-  mute: boolean;
-}
-// 消息类型
-interface IMessage {
-  // 消息编号
-  id: string;
-  // 子频道编号
-  channel_id: string;
-  // 频道编号
-  guild_id: string;
-  // 消息内容
-  content: string;
-  timestamp: string;
-  edited_timestamp: string;
-  mention_everyone: boolean;
-  // 消息创建者
-  author: IUser;
-  //
-  member: IMember;
-  attachments: {
-    url: string;
-  }[];
-  //
-  embeds: EmbedsType[];
-  mentions: IUser[];
-  //
-  ark: ArkType;
-  seq?: number;
-  seq_in_channel?: string;
-}
-
-interface EmbedsType {
-  title: string;
-  description?: string;
-  prompt?: string;
-  thumbnail?: {
-    url: string;
-  };
-  fields?: {
-    name: string;
-  }[];
-}
-
-interface ArkType {
-  template_id: string;
-  kv: {
-    key: string;
-    value: string;
-    obj: {
-      obj_kv: {
-        key: string;
-        value: string;
-      }[];
-    }[];
-  }[];
-}
-
-// 表态
-interface ReactionObj {
-  // 消息编号
-  message_id: string;
-  // 表情类型
-  emoji_type: number;
-  // 表情编号
-  emoji_id: string;
-}
-
-// ws配置
-interface GetWsParam {
-  // 应用编号
-  appID: string;
-  // 机器令牌
-  token: string;
-  // 是否是沙河环境
-  sandbox?: boolean;
-  // 分发推荐
-  shards?: number[];
-  //事件响应
-  intents?: AvailableIntentsEventsEnum[];
-  //
-  maxRetry?: number;
-}
-
-// 引用类型
-interface MessageReference {
-  message_id: string;
-  ignore_get_message_error?: boolean;
-}
-
-// guiles
-enum AvailableIntentsEventsEnum {
-  // 频道
-  GUILDS = "GUILDS",
-  // 频道消息
-  GUILD_MEMBERS = "GUILD_MEMBERS",
-  // 私域消息
-  GUILD_MESSAGES = "GUILD_MESSAGES",
-  //
-  GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
-  //
-  DIRECT_MESSAGE = "DIRECT_MESSAGE",
-  //
-  FORUMS_EVENT = "FORUMS_EVENT",
-  // 音频and麦克风消息
-  AUDIO_ACTION = "AUDIO_ACTION",
-  // 公域消息
-  PUBLIC_GUILD_MESSAGES = "PUBLIC_GUILD_MESSAGES",
-  //
-  MESSAGE_AUDIT = "MESSAGE_AUDIT",
-  //
-  INTERACTION = "INTERACTION",
-}
-
-//
-interface IGuild {
-  id: string;
-  name: string;
-  icon: string;
-  owner_id: string;
-  owner: boolean;
-  member_count: number;
-  max_members: number;
-  description: string;
-  joined_at: number;
-  channels: IChannel[];
-  unionworld_id: string;
-  union_org_id: string;
-}
-
-//
-interface IChannel extends PostChannelObj {
-  id: string;
-  guild_id: string;
-  owner_id: string;
-  speak_permission?: number;
-  application_id?: string;
-}
-
-//
-interface PostChannelObj {
-  name: string;
-  type: ChannelType;
-  sub_type?: ChannelSubType;
-  position: number;
-  parent_id: string;
-  private_type?: number;
-  private_user_ids?: string[];
-  permissions?: string;
-}
-
-type ChannelType = 0 | 1 | 2 | 3 | 4 | 10005;
-type ChannelSubType = 0 | 1 | 2 | 3;
-
-/**
- * alemon-types  可以导出
- *
- *
- * api需要什么就保留什么
- *
- * 交互信息用到什么就保留什么
- *
- * 其他的数据都清除,减少e消息数据包大小
- *
- */
-
 // 玩家信息
 export interface UserType {
   //编号
   id: string;
   //用户名
-  username: string;
+  name: string;
   //状态
   status: number;
   //是否是机器
@@ -266,30 +76,6 @@ export interface BotType {
   shard: number[]; //分发建议
 }
 
-// 消息类型
-export interface EMessageType extends IMessage {
-  // 机器人
-  version: number;
-  session_id: string;
-  user: UserType; //机器人信息
-  shard: number[]; //分发建议
-  // 用户
-  message_reference: MessageReference; //引用消息
-  author: IUser; //消息作者
-  channel_name: string; //子频道名称
-  channel_id: string; //子频道号
-  content: string; //消息内容
-  guild_name: string; //频道名
-  owner_id: string; //频道主 // 删除
-  guild_id: string; //频道号
-  id: string; //消息id
-  member: IMember; //消息用户
-  mentions: IUser[]; //ai消息对象数组
-  seq?: number; //消息间的排序,已废弃
-  seq_in_channel: string; //消息间的排序,仅限于子频道
-  timestamp: string; //消息时间
-}
-
 // 权限类型
 export interface PermissionsType {
   //子频道权限
@@ -333,7 +119,6 @@ export interface UserType {
 
 // 消息对象类型
 export interface AMessage {
-  segment: segmentType;
   // 消息事件
   eventId: string;
   // 事件类型
@@ -346,19 +131,21 @@ export interface AMessage {
   isGroup: boolean;
   // 是否是撤回
   isRecall: boolean;
+
+  // 是否是机器人主人
+  isMaster: boolean;
+
   // 艾特得到的qq
   atuid: UserType[];
+
   // 是否是艾特
   at: boolean;
-
-  // 子频道编号
-  channel_id: string;
 
   // 频道编号
   guild_id: string;
 
-  // 是否是机器人主人
-  isMaster: boolean;
+  // 子频道编号
+  channel_id: string;
 
   // 当前机器人的信息
   bot?: {
@@ -370,11 +157,13 @@ export interface AMessage {
   // 身份(触发该消息的用户的身份)
   identity?: IdentityType; // 可以计算得出
 
-  // 消息对象
-  EMessage?: EMessageType;
-
   // 消息编号
   msg_id: string;
+
+  // 消息
+  msg: string;
+
+  txt: string;
 
   /**
    * @deprecated 已废弃,请使用msg
@@ -382,20 +171,20 @@ export interface AMessage {
   cmd_msg: string;
 
   // 消息创建时间
-  createTime: number;
+  msg_create_time: number;
 
   // 原始消息内容
-  txt: string;
-
-  // 消息
-  msg: string;
 
   // 用户编号
   user_id: string;
+
   // 用户名
   user_name: string;
+
   // 用户头像
   user_avatar: string;
+
+  segment: segmentType;
 
   /**
    * 消息发送机制
@@ -425,14 +214,14 @@ export interface AMessage {
    * 发送表态
    * @param boj
    */
-  replyEmoji(boj: ReactionObj): Promise<boolean>;
+  replyEmoji(boj: any): Promise<boolean>;
 
   /**
    * 删除表态
    * @param boj 表情对象
    * @returns
    */
-  deleteEmoji(boj: ReactionObj): Promise<boolean>;
+  deleteEmoji(boj: any): Promise<boolean>;
 
   /**
    * 公信转私信
@@ -449,28 +238,28 @@ export interface AMessage {
    * 获取当前用户下的所有频道列表
    * @returns
    */
-  getGuildList(): Promise<boolean | IGuild[]>;
+  getGuildList(): Promise<boolean | any[]>;
 
   /**
    * 获取频道详情
    * @param gid 频道编号
    * @returns
    */
-  getGuildMsg(gid: string): Promise<boolean | IGuild>;
+  getGuildMsg(gid: string): Promise<boolean | any>;
 
   /**
    * 获取子频道列表
    * @param gid 频道编号
    * @returns
    */
-  getChannels(gid: string): Promise<boolean | IChannel[]>;
+  getChannels(gid: string): Promise<boolean | any[]>;
 
   /**
    * 获取子频道详情
    * @param cid 子频道编号
    * @returns
    */
-  getChannel(cid: string): Promise<boolean | IChannel>;
+  getChannel(cid: string): Promise<boolean | any>;
 
   /**
    * 获取频道下指定成员的信息
@@ -478,7 +267,7 @@ export interface AMessage {
    * @param uid 用户
    * @returns
    */
-  getGuildMemberMsg(gid: string, uid: string): Promise<boolean | IMember>;
+  getGuildMemberMsg(gid: string, uid: string): Promise<boolean | any>;
 
   /**
    * 撤回指定消息
