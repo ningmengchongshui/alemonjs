@@ -1,4 +1,31 @@
-import { segmentType } from "./segment.js";
+import { ScreenshotOptions } from "puppeteer";
+
+export interface PictureOptions {
+  /**
+   * 插件名
+   */
+  AppName: string;
+  /**
+   * 模板地址模板地址
+   */
+  tplFile: string;
+  /**
+   * 文件名
+   */
+  PageName: string;
+  /**
+   * 模板插入的数据
+   */
+  directory: string;
+  /**
+   * 截图参数
+   */
+  SOptions: ScreenshotOptions;
+  /**
+   * 任意数据对象
+   */
+  data: any;
+}
 
 // 截图文件类型
 export enum ScreenshotType {
@@ -103,6 +130,63 @@ export interface UserType {
   avatar: string;
   // 是否是机器人
   bot: boolean;
+}
+
+interface BtValType {
+  desc: string;
+  link?: string;
+}
+
+interface BtObjType {
+  key: string;
+  value: string;
+}
+
+export interface segmentType {
+  url(url: string): Promise<Buffer>;
+  buffer(path: string): Buffer;
+  reply(msg_id: string): { message_reference: { message_id: string } };
+  at(uid: string): string;
+  atall(): string;
+  face(id: number): string;
+  channel(channel_id: string): string;
+  image(url: string): { image: string };
+  embed(
+    title: string,
+    prompt: string,
+    url: string,
+    arr: any[]
+  ): {
+    embed: {
+      title: string;
+      prompt: string;
+      thumbnail: {
+        url: string;
+      };
+      fields: {
+        name: any;
+      }[];
+    };
+  };
+  button(arr: BtValType[]): {
+    ark: {
+      template_id: number;
+      kv: (
+        | {
+            key: string;
+            value: string;
+            obj?: undefined;
+          }
+        | {
+            key: string;
+            obj: {
+              obj_kv: BtObjType;
+            }[];
+            value?: undefined;
+          }
+      )[];
+    };
+  };
 }
 
 // 消息对象类型

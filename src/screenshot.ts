@@ -1,9 +1,9 @@
 import { readFileSync, writeFileSync, watch, mkdirSync } from "fs";
 import { join } from "path";
-import { ScreenshotOptions } from "puppeteer";
 import template from "art-template";
 import lodash from "lodash";
 import { screenshot } from "./puppeteer.js";
+import { PictureOptions } from "./typings.js";
 
 // 模板缓存
 let html = {};
@@ -36,31 +36,34 @@ function watchCT(tplFile: string) {
 }
 
 /**
- * 插件截图
- * @param AppName 插件名
- * @param tplFile 模板地址模板地址
- * @param directory 拼接地址
- * @param PageName 文件名
- * @param data 模板插入的数据
- * @param SOptions 截图参数
+ *
+ * @param Options
  * @returns
  */
 export async function createPicture(
-  AppName: string,
-  tplFile: string,
-  directory: string,
-  PageName: string,
-  data: object = {},
-  SOptions: ScreenshotOptions = { type: "jpeg", quality: 90 }
+  Options: PictureOptions
 ): Promise<string | false | Buffer> {
+  const {
+    AppName,
+    tplFile,
+    PageName,
+    data,
+    directory,
+    SOptions = { type: "jpeg", quality: 90 },
+  } = Options;
+
   /** 创建目录地址 */
   const PathHtml = join(process.cwd(), "data", AppName, "html", directory);
+
   /* 创建文件地址 */
   const AdressHtml = join(PathHtml, `/${PageName}.html`);
+
   /* 确保目录存在 */
   mkdirSync(PathHtml, { recursive: true });
+
   /* 判断初始模板是否改变 */
   let T = false;
+
   if (!html[tplFile]) {
     try {
       //如果不存在,则读取模板
@@ -73,20 +76,44 @@ export async function createPicture(
     watchCT(tplFile);
     T = true;
   }
+
   //如果数据不相等,需要更新数据
   if (!lodash.isEqual(AdressCache[AdressHtml], data)) {
     AdressCache[AdressHtml] = data;
     T = true;
   }
+
   //模板更改和数据更改都会生成生成html
   if (T) {
+    const basePath = join(process.cwd(), "plugins", AppName);
+    //
+    const reg =
+      /url\(['"](@[^'"]+)['"]\)|href=['"](@[^'"]+)['"]|src=['"](@[^'"]+)['"]/g;
+    //
+    const absolutePathTemplate = html[tplFile].replace(
+      reg,
+      (match, urlPath, hrefPath, srcPath) => {
+        const relativePath = urlPath ?? hrefPath ?? srcPath;
+        // 去掉路径开头的 @ 符号
+        // 转义\/
+        const absolutePath = join(basePath, relativePath.substr(1)).replace(
+          /\\/g,
+          "/"
+        );
+        if (urlPath) return `url('${absolutePath}')`;
+        if (hrefPath) return `href='${absolutePath}'`;
+        if (srcPath) return `src='${absolutePath}'`;
+      }
+    );
+    //
     writeFileSync(
       AdressHtml,
-      template.render(html[tplFile], AdressCache[AdressHtml])
+      template.render(absolutePathTemplate, AdressCache[AdressHtml])
     );
+    //
     console.info("[HTML][CREATE]", AdressHtml);
   }
-  /* 截图 */
+
   return await screenshot(AdressHtml, SOptions).catch((err: any) => {
     console.error(err);
     return false;
