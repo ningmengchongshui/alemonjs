@@ -6,9 +6,17 @@ import { getMessage } from "./message.js";
 import { getApp, delApp, getAppKey } from "./app.js";
 import { conversationHandlers, getConversationState } from "./dialogue.js";
 
-// 指令合集
+/**
+ * 指令合集
+ */
 const Command: CmdType = {} as CmdType;
+/**
+ * example插件集合
+ */
 let ExampleArr = [];
+/**
+ * plugins插件集合
+ */
 let PluginsArr = [];
 
 /**
@@ -140,7 +148,7 @@ async function loadPlugins(dir: string) {
       });
     } else if (existsSync(`${dir}/${appname}/index.js`)) {
       /**
-       * js的写法也是允许的
+       * 允许js写法
        */
       await import(`file://${dir}/${appname}/index.js`).catch((error) => {
         console.error(`file://${dir}/${appname}/index.js`);
