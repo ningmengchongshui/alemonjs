@@ -255,7 +255,7 @@ export async function InstructionMatching(e: AMessage) {
 
   for await (let item of msgarr) {
     /**
-     * 发现有message  eventType需要变为undefined
+     * 发现message
      */
     if (item == "message") {
       e.event = EventEnum.message;

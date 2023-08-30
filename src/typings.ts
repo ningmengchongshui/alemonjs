@@ -240,13 +240,19 @@ export interface AMessage {
   isMaster: boolean;
 
   /**
-   * 艾特得到的uid即可
-   */
-  atuid: UserType[];
-  /**
    * 是否有@
    */
   at: boolean;
+  /**
+   * 当有艾特时
+   * 第一个非机器人用户信息
+   * 不管是公域或私域
+   */
+  at_user: UserType;
+  /**
+   * 艾特得到的uid即可
+   */
+  at_users: UserType[];
 
   /**
    * 当前机器人的信息
@@ -480,9 +486,18 @@ export interface CmdItemType {
  * segment
  */
 export interface segmentType {
-  url(url: string): Promise<Buffer>;
-  buffer(path: string): Buffer;
+  /**
+   * 艾特用户
+   * @param uid
+   */
   at(uid: string): string;
+  /**
+   * 艾特全体
+   */
   atAll(): string;
+  /**
+   * 艾特频道
+   * @param channel_id
+   */
   atChannel(channel_id: string): string;
 }

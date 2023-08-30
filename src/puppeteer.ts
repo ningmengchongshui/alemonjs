@@ -60,8 +60,14 @@ export async function screenshot(
     if (!(await startChrom())) return false;
   }
   if (pic <= RestartControl) {
+    /**
+     * 记录次数
+     */
     pic++;
   } else {
+    /**
+     * 重置次数
+     */
     pic = 0;
     console.info("[puppeteer]过载关闭");
     isBrowser = false;
@@ -70,6 +76,9 @@ export async function screenshot(
     if (!(await startChrom())) return false;
     pic++;
   }
+  /**
+   * 开始截图
+   */
   return await startPage(htmlPath, SOptions, tab, timeout).catch((err) => {
     console.error(err);
     return false;
@@ -77,7 +86,7 @@ export async function screenshot(
 }
 
 /**
- *
+ * 开始截图
  * @param htmlPath  绝对路径
  * @param SOptions  { type 图片类型 , quality 清晰度   }
  * @param tab  截图元素位
@@ -91,6 +100,9 @@ export async function startPage(
   timeout: number
 ): Promise<string | false | Buffer> {
   try {
+    /**
+     * 开始
+     */
     if (!isBrowser) {
       console.info("[puppeteer]实例启动");
       if (!(await startChrom())) return false;
