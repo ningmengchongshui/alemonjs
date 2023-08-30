@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "ignoreDeprecations": "5.0",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "preserveConstEnums": true,
-    "typeRoots": ["node_modules/@types"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["bin"],
-  "exclude": ["node_modules", "bin/template"]
+  "include": [
+    "bin/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bin/template"
+  ]
 }
