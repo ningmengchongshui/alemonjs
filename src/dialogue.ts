@@ -1,4 +1,3 @@
-// 非依赖引用
 import { AMessage } from "./typings.js";
 
 // 对话处理函数类型

@@ -24,47 +24,64 @@ export function getAllJsAndTsFilesSync(dirPath) {
 
 /**
  * 集成工程
- * @param AppName
- * @param DirName
+ * @param AppName 目录名
+ * @param DirName 默认apps
  * @returns
  */
 export const integration = async (AppName: string, DirName = "apps") => {
-  // 根目录锁定
+  /**
+   * 根目录锁定
+   */
   const RootPath = join(process.cwd(), "plugins", AppName);
-  // 集成
+  /**
+   * 集成
+   */
   const apps = {};
-  // 重名控制器
+  /**
+   * 重名控制器
+   */
   let acount = 0;
   try {
     const filepath = join(RootPath, DirName);
     mkdirSync(filepath, { recursive: true });
     const arr = getAllJsAndTsFilesSync(filepath);
-    // 重名控制器
     for await (const AppDir of arr) {
-      //文件对象:对象中有多个class
+      /**
+       * 文件对象:对象中有多个class
+       */
       const dirObject = await import(`file://${AppDir}`).catch((err) => {
         console.error(AppDir);
         console.error(err);
         return {};
       });
       for (const item in dirObject) {
-        //如果该导出是class
+        /**
+         * 如果该导出是class
+         */
         if (dirObject[item].prototype) {
           if (!Object.prototype.hasOwnProperty.call(apps, item)) {
-            // 不重名
+            /**
+             * 不重名
+             */
             apps[item] = dirObject[item];
             continue;
           }
           while (true) {
             let keyName = `${item}$${acount}`;
             if (!Object.prototype.hasOwnProperty.call(apps, keyName)) {
-              // 不重名
+              /**
+               * 不重名
+               */
               apps[keyName] = dirObject[item];
-              // 重置为0
+              /**
+               * 重置为0
+               */
               acount = 0;
               break;
             } else {
-              // 加1
+              /**
+               * 加1
+               */
               acount++;
             }
           }
@@ -83,8 +100,13 @@ export const integration = async (AppName: string, DirName = "apps") => {
  * @returns
  */
 export function createApp(AppName: string) {
+  /**
+   * 应用集
+   */
   const apps: object = {};
-  // 重名控制器
+  /**
+   * 重名控制器
+   */
   let acount = 0;
   return {
     setMessage: (fnc: Function) => {
@@ -103,23 +125,33 @@ export function createApp(AppName: string) {
     component: (dirObject: object = {}) => {
       try {
         for (let item in dirObject) {
-          //如果该导出是class
+          /**
+           * 如果该导出是class
+           */
           if (dirObject[item].prototype) {
             if (!Object.prototype.hasOwnProperty.call(apps, item)) {
-              // 不重名
+              /**
+               * 不重名
+               */
               apps[item] = dirObject[item];
               continue;
             }
             while (true) {
               let keyName = `${item}$${acount}`;
               if (!Object.prototype.hasOwnProperty.call(apps, keyName)) {
-                // 不重名
+                /**
+                 * 不重名
+                 */
                 apps[keyName] = dirObject[item];
-                // 重置为0
+                /**
+                 * 重置为0
+                 */
                 acount = 0;
                 break;
               } else {
-                // 加1
+                /**
+                 * 加1
+                 */
                 acount++;
               }
             }
@@ -146,55 +178,3 @@ export function createApp(AppName: string) {
     },
   };
 }
-
-/**
- * 创建插件应用
- * @param AppName  插件名（与插件名相同）
- * @param DirName 应用地址（默认为apps）
- * @returns
- * @deprecated 已废弃,请使用 createapp()
- */
-export const createApps = async (
-  AppName: string,
-  DirName = "apps"
-): Promise<object> => {
-  const filepath = join(process.cwd(), "plugins", AppName, DirName);
-  const apps: object = {};
-  mkdirSync(filepath, { recursive: true });
-  const arr = getAllJsAndTsFilesSync(filepath);
-  // 重名控制器
-  let acount = 0;
-  for await (let AppDir of arr) {
-    //文件对象:对象中有多个class
-    const dirObject = await import(`file://${AppDir}`).catch((err) => {
-      console.error(AppDir);
-      console.error(err);
-      return {};
-    });
-    for (let item in dirObject) {
-      //如果该导出是class
-      if (dirObject[item].prototype) {
-        if (!Object.prototype.hasOwnProperty.call(apps, item)) {
-          // 不重名
-          apps[item] = dirObject[item];
-          continue;
-        }
-        while (true) {
-          let keyName = `${item}$${acount}`;
-          if (!Object.prototype.hasOwnProperty.call(apps, keyName)) {
-            // 不重名
-            apps[keyName] = dirObject[item];
-            // 重置为0
-            acount = 0;
-            break;
-          } else {
-            // 加1
-            acount++;
-          }
-        }
-      }
-    }
-  }
-  setApp(AppName, apps);
-  return apps;
-};

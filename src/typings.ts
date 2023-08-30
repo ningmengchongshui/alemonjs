@@ -34,228 +34,268 @@ export enum ScreenshotType {
   WEBP = "webp",
 }
 
-// 消息类型
+/**
+ * 消息枚举
+ */
 export enum EventEnum {
-  /* 频道消息 */
+  /**
+   * 频道消息
+   */
   GUILD = "GUILD",
-  /* 子频道消息 */
+  /**
+   * 子频道消息
+   */
   CHANNEL = "CHANNEL",
-  /* 成员频道进出变动消息 */
+  /**
+   * 成员频道进出变动消息
+   */
   GUILD_MEMBERS = "GUILD_MEMBERS",
-  /* 审核消息 */
+  /**
+   * 审核消息
+   */
   MESSAGE_AUDIT = "MESSAGE_AUDIT",
-  /* 私聊会话消息 */
+  /**
+   * 私聊会话消息
+   */
   DIRECT_MESSAGE = "DIRECT_MESSAGE",
-  /* 论坛消息:公私合并 */
-  FORUMS_THREAD = "FORUMS_THREAD", //主题
-  FORUMS_POST = "FORUMS_POST", //POST
-  FORUMS_REPLY = "FORUMS_REPLY", //评论
-  /* 会话消息:公私合并 */
+  /**
+   * 论坛主题
+   */
+  FORUMS_THREAD = "FORUMS_THREAD",
+  /**
+   * 论坛POST
+   */
+  FORUMS_POST = "FORUMS_POST",
+  /**
+   * 论坛评论
+   */
+  FORUMS_REPLY = "FORUMS_REPLY",
+  /**
+   * 会话消息:公私合并
+   */
   MESSAGES = "MESSAGES",
-  /* 小写兼容层 */
+  /**
+   * 小写兼容层
+   */
   message = "message",
-  /* 频道表情点击会话消息 */
+  /**
+   * 频道表情点击会话消息
+   */
   GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
-  /* 互动事件监听 */
+  /**
+   * 互动事件监听
+   */
   INTERACTION = "INTERACTION",
-  /* 音频事件 */
+  /**
+   * 音频事件
+   */
   AUDIO_FREQUENCY = "AUDIO_FREQUENCY",
-  /* 麦克风事件 */
+  /**
+   * 麦克风事件
+   */
   AUDIO_MICROPHONE = "AUDIO_MICROPHONE",
-  // 兼容不响应
+  /**
+   * 兼容不响应
+   */
   "notice.*.poke" = "notice.*.poke",
 }
 
-// 消息判断
+/**
+ * 消息判断
+ */
 export enum EventType {
   CREATE = "CREATE",
   UPDATE = "UPDATE",
   DELETE = "DELETE",
 }
 
-// 应用类型
+/**
+ * 应用类型
+ */
 export interface AppType {
   [key: string]: object;
 }
 
-// 指令类型
+/**
+ * 指令类型
+ */
 export type CmdType = {
   [Event in EventEnum]: CmdItemType[];
 };
 
-// 机器人信息
-export interface BotType {
-  version: number;
-  session_id: string;
-  user: UserType; //机器人信息
-  shard: number[]; //分发建议
-}
-
-// 权限类型
+/**
+ * 权限类型
+ */
 export interface PermissionsType {
-  //子频道权限
+  /**
+   * 子频道权限
+   */
   state: boolean;
-  //可查看
+  /**
+   * 可查看
+   */
   look: boolean;
-  //可管理
+  /**
+   * 可管理
+   */
   manage: boolean;
-  //可发言
+  /**
+   * 可发言
+   */
   speak: boolean;
-  //可直播
+  /**
+   * 可直播
+   */
   broadcast: boolean;
-  //权限权重
+  /**
+   * 权限权重
+   */
   botmiss: number;
 }
 
-// 身份类型
+/**
+ * 身份类型
+ */
 export interface IdentityType {
-  //频道主人
-  master: boolean;
-  //成员
-  member: boolean;
-  //等级
+  /**
+   * 等级
+   */
   grade: string;
-  //管理员
+  /**
+   * 频道主
+   */
+  master: boolean;
+  /**
+   * 管理员
+   */
   admins: boolean;
-  //子频道管理也
+  /**
+   * 子频道管理员
+   */
   wardens: boolean;
+  /**
+   * 成员
+   */
+  member: boolean;
 }
 
+/**
+ * 用户类型
+ */
 export interface UserType {
-  // 用户编号
+  /**
+   * 用户编号
+   */
   id: string;
-  // 用户名称
+  /**
+   * 用户名称
+   */
   name: string;
-  // 用户头像地址
+  /**
+   * 用户头像地址
+   */
   avatar: string;
-  // 是否是机器人
+  /**
+   * 是否是机器人
+   */
   bot: boolean;
 }
 
-interface BtValType {
-  desc: string;
-  link?: string;
-}
-
-interface BtObjType {
-  key: string;
-  value: string;
-}
-
-export interface segmentType {
-  url(url: string): Promise<Buffer>;
-  buffer(path: string): Buffer;
-  reply(msg_id: string): { message_reference: { message_id: string } };
-  at(uid: string): string;
-  atall(): string;
-  face(id: number): string;
-  channel(channel_id: string): string;
-  image(url: string): { image: string };
-  embed(
-    title: string,
-    prompt: string,
-    url: string,
-    arr: any[]
-  ): {
-    embed: {
-      title: string;
-      prompt: string;
-      thumbnail: {
-        url: string;
-      };
-      fields: {
-        name: any;
-      }[];
-    };
-  };
-  button(arr: BtValType[]): {
-    ark: {
-      template_id: number;
-      kv: (
-        | {
-            key: string;
-            value: string;
-            obj?: undefined;
-          }
-        | {
-            key: string;
-            obj: {
-              obj_kv: BtObjType;
-            }[];
-            value?: undefined;
-          }
-      )[];
-    };
-  };
-}
-
-// 消息对象类型
+/**
+ * 阿柠檬消息类型
+ */
 export interface AMessage {
-  // 消息事件
-  eventId: string;
-  // 事件类型
+  /**
+   * 事件类型
+   */
   event: EventEnum;
-  // 消息类型
+  /**
+   * 消息类型
+   */
   eventType: EventType;
-  // 是否是私域
-  isPrivate: boolean;
-  // 是否是群聊
-  isGroup: boolean;
-  // 是否是撤回
-  isRecall: boolean;
-
-  // 是否是机器人主人
-  isMaster: boolean;
-
-  // 艾特得到的qq
-  atuid: UserType[];
-
-  // 是否是艾特
-  at: boolean;
-
-  // 频道编号
+  /**
+   * 频道编号
+   */
   guild_id: string;
-
-  // 子频道编号
+  /**
+   * 子频道编号
+   */
   channel_id: string;
 
-  // 当前机器人的信息
+  /**
+   * 是否是私域
+   */
+  isPrivate: boolean;
+  /**
+   * 是否是群聊
+   */
+  isGroup: boolean;
+  /**
+   * 是否是撤回
+   */
+  isRecall: boolean;
+  /**
+   * 是否是主人
+   */
+  isMaster: boolean;
+
+  /**
+   * 艾特得到的uid即可
+   */
+  atuid: UserType[];
+  /**
+   * 是否有@
+   */
+  at: boolean;
+
+  /**
+   * 当前机器人的信息
+   */
   bot?: {
     id: string;
     name: string;
     avatar: string;
   };
 
-  // 身份(触发该消息的用户的身份)
-  identity?: IdentityType; // 可以计算得出
-
-  // 消息编号
-  msg_id: string;
-
-  // 消息
-  msg: string;
-
-  txt: string;
-
   /**
-   * @deprecated 已废弃,请使用msg
+   * 消息编号
    */
-  cmd_msg: string;
-
-  // 消息创建时间
+  msg_id: string;
+  /**
+   * 原始消息内容
+   */
+  msg_txt: string;
+  /**
+   * 纯消息
+   */
+  msg: string;
+  /**
+   * 消息创建时间
+   */
   msg_create_time: number;
 
-  // 原始消息内容
-
-  // 用户编号
+  /**
+   * 用户编号
+   */
   user_id: string;
-
-  // 用户名
+  /**
+   * 用户名
+   */
   user_name: string;
-
-  // 用户头像
+  /**
+   * 用户头像
+   */
   user_avatar: string;
 
+  /**
+   * 身份(触发该消息的用户的身份)
+   * 可以计算得出
+   */
+  identity?: IdentityType;
+
+  /**
+   * 快捷接口
+   */
   segment: segmentType;
 
   /**
@@ -283,14 +323,10 @@ export interface AMessage {
   ): Promise<boolean>;
 
   /**
-   * 回复消息
+   * 回复卡片
    * @param obj
    */
-  replyByMidCard?(
-    mid: string,
-    content?: string | string[] | Buffer,
-    img?: Buffer
-  ): Promise<boolean>;
+  replyByMidCard?(mid: string, obj: object): Promise<boolean>;
 
   /**
    * 发送表态
@@ -425,6 +461,9 @@ export interface SuperType {
   }[];
 }
 
+/**
+ * 指令可枚举类型
+ */
 export interface CmdItemType {
   reg: RegExp | string;
   priority: number;
@@ -435,4 +474,15 @@ export interface CmdItemType {
   fncName: string;
   fnc: Function;
   dsc: string;
+}
+
+/**
+ * segment
+ */
+export interface segmentType {
+  url(url: string): Promise<Buffer>;
+  buffer(path: string): Buffer;
+  at(uid: string): string;
+  atAll(): string;
+  atChannel(channel_id: string): string;
 }

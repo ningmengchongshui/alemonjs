@@ -1,14 +1,36 @@
 import { EventEnum, SuperType, EventType } from "./typings.js";
 class plugin {
+  /**
+   * 模块名
+   */
   name?: string;
+  /**
+   * 模块说明
+   */
   dsc?: string;
+  /**
+   * 事件枚举
+   */
   event?: EventEnum;
+  /**
+   * 事件类型
+   */
   eventType?: EventType;
+  /**
+   * 匹配优先级
+   */
   priority?: number;
+  /**
+   * 匹配集
+   */
   rule?: {
-    //正则
+    /**
+     * 正则
+     */
     reg?: RegExp | string;
-    //方法(函数)
+    /**
+     * 方法(函数)
+     */
     fnc: string;
   }[];
   /**

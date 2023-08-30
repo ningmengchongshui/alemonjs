@@ -1,7 +1,6 @@
 import { existsSync, mkdirSync, readdirSync } from "fs";
 import { join } from "path";
 import lodash from "lodash";
-// 非依赖引用
 import { AMessage, CmdType, CmdItemType, EventEnum } from "./typings.js";
 import { getMessage } from "./message.js";
 import { getApp, delApp, getAppKey } from "./app.js";
@@ -21,7 +20,9 @@ let PluginsArr = [];
 async function synthesis(AppsObj: object, appname: string, belong: string) {
   for (const item in AppsObj) {
     let keys = new AppsObj[item]();
-    // 不合法
+    /**
+     * 不合法
+     */
     if (
       !keys["rule"] ||
       !Array.isArray(keys["rule"]) ||
@@ -29,15 +30,19 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
     ) {
       continue;
     }
-    // 指令不存在
+    /**
+     * 指令不存在
+     */
     for await (const key of keys["rule"]) {
       if (
         !key["fnc"] ||
         !key["reg"] ||
         typeof keys[key["fnc"]] !== "function"
       ) {
-        // 函数指定不存在,正则不存在
-        // 得到的不是函数
+        /**
+         * 函数指定不存在,正则不存在
+         * 得到的不是函数
+         */
         continue;
       }
       if (typeof key["reg"] === "string" || key["reg"] instanceof RegExp) {
@@ -48,7 +53,9 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
         const fncName = key["fnc"];
         const fnc = keys[fncName];
         const reg = key["reg"];
-        // 推送
+        /**
+         * 推送
+         */
         Command[event].push({
           belong,
           event: event,
@@ -71,18 +78,28 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
  * @param dir
  */
 async function loadExample(dir: string) {
-  /* 初始化 */
+  /**
+   * 初始化
+   */
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  /* 读取文件 */
+  /**
+   * 读取文件
+   */
   const readDir = readdirSync(dir);
-  /* 正则匹配ts文件并返回 */
+  /**
+   * 正则匹配ts文件并返回
+   */
   const flies = readDir.filter((item) => /.(ts|js)$/.test(item));
-  // 所有的子插件集成
+  /**
+   * 所有的子插件集成
+   */
   for await (let appname of flies) {
     if (!existsSync(`${dir}/${appname}`)) {
       continue;
     }
-    // 得到插件名
+    /**
+     * 得到插件名
+     */
     const AppName = appname.replace(/\.(ts|js)$/, "");
     const apps = {};
     const Program = await import(`file://${dir}/${appname}`).catch((err) => {
@@ -108,18 +125,23 @@ async function loadExample(dir: string) {
 async function loadPlugins(dir: string) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   let flies = readdirSync(dir);
-  //识别并执行插件
+  /**
+   * 识别并执行插件
+   */
   for await (let appname of flies) {
-    // 优先考虑ts
     if (existsSync(`${dir}/${appname}/index.ts`)) {
+      /**
+       * 优先考虑ts
+       */
       await import(`file://${dir}/${appname}/index.ts`).catch((err) => {
         console.error(`file://${dir}/${appname}/index.ts`);
         console.error(err);
         process.exit();
       });
-    }
-    // js的写法也是允许的
-    else if (existsSync(`${dir}/${appname}/index.js`)) {
+    } else if (existsSync(`${dir}/${appname}/index.js`)) {
+      /**
+       * js的写法也是允许的
+       */
       await import(`file://${dir}/${appname}/index.js`).catch((error) => {
         console.error(`file://${dir}/${appname}/index.js`);
         console.error(error);
@@ -128,7 +150,9 @@ async function loadPlugins(dir: string) {
     }
   }
   const APPARR = getAppKey();
-  //获取插件方法
+  /**
+   * 获取插件方法
+   */
   for await (let item of APPARR) {
     const apps = getApp(item);
     await synthesis(apps, item, "plugins");
@@ -159,7 +183,9 @@ export async function cmdInit() {
   dataInit();
   await loadPlugins(join(process.cwd(), "/plugins"));
   await loadExample(join(process.cwd(), "/example"));
-  // 排序
+  /**
+   * 排序
+   */
   for (let val in Command) {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
@@ -186,35 +212,50 @@ export async function getLoadMsg(key: "example" | "plugins") {
  * @param e
  * @returns
  */
-export async function InstructionMatching(e) {
+export async function InstructionMatching(e: AMessage) {
   if (e.isRecall) return true;
-  // 匹配不到事件
+  /**
+   * 匹配不到事件
+   */
   if (!Command[e.event]) return true;
 
-  // 获取对话状态
+  /**
+   * 获取对话状态
+   */
   const state = await getConversationState(e.user_id);
 
-  // 获取对话处理函数
+  /**
+   * 获取对话处理函数
+   */
   const handler = conversationHandlers.get(e.user_id);
   if (handler && state) {
-    /* 如果用户处于对话状态，则调用对话处理函数 */
+    /**
+     * 如果用户处于对话状态
+     * 则调用对话处理函数
+     */
     await handler(e, state);
     return true;
   }
 
-  // 消息类型兼容层
+  /**
+   * 消息类型兼容层
+   */
   const msgarr = ["MESSAGES"];
   if (e.event == "MESSAGES") {
     msgarr.push("message");
   }
 
   for await (let item of msgarr) {
-    // 发现有message  eventType需要变为undefined
+    /**
+     * 发现有message  eventType需要变为undefined
+     */
     if (item == "message") {
       e.event = EventEnum.message;
       e.eventType = undefined;
     }
-    /* 循环所有指令 */
+    /**
+     * 循环所有指令
+     */
     for await (let data of Command[e.event]) {
       if (data.reg === undefined) continue;
       if (!new RegExp(data.reg).test(e.msg)) continue;
