@@ -1,4 +1,10 @@
-import { existsSync, mkdirSync, readdirSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  writeFileSync,
+  readFileSync,
+} from "fs";
 import { join } from "path";
 import lodash from "lodash";
 import { AMessage, CmdType, CmdItemType, EventEnum } from "./typings.js";
@@ -18,6 +24,14 @@ let ExampleArr = [];
  * plugins插件集合
  */
 let PluginsArr = [];
+
+let plugins: object = {};
+
+export function getPluginHelp(AppName: string) {
+  // 地址
+  const basePath = join(process.cwd(), "plugins", AppName, `${AppName}.json`);
+  return JSON.parse(readFileSync(basePath, "utf8"));
+}
 
 /**
  * 应用挂载
@@ -56,13 +70,30 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
       if (typeof key["reg"] === "string" || key["reg"] instanceof RegExp) {
         const event = keys["event"] ?? "MESSAGE";
         const eventType = keys["eventType"] ?? "CREATE";
-        const dsc = keys["dsc"] ?? "";
         const priority = keys["priority"] ?? 9999;
         const fncName = key["fnc"];
         const fnc = keys[fncName];
         const reg = key["reg"];
+        const doc = key["doc"] ?? "";
+        const dsc = key["dsc"] ?? "";
         /**
-         * 推送
+         * json记录
+         */
+        if (belong == "plugins") {
+          if (!plugins[appname]) {
+            plugins[appname] = [];
+          }
+          plugins[appname].push({
+            event: event,
+            eventType: eventType,
+            reg,
+            priority,
+            doc,
+            dsc,
+          });
+        }
+        /**
+         * 保存
          */
         Command[event].push({
           belong,
@@ -70,7 +101,6 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
           eventType: eventType,
           reg,
           priority,
-          dsc,
           fncName,
           fnc,
           AppName: appname,
@@ -194,9 +224,19 @@ export async function cmdInit() {
   /**
    * 排序
    */
-  for (let val in Command) {
+  for (const val in Command) {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
+
+  /**
+   * 生成指令集合
+   */
+  for (const item in plugins) {
+    const basePath = join(process.cwd(), "plugins", item, `${item}.json`);
+    const jsonData = JSON.stringify(plugins[item], null, 2);
+    writeFileSync(basePath, jsonData, "utf-8");
+  }
+
   console.info(
     `[LOAD] Plugins*${PluginsArr.length} Example*${ExampleArr.length}`
   );

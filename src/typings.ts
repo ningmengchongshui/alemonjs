@@ -10,21 +10,21 @@ export interface PictureOptions {
    */
   tplFile: string;
   /**
-   * 文件名
-   */
-  PageName: string;
-  /**
-   * 模板插入的数据
-   */
-  directory: string;
-  /**
    * 截图参数
    */
-  SOptions: ScreenshotOptions;
+  SOptions?: ScreenshotOptions;
   /**
    * 任意数据对象
    */
-  data: any;
+  data?: any;
+  /**
+   * 截图元素
+   */
+  tab?: string;
+  /**
+   * 时差
+   */
+  timeout?: number;
 }
 
 // 截图文件类型
@@ -248,7 +248,7 @@ export interface AMessage {
    * 第一个非机器人用户信息
    * 不管是公域或私域
    */
-  at_user: UserType;
+  at_user: UserType | undefined;
   /**
    * 艾特得到的uid即可
    */
@@ -464,6 +464,10 @@ export interface SuperType {
     reg?: RegExp | string;
     //方法(函数)
     fnc: string;
+    // 指令示例
+    dsc?: string;
+    // 指令说明
+    doc?: string;
   }[];
 }
 
@@ -479,7 +483,6 @@ export interface CmdItemType {
   AppName: string;
   fncName: string;
   fnc: Function;
-  dsc: string;
 }
 
 /**

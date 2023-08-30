@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, watch, mkdirSync } from "fs";
-import { join } from "path";
+import { join, dirname, basename } from "path";
 import template from "art-template";
 import lodash from "lodash";
 import { screenshot } from "./puppeteer.js";
@@ -18,7 +18,7 @@ const watcher = {};
 /**
  * 地址缓存
  */
-const AdressCache = {};
+const CacheData = {};
 
 /**
  * 缓存监听
@@ -60,42 +60,37 @@ export async function createPicture(
   const {
     AppName,
     tplFile,
-    PageName,
     data,
-    directory,
+    tab,
+    timeout,
     SOptions = { type: "jpeg", quality: 90 },
   } = Options;
+
   /**
    * 插件路径
    */
   const basePath = join(process.cwd(), "plugins", AppName);
 
   /**
-   * 创建目录地址
+   * 写入地址
    */
-  const PathHtml = join(basePath, "html", directory);
+  const AdressHtml = join(process.cwd(), "data", AppName, basename(tplFile));
 
   /**
-   * 创建文件地址
+   * 确保写入目录存在
    */
-  const AdressHtml = join(PathHtml, `/${PageName}.html`);
-
-  /**
-   * 确保目录存在
-   */
-  mkdirSync(PathHtml, { recursive: true });
+  mkdirSync(join(process.cwd(), "data", AppName), { recursive: true });
 
   /**
    * 判断初始模板是否改变
-   *
    */
   let T = false;
 
   if (!html[tplFile]) {
+    /**
+     * 如果模板不存在,则读取模板
+     */
     try {
-      /**
-       * 如果不存在,则读取模板
-       */
       html[tplFile] = readFileSync(tplFile, "utf8");
     } catch (err) {
       console.error("[HTML][ERROR]", tplFile, err);
@@ -109,10 +104,10 @@ export async function createPicture(
   }
 
   /**
-   * 需要更新数据
+   * 模板对象不同需要更新数据
    */
-  if (!lodash.isEqual(AdressCache[AdressHtml], data)) {
-    AdressCache[AdressHtml] = data;
+  if (!lodash.isEqual(CacheData[tplFile], data)) {
+    CacheData[tplFile] = data;
     T = true;
   }
 
@@ -120,11 +115,10 @@ export async function createPicture(
    * 模板更改和数据更改都会生成生成html
    */
   if (T) {
-    const basePath = join(process.cwd(), "plugins", AppName);
-    //
     const reg =
       /url\(['"](@[^'"]+)['"]\)|href=['"](@[^'"]+)['"]|src=['"](@[^'"]+)['"]/g;
     //
+
     const absolutePathTemplate = html[tplFile].replace(
       reg,
       (match, urlPath, hrefPath, srcPath) => {
@@ -141,22 +135,26 @@ export async function createPicture(
       }
     );
     /**
-     * 写入模板
+     * 写入对生成地址写入模板
      */
     writeFileSync(
       AdressHtml,
-      template.render(absolutePathTemplate, AdressCache[AdressHtml])
+      template.render(absolutePathTemplate, CacheData[tplFile])
     );
     /**
-     * 打印反馈
+     * 打印反馈生成后的地址
      */
     console.info("[HTML][CREATE]", AdressHtml);
   }
 
   /**
-   * 截图
+   * 对生成后的地址截图
    */
-  return await screenshot(AdressHtml, SOptions).catch((err: any) => {
+  return await screenshot(AdressHtml, {
+    SOptions,
+    tab,
+    timeout,
+  }).catch((err: any) => {
     console.error(err);
     return false;
   });

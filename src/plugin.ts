@@ -32,6 +32,14 @@ class plugin {
      * 方法(函数)
      */
     fnc: string;
+    /**
+     * 指令示范
+     */
+    dsc?: string;
+    /**
+     * 指令文档
+     */
+    doc?: string;
   }[];
   /**
    * @param name 类名标记  用于特殊需要时的唯一标记
@@ -41,6 +49,7 @@ class plugin {
    * @param priority 优先级      数字越小优先级越高
    * @param rule.reg 命令正则      RegExp(rule.reg)
    * @param rule.fnc 命令执行方法    function
+   * @param rule.doc 指令文档    doc
    */
   constructor({
     name = "your-name",

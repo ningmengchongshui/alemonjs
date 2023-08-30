@@ -48,10 +48,14 @@ export function setLanchConfig(val: PuppeteerLaunchOptions) {
  */
 export async function screenshot(
   htmlPath: string | Buffer | URL,
-  SOptions: ScreenshotOptions,
-  tab: string = "body",
-  timeout: number = 120000
+  Options: {
+    SOptions: ScreenshotOptions;
+    tab?: string;
+    timeout?: number;
+  }
 ): Promise<string | false | Buffer> {
+  const { SOptions, tab = "body", timeout = 120000 } = Options;
+
   /**
    * 检测是否开启
    */
