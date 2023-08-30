@@ -86,10 +86,10 @@ async function synthesis(AppsObj: object, appname: string, belong: string) {
           plugins[appname].push({
             event: event,
             eventType: eventType,
-            reg,
-            priority,
-            doc,
+            reg: String(reg),
             dsc,
+            doc,
+            priority,
           });
         }
         /**
