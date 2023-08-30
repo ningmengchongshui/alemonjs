@@ -1,37 +1,11 @@
 #!/usr/bin/env node
 
-import prompts from "prompts";
-import { existsSync, mkdirSync } from "fs";
-import fse from "fs-extra";
-import { spawn } from "child_process";
-import { resolve, join, dirname } from "path";
-import { fileURLToPath } from "node:url";
-
-async function runNpmCommand(command, args) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { shell: true });
-
-    child.stdout.on("data", (data) => {
-      console.log(data.toString());
-    });
-
-    child.stderr.on("data", (data) => {
-      console.error(data.toString());
-    });
-
-    child.on("error", (error) => {
-      reject(error);
-    });
-
-    child.on("close", (code) => {
-      if (code !== 0) {
-        reject(new Error(`Command "${command}" failed with exit code ${code}`));
-      } else {
-        resolve("");
-      }
-    });
-  });
-}
+import prompts from 'prompts';
+import { existsSync, mkdirSync } from 'fs';
+import fs from 'fs';
+import { execSync } from 'child_process';
+import { resolve, join, dirname } from 'path';
+import { fileURLToPath } from 'node:url';
 
 const args = process.argv;
 
@@ -46,27 +20,27 @@ async function createAlemon({ name, force = false }) {
   // 已经存在目录
   if (existsSync(dirPath)) {
     if (!force) {
-      console.log("Robot name already exists!");
+      console.log('Robot name already exists!');
       return;
     }
-    await fse.removeSync(dirPath); // 强制删除已存在的文件或目录
+    fs.rmSync(dirPath, { recursive: true }); // 强制删除已存在的文件或目录
   }
 
   // 没有存在
-  mkdirSync(dirPath);
-  console.log("\n");
+  mkdirSync(dirPath, { recursive: true });
+  console.log('\n');
   const currentFilePath = fileURLToPath(import.meta.url);
   const currentDirPath = dirname(currentFilePath);
   try {
     const alemonCliPath = resolve(currentDirPath);
-    const templatePath = join(alemonCliPath, "template");
-    console.log("Copying template...");
-    await fse.copy(templatePath, dirPath);
+    const templatePath = join(alemonCliPath, 'template');
+    console.log('Copying template...');
+    fs.cpSync(templatePath, dirPath, { recursive: true });
     process.chdir(dirPath);
-    console.log("Loading dependencies...");
-    await runNpmCommand("npm", ["install"]);
+    console.log('Loading dependencies...');
+    execSync('npm install', { stdio: 'inherit' });
     console.log(`------------------------------------`);
-    console.log("Alemon-Bot cloned successfully!");
+    console.log('Alemon-Bot cloned successfully!');
     console.log(`------------------------------------`);
     console.log(`cd ${name}      #进入机器人目录`);
     console.log(`npm run app:qq     #启动qq频道机器人`);
@@ -80,7 +54,7 @@ async function createAlemon({ name, force = false }) {
 }
 
 if (!args[2]) {
-  createAlemon({ name: "alemon-bot" });
+  createAlemon({ name: 'alemon-bot' });
 }
 
 if (args[2]) {
@@ -91,35 +65,35 @@ if (args[2]) {
   if (args[3]) {
     switch (args[3]) {
       // 强制覆盖  不管存不存在,直接覆盖
-      case "f": {
+      case 'f': {
         createAlemon({ name: BotName, force: true });
         break;
       }
       // 想重输入
-      case "d": {
+      case 'd': {
         prompts([
           {
-            type: "text",
-            name: "name",
-            message: "robot name:",
+            type: 'text',
+            name: 'name',
+            message: 'robot name:',
             validate: async (value: any) => {
-              if (existsSync(`./${value}`)) return "Robot name already exists!";
+              if (existsSync(`./${value}`)) return 'Robot name already exists!';
               return /^[a-z][0-9a-z_-]{0,}$/.test(value)
                 ? true
-                : "首字母小写,可选符号数字、小写字母、_和-";
+                : '首字母小写,可选符号数字、小写字母、_和-';
             },
-            initial: "alemon-bot",
-          },
+            initial: 'alemon-bot'
+          }
         ])
           .then(createAlemon)
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
             return;
           });
         break;
       }
       default: {
-        console.log("无效参数~");
+        console.log('无效参数~');
         break;
       }
     }
