@@ -7,13 +7,13 @@ export class TestEmonij extends plugin {
         {
           reg: /^\/你得意什么$/,
           fnc: 'onrecall',
-          dsc: '/柠檬帮助',
+          dsc: '/你得意什么',
           doc: '发个表态'
         },
         {
           reg: /^\/艾特一下$/,
           fnc: 'AtOne',
-          dsc: '/柠檬帮助',
+          dsc: '/艾特一下',
           doc: '响应所有艾特'
         }
       ]
