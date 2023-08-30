@@ -1,12 +1,14 @@
 import { plugin, AMessage } from 'alemon'
-export class msg extends plugin {
+export class TestMessage extends plugin {
   constructor() {
     super({
       dsc: '开发简单示例演示',
       rule: [
         {
-          reg: /^\/数组信息$/,
-          fnc: 'getArrMsg'
+          reg: /^\/数组消息$/,
+          fnc: 'getArrMsg',
+          dsc: '/数组消息',
+          doc: '数组类型消息也是支持的'
         }
       ]
     })

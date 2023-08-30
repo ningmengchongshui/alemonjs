@@ -1,12 +1,20 @@
 import { plugin, AMessage } from 'alemon'
-export class emoji extends plugin {
+export class TestEmonij extends plugin {
   constructor() {
     super({
       dsc: '表态示范',
       rule: [
         {
           reg: /^\/你得意什么$/,
-          fnc: 'onrecall'
+          fnc: 'onrecall',
+          dsc: '/柠檬帮助',
+          doc: '发个表态'
+        },
+        {
+          reg: /^\/艾特一下$/,
+          fnc: 'AtOne',
+          dsc: '/柠檬帮助',
+          doc: '响应所有艾特'
         }
       ]
     })
@@ -16,13 +24,29 @@ export class emoji extends plugin {
    * @returns
    */
   async onrecall(e: AMessage): Promise<boolean> {
-    e.replyEmoji(e.msg_id, {
-      message_id: e.msg_id,
-      emoji_type: 1,
-      emoji_id: '4'
-    }).catch(err => {
-      console.log(err)
-    })
+    if (e.replyEmoji) {
+      e.replyEmoji(e.msg_id, {
+        emoji_type: 1,
+        emoji_id: '4'
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+    return false
+  }
+
+  /**
+   * @param e 消息对象
+   * @returns
+   */
+  async AtOne(e: AMessage): Promise<boolean> {
+    e.reply([
+      e.segment.at(e.user_id),
+      ' ',
+      e.segment.atAll(),
+      ' ',
+      e.segment.atChannel(e.channel_id)
+    ])
     return false
   }
 }

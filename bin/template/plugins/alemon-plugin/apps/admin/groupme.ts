@@ -1,12 +1,12 @@
 import { plugin, AMessage } from 'alemon'
 /**
  * 当私聊机器人超过三次时,
- * 机器人仍未回复消息,立即会被频道禁止
+ * 机器人仍未回复消息,立即会被QQ频道禁止
  * 频道拒绝用户向该机器人发送消息
  * 除非机器人主动在子频道中开通私信并回复消息才能接触禁止状态~
  * 此时要注意频道主允许机器人主动私聊
  */
-export class groupme extends plugin {
+export class TestGroupme extends plugin {
   constructor() {
     super({
       /* 说明集*/
@@ -15,7 +15,9 @@ export class groupme extends plugin {
       rule: [
         {
           reg: /^\/私聊我$/,
-          fnc: 'isGroup'
+          fnc: 'isGroup',
+          dsc: '/私聊我',
+          doc: '解除QQ频道私聊禁止'
         }
       ]
     })
@@ -25,15 +27,17 @@ export class groupme extends plugin {
    * @returns
    */
   async isGroup(e: AMessage): Promise<boolean> {
-    /* 公信转私信 */
-    const is = await e.replyPrivate('私聊你了哟~').catch(err => {
-      console.log(err)
-      return false
-    })
-    if (!is)
-      e.reply('失败了~').catch(err => {
+    if (e.replyPrivate) {
+      const T = await e.replyPrivate('私聊你了哟~').catch(err => {
         console.log(err)
+        return false
       })
+      if (!T) {
+        e.reply('失败了~').catch(err => {
+          console.log(err)
+        })
+      }
+    }
     return false
   }
 }

@@ -1,5 +1,5 @@
 import { plugin, AMessage } from 'alemon'
-export class testcmd extends plugin {
+export class TestCmd extends plugin {
   constructor() {
     super({
       /* 指令集 */
@@ -7,19 +7,15 @@ export class testcmd extends plugin {
       rule: [
         {
           reg: /^\/回复我$/, //正则指令
-          fnc: 'replyCat' //函数匹配10
-        },
-        {
-          reg: /^\/鸡你太美$/, //正则指令
-          fnc: 'ontest' //函数匹配10
-        },
-        {
-          reg: /^\/个人卡片$/, //正则指令
-          fnc: 'userCark' //函数匹配10
+          fnc: 'replyCat', //函数匹配10
+          dsc: '/回复我',
+          doc: '响应回复消息'
         },
         {
           reg: /^\/泰裤辣$/, //正则指令
-          fnc: 'getCool' //函数匹配10
+          fnc: 'getCool', //函数匹配10
+          dsc: '/泰裤辣',
+          doc: '得到一个卡片示范效果'
         }
       ]
     })
@@ -31,49 +27,46 @@ export class testcmd extends plugin {
    */
   async replyCat(e: AMessage): Promise<boolean> {
     /* 封装好的消息发送机制 */
-    e.replyByMid(e.msg_id, `😂 不要急嘛~`).catch(err => {
-      console.log(err)
-    })
-    return false
-  }
-  /**
-   * @param e 消息对象
-   * @returns
-   */
-  async userCark(e: AMessage): Promise<boolean> {
-    e.replyCard(e.segment.embed(e.user_name, '个人卡片', e.user_avatar, ['编号', e.user_id])).catch(
-      err => {
+    if (e.replyByMid) {
+      e.replyByMid(e.msg_id, `😂 不要急嘛~`).catch(err => {
         console.log(err)
-      }
-    )
+      })
+    }
     return false
   }
-  /**
-   * @param e 消息对象
-   * @returns
-   */
-  async ontest(e: AMessage): Promise<boolean> {
-    /* 封装好的消息发送机制 */
-    e.replyByMid(e.msg_id, `😂 你干嘛,哎哟~`).catch(err => {
-      console.log(err)
-    })
-    return false
-  }
+
   /**
    * @param e 消息对象
    * @returns
    */
   async getCool(e: AMessage): Promise<boolean> {
-    e.replyCard(
-      e.segment.embed(
-        '新人任务',
-        '一库一库',
-        'http://tva1.sinaimg.cn/bmiddle/6af89bc8gw1f8ub7pm00oj202k022t8i.jpg',
-        ['一库一库', '一库一库']
-      )
-    ).catch(err => {
-      console.log(err)
-    })
+    if (e.replyCard) {
+      e.replyCard({
+        type: 'embed',
+        card: {
+          embed: {
+            title: '新人任务',
+            prompt: '新人任务',
+            thumbnail: {
+              url: 'http://tva1.sinaimg.cn/bmiddle/6af89bc8gw1f8ub7pm00oj202k022t8i.jpg'
+            },
+            fields: [
+              {
+                name: '一库一库'
+              },
+              {
+                name: '一库一库'
+              },
+              {
+                name: '😁继续努力'
+              }
+            ]
+          }
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
     return false
   }
 }

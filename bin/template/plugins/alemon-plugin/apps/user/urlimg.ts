@@ -1,12 +1,14 @@
-import { plugin, AMessage } from 'alemon'
-export class urlimg extends plugin {
+import { plugin, AMessage, getUrlbuffer } from 'alemon'
+export class TestUrl extends plugin {
   constructor() {
     super({
       dsc: '开发简单示例演示',
       rule: [
         {
           reg: /^\/原神黄历$/,
-          fnc: 'getAlmanac'
+          fnc: 'getAlmanac',
+          dsc: '/柠檬帮助',
+          doc: '获取所有指令'
         }
       ]
     })
@@ -17,7 +19,7 @@ export class urlimg extends plugin {
    */
   async getAlmanac(e: AMessage): Promise<boolean> {
     /* 消息发送机制 */
-    e.replyCard(e.segment.image('https://api.xingzhige.com/API/yshl/')).catch(err => {
+    e.reply(await getUrlbuffer('https://api.xingzhige.com/API/yshl/')).catch(err => {
       console.log(err)
     })
     return false

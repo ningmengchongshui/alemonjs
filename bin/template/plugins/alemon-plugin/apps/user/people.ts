@@ -1,5 +1,5 @@
 import { plugin, AMessage, EventType, EventEnum } from 'alemon'
-export class People extends plugin {
+export class TestPeople extends plugin {
   constructor() {
     super({
       dsc: '成员加入',
@@ -7,7 +7,9 @@ export class People extends plugin {
       eventType: EventType.CREATE,
       rule: [
         {
-          fnc: 'peopleAdd'
+          fnc: 'peopleAdd',
+          dsc: '成员加入',
+          doc: '成员加入'
         }
       ]
     })
@@ -30,7 +32,9 @@ export class PeopleDelete extends plugin {
       eventType: EventType.UPDATE,
       rule: [
         {
-          fnc: 'peopleDelete'
+          fnc: 'peopleDelete',
+          dsc: '成员更新',
+          doc: '成员更新'
         }
       ]
     })
@@ -53,7 +57,9 @@ export class PeopleUpdata extends plugin {
       eventType: EventType.DELETE,
       rule: [
         {
-          fnc: 'peopleUpdata'
+          fnc: 'peopleUpdata',
+          dsc: '成员退出',
+          doc: '成员退出'
         }
       ]
     })

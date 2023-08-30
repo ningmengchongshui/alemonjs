@@ -1,21 +1,27 @@
-import { plugin, AMessage, createQrcode } from 'alemon'
-import { obtainingImages, getJson, getJsonPath } from '../../api.js'
-export class show extends plugin {
+import { plugin, AMessage, createQrcode, getPathBuffer, getPluginHelp } from 'alemon'
+import { obtainingImages, AppName } from '../../api.js'
+export class TestShow extends plugin {
   constructor() {
     super({
       dsc: '发送图片',
       rule: [
         {
           reg: /^\/柠檬帮助.*$/,
-          fnc: 'getHelp'
+          fnc: 'getHelp',
+          dsc: '/柠檬帮助',
+          doc: '获取所有指令'
         },
         {
           reg: /^\/百度一下$/,
-          fnc: 'baidu'
+          fnc: 'baidu',
+          dsc: '/百度一下',
+          doc: '自己百度吧'
         },
         {
           reg: /^\/柠檬图标$/,
-          fnc: 'sculpture'
+          fnc: 'sculpture',
+          dsc: '/柠檬图标',
+          doc: '看看机器人定制的本地图标'
         }
       ]
     })
@@ -25,14 +31,17 @@ export class show extends plugin {
    * @returns
    */
   async getHelp(e: AMessage): Promise<boolean> {
-    const HelpData = getJson('help')
-    const PData = getJsonPath('package', process.cwd().replace(/\\/g, '/'))
     const data = {
-      body: HelpData,
-      name: PData['name'],
-      version: PData['dependencies']['alemon']
+      body: [
+        {
+          group: '指令示范效果',
+          list: getPluginHelp(AppName)
+        }
+      ],
+      name: 'alemon-plugin',
+      version: '1.0.0'
     }
-    const img = await obtainingImages('help', 'help', data).catch(err => {
+    const img = await obtainingImages('/resources/html/help/help.html', data).catch(err => {
       console.log(err)
       return '未知错误'
     })
@@ -62,7 +71,7 @@ export class show extends plugin {
    * @returns
    */
   async sculpture(e: AMessage): Promise<boolean> {
-    const img = e.segment.buffer('./plugins/alemon-plugin/resources/assets/img/help/icon.png')
+    const img = getPathBuffer('./plugins/alemon-plugin/resources/assets/img/help/icon.png')
     if (img) {
       e.reply(img).catch(err => {
         console.log(err)

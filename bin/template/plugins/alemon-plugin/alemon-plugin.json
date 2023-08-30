@@ -1,0 +1,90 @@
+[
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "解除QQ频道私聊禁止",
+    "dsc": "/私聊我"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "获取所有指令",
+    "dsc": "/柠檬帮助"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "自己百度吧",
+    "dsc": "/百度一下"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "看看机器人定制的本地图标",
+    "dsc": "/柠檬图标"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "对话机开始触发",
+    "dsc": "/你好呀"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "发个表态",
+    "dsc": "/柠檬帮助"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "响应所有艾特",
+    "dsc": "/柠檬帮助"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "数组类型消息也是支持的",
+    "dsc": "/数组消息"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "响应回复消息",
+    "dsc": "/回复我"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "得到一个卡片示范效果",
+    "dsc": "/泰裤辣"
+  },
+  {
+    "event": "MESSAGES",
+    "eventType": "CREATE",
+    "reg": {},
+    "priority": 5000,
+    "doc": "获取所有指令",
+    "dsc": "/柠檬帮助"
+  }
+]
