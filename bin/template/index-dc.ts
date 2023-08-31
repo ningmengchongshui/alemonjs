@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { createAlemon } from 'alemon-dc'
 // import ffmpegDownload from 'alemon-ffmpeg'
 // await ffmpegDownload()
