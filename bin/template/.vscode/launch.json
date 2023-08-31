@@ -1,0 +1,33 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        //kook debug
+        {
+            "command": "npm run app:kook", // 运行的命令
+            "name": "alemon Debug KOOK",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        // QQ 频道 debug
+        {
+            "command": "npm run app:qq", // 运行的命令
+            "name": "alemon Debug QQ",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        // dc debug
+        {
+            "command": "npm run app:dc", // 运行的命令
+            "name": "alemon Debug dc",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        // mys debug
+        {
+            "command": "npm run app:mys", // 运行的命令
+            "name": "alemon Debug mys",
+            "request": "launch",
+            "type": "node-terminal"
+        }
+    ]
+}
