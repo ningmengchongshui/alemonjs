@@ -1,6 +1,6 @@
 import fs from 'fs'
 import typescript from '@rollup/plugin-typescript'
-import multiEntry from 'rollup-plugin-multi-entry'
+import multiEntry from '@rollup/plugin-multi-entry'
 // 读取插件目录下的所有目录
 const pluginDirectories = fs
   .readdirSync('plugins', { withFileTypes: true })
