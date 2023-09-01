@@ -5,10 +5,13 @@ let skipDownload = false
 let executablePath
 //win32
 if (process.platform == 'win32') {
-  if (existsSync('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe')) {
+  if (
+    existsSync('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe')
+  ) {
     // 存在 Edge
     skipDownload = true
-    executablePath = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+    executablePath =
+      'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
     console.info('[win32] system')
     console.info('[Edge] start')
   }
