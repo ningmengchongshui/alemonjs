@@ -1,10 +1,8 @@
 import { spawn } from 'child_process'
 
-/**
- * 这里要如何传递？
- */
+const ars = process.argv.slice(2)
 
-const command = spawn('npm run app', { shell: true })
+const command = spawn(`ts-node index.ts ${ars.join(' ')}`, { shell: true })
 
 command.stdout.on('data', data => {
   process.stdout.write(data.toString())

@@ -2,6 +2,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { createAlemon } from 'alemon-bot'
 import { cmdInit } from 'alemon'
 
+const ars = process.argv.slice(2)
+
 /**
  * 插件加载控制
  */
@@ -10,7 +12,7 @@ let T = false
 
 const arr = []
 
-for await (const item of process.argv) {
+for await (const item of ars) {
   /**
    * 不能启动相同的机器人
    */
