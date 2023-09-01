@@ -154,32 +154,6 @@ export interface PermissionsType {
 }
 
 /**
- * 身份类型
- */
-export interface IdentityType {
-  /**
-   * 等级
-   */
-  grade: string;
-  /**
-   * 频道主
-   */
-  master: boolean;
-  /**
-   * 管理员
-   */
-  admins: boolean;
-  /**
-   * 子频道管理员
-   */
-  wardens: boolean;
-  /**
-   * 成员
-   */
-  member: boolean;
-}
-
-/**
  * 用户类型
  */
 export interface UserType {
@@ -206,6 +180,18 @@ export interface UserType {
  */
 export interface AMessage {
   /**
+   * 平台 qq | kook | discord | villa
+   */
+  platform: string;
+  /**
+   * 当前机器人的信息
+   */
+  bot?: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  /**
    * 事件类型
    */
   event: EventEnum;
@@ -218,10 +204,9 @@ export interface AMessage {
    */
   guild_id: string;
   /**
-   * 子频道编号
+   * 子频道编号 ?
    */
-  channel_id: string;
-
+  channel_id?: string;
   /**
    * 是否是私域
    */
@@ -238,7 +223,6 @@ export interface AMessage {
    * 是否是主人
    */
   isMaster: boolean;
-
   /**
    * 是否有@
    */
@@ -248,38 +232,27 @@ export interface AMessage {
    * 第一个非机器人用户信息
    * 不管是公域或私域
    */
-  at_user: UserType | undefined;
+  at_user?: UserType | undefined;
   /**
    * 艾特得到的uid即可
    */
-  at_users: UserType[];
-
-  /**
-   * 当前机器人的信息
-   */
-  bot?: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
-
+  at_users?: UserType[];
   /**
    * 消息编号
    */
   msg_id: string;
   /**
-   * 原始消息内容
-   */
-  msg_txt: string;
-  /**
-   * 纯消息
-   */
-  msg: string;
-  /**
    * 消息创建时间
    */
   msg_create_time: number;
-
+  /**
+   * 原始消息内容
+   */
+  msg_txt?: string;
+  /**
+   * 纯消息
+   */
+  msg?: string;
   /**
    * 用户编号
    */
@@ -292,18 +265,14 @@ export interface AMessage {
    * 用户头像
    */
   user_avatar: string;
-
-  /**
-   * 身份(触发该消息的用户的身份)
-   * 可以计算得出
-   */
-  identity?: IdentityType;
-
   /**
    * 快捷接口
    */
-  segment: segmentType;
-
+  segment: markdownType;
+  /**
+   * 权限
+   */
+  permissions?: permissionsType;
   /**
    * 消息发送机制
    * @param content 消息 | buffer
@@ -335,17 +304,13 @@ export interface AMessage {
   replyByMidCard?(mid: string, obj: object): Promise<boolean>;
 
   /**
-   * 发送表态
-   * @param boj
-   */
-  replyEmoji?(mid: string, boj: any): Promise<boolean>;
-
-  /**
-   * 删除表态
-   * @param boj 表情对象
+   * 撤回指定消息
+   * @param cid 频道编号
+   * @param mid 消息编号
+   * @param hideTip 是否隐藏
    * @returns
    */
-  deleteEmoji?(mid: string, boj: any): Promise<boolean>;
+  replyDelete?(cid: string, mid: string, hideTip: boolean): Promise<any>;
 
   /**
    * 公信转私信
@@ -357,6 +322,19 @@ export interface AMessage {
     content?: string | string[] | Buffer,
     obj?: Buffer
   ): Promise<boolean>;
+
+  /**
+   * 发送表态
+   * @param boj
+   */
+  replyEmoji?(mid: string, boj: any): Promise<boolean>;
+
+  /**
+   * 删除表态
+   * @param boj 表情对象
+   * @returns
+   */
+  deleteEmoji?(mid: string, boj: any): Promise<boolean>;
 
   /**
    * 获取当前用户下的所有频道列表
@@ -392,55 +370,59 @@ export interface AMessage {
    * @returns
    */
   getGuildMemberMsg?(gid: string, uid: string): Promise<boolean | any>;
+}
 
-  /**
-   * 撤回指定消息
-   * @param cid 频道编号
-   * @param mid 消息编号
-   * @param hideTip 是否隐藏
-   * @returns
-   */
-  deleteMsg?(cid: string, mid: string, hideTip: boolean): Promise<any>;
-
-  /**
-   * 权限api
-   */
-  permissions?: {
-    /**
-     * 查询机器人权限
-     * @param channel_id 子频道编号
-     * @param id  用户编号
-     * @returns
-     */
-    searchByBot(
-      channel_id: any,
-      id: any
-    ): Promise<{
-      botmiss: any;
-      look: boolean;
-      manage: boolean;
-      speak: boolean;
-      broadcast: boolean;
-      state: boolean;
-    }>;
-
-    /**
-     * 查询用户权限
-     * @param channel_id 子频道编号
-     * @param id  用户编号
-     * @returns
-     */
-    searchByUer(
-      channel_id: any,
-      id: any
-    ): Promise<{
-      botmiss: any;
-      look: boolean;
-      manage: boolean;
-      speak: boolean;
-      broadcast: boolean;
-      state: boolean;
-    }>;
+/**
+ * 权限类型
+ */
+export interface permissionsType {
+  statement?: {
+    // 可否发表态
+    create: boolean;
+    update: boolean;
+    // 可否删除表态
+    delete: boolean;
+  };
+  speak?: {
+    // 可否发言
+    create: boolean;
+    update: boolean;
+    // 可否撤回
+    delete: boolean;
+  };
+  // 可否艾特成员
+  at?: boolean;
+  // 可否艾特全体成员
+  atAll?: boolean;
+  // 可否艾特频道
+  atChannel?: boolean;
+  prohibition?: {
+    member?: boolean;
+    all?: boolean;
+  };
+  // 身份组可否可建
+  identityGroup?: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
+  };
+  // 子频道
+  channel: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
+  };
+  // 公告
+  Notice: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
+  };
+  // 精华
+  essence: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
   };
 }
 
@@ -488,7 +470,7 @@ export interface CmdItemType {
 /**
  * segment
  */
-export interface segmentType {
+export interface markdownType {
   /**
    * 艾特用户
    * @param uid
@@ -503,4 +485,49 @@ export interface segmentType {
    * @param channel_id
    */
   atChannel(channel_id: string): string;
+  /**
+   *
+   * @param role_id 角色
+   */
+  role?(role_id: string): string;
+  /**
+   *  点击后才显示
+   * @param content 内容
+   */
+  spoiler?(content: string): string;
+  /**
+   *
+   * @param name  服务器表情名
+   * @param id   服务器表情id
+   */
+  expression?(name: string, id: string): string;
+  /**
+   * @param txt 链接文字
+   * @param rul 链接地址
+   */
+  link?(txt: string, rul: string): string;
+  /**
+   * 加粗
+   * @param txt
+   */
+  Bold?(txt: string): string;
+  /**
+   * 斜体
+   * @param txt
+   */
+  italic?(txt: string): string;
+  /**
+   * 加粗斜体
+   */
+  boldItalic?(txt: string): string;
+  /**
+   * 删除线
+   * @param txt
+   */
+  strikethrough?(txt: string): string;
+  /**
+   * 代码块
+   * @param txt
+   */
+  block?(txt: string): string;
 }
