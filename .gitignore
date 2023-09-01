@@ -1,5 +1,10 @@
 node_modules
 *.logs
 *.log
+logs
+log
 /bin/*.js
-/commands/*.js
+/bin/template/config
+/bin/template/example
+/bin/template/data
+/bin/template/plugins/alemon-plugin/alemon-plugin.json

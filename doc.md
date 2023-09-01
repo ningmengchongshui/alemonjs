@@ -13,5 +13,5 @@ npm link
 ### 启动
 
 ```
-alemon-cli install
+npm init alemon
 ```

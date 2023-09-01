@@ -2,6 +2,9 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { createAlemon } from 'alemon-bot'
 import { cmdInit } from 'alemon'
 
+// import ffmpeg from 'alemon-ffmpeg'
+// await ffmpeg()
+
 const ars = process.argv.slice(2)
 
 /**

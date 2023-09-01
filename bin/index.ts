@@ -12,10 +12,9 @@ const args = process.argv;
 async function createAlemon({ name, force = false }) {
   // 错误参数
   if (!name) process.exit();
+
   // 锁定位置
   const dirPath = `./${name}`;
-
-  // 如果f为真,不敢存不存在,直接
 
   // 已经存在目录
   if (existsSync(dirPath)) {
@@ -23,7 +22,10 @@ async function createAlemon({ name, force = false }) {
       console.log("Robot name already exists!");
       return;
     }
-    fs.rmSync(dirPath, { recursive: true }); // 强制删除已存在的文件或目录
+    /**
+     * 强制删除已存在的文件或目录
+     */
+    fs.rmSync(dirPath, { recursive: true });
   }
 
   // 没有存在
@@ -42,11 +44,11 @@ async function createAlemon({ name, force = false }) {
     console.log(`------------------------------------`);
     console.log("Alemon-Bot cloned successfully!");
     console.log(`------------------------------------`);
-    console.log(`cd ${name}      #进入机器人目录`);
-    console.log(`npm run app:qq     #启动qq频道机器人`);
-    console.log(`npm run app:dc     #启动discord机器人`);
-    console.log(`npm run app:mys    #启动villa机器人`);
-    console.log(`npm run app:kook    #启动KOOK机器人`);
+    console.log(`cd ${name}          #进入机器人目录`);
+    console.log(`npm run app discord #启动discord机器人`);
+    console.log(`npm run app qq      #启动qq频道机器人`);
+    console.log(`npm run app villa   #启动villa机器人`);
+    console.log(`npm run app kook    #启动KOOK机器人`);
   } catch (error) {
     console.log(`${name} ${error}`);
     return;

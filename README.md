@@ -15,17 +15,17 @@ npm run alemon-bot
 运行 QQ 机器人
 
 ```shell
-npm run app:qq  # 其他实例可更改:dc :kook :mys
+npm run app qq  # 其他实例可更改discord kook villa
 ```
 
 日常管理
 
 ```shell
-npm run login:qq  # 登录机器人
-npm run start:qq  # 后台启动程序
-npm run stop:qq   # 停止后台程序
-npm run delete:qq # 删除程序
-npm run logs:qq   # 查看后台运行记录
+npm run login     # 登录机器人
+npm run start     # 后台启动程序
+npm run stop      # 停止后台程序
+npm run delete    # 删除程序
+npm run logs      # 查看后台运行记录
 npm run restart   # 重启所有程序
 npm run update    # 更新pm2版本
 npm run monit     # 机器人时时监控
