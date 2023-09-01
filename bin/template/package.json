@@ -30,6 +30,7 @@
     "alemon": "^1.5.5",
     "alemon-bot": "^1.0.1",
     "alemon-ffmpeg": "^1.0.1",
+    "alemon-redis": "^1.0.3",
     "art-template": "^4.13.2",
     "axios": "^1.4.0",
     "express": "^4.18.2",

@@ -3,11 +3,5 @@ node_modules
 /doc.md
 /tsconfig.json
 /bin/*.ts
-/bin/template/config
-/bin/template/data
-/bin/template/example
-/bin/template/*.logs
-/bin/template/*.log
-/bin/template/logs
-/bin/template/log
-/bin/template/plugins/alemon-plugin/alemon-plugin.json
+
+# tempalte
