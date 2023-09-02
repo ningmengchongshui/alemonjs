@@ -38,3 +38,7 @@ export * from "./typings.js";
  * 二进制
  */
 export * from "./buffer.js";
+/**
+ * 编译
+ */
+export * from "./build.js";
