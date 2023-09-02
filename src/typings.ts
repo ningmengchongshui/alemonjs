@@ -164,7 +164,7 @@ export interface AMessage {
   /**
    * 纯消息
    */
-  msg?: string;
+  msg: string;
   /**
    * 用户编号
    */
@@ -191,7 +191,7 @@ export interface AMessage {
    * @param img  消息 | buffer
    * @returns
    */
-  reply?(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
+  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
 
   /**
    * 发送卡片
