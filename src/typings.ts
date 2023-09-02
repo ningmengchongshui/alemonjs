@@ -1,16 +1,16 @@
 /**
  * 平台枚举
  */
-export enum PlatformEnum {
-  qq = "qq",
-  kook = "kook",
-  discord = "discord",
-  villa = "villa",
-  qqgroup = "qqgroup",
-  wechat = "wechat",
-  telegram = "telegram",
-  dodo = "dodo",
-}
+export declare const PlatformEnum: [
+  "qq",
+  "kook",
+  "discord",
+  "villa",
+  "qqgroup",
+  "wechat",
+  "telegram",
+  "dodo"
+];
 
 /**
  * 消息枚举
@@ -94,7 +94,7 @@ export interface AMessage {
   /**
    * 平台 qq | kook | discord | villa
    */
-  platform: PlatformEnum;
+  platform: (typeof PlatformEnum)[number];
   /**
    * 当前机器人的信息
    */
