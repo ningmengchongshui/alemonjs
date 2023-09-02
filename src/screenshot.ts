@@ -1,9 +1,35 @@
 import { readFileSync, writeFileSync, watch, mkdirSync } from "fs";
-import { join, dirname, basename } from "path";
+import { join, basename } from "path";
 import template from "art-template";
 import lodash from "lodash";
+import { ScreenshotOptions } from "puppeteer";
 import { screenshot } from "./puppeteer.js";
-import { PictureOptions } from "./typings.js";
+export interface PictureOptions {
+  /**
+   * 插件名
+   */
+  AppName: string;
+  /**
+   * 模板地址模板地址
+   */
+  tplFile: string;
+  /**
+   * 截图参数
+   */
+  SOptions?: ScreenshotOptions;
+  /**
+   * 任意数据对象
+   */
+  data?: any;
+  /**
+   * 截图元素
+   */
+  tab?: string;
+  /**
+   * 时差
+   */
+  timeout?: number;
+}
 
 /**
  * 模板缓存
@@ -117,14 +143,14 @@ export async function createPicture(
   if (T) {
     const reg =
       /url\(['"](@[^'"]+)['"]\)|href=['"](@[^'"]+)['"]|src=['"](@[^'"]+)['"]/g;
-    //
-
     const absolutePathTemplate = html[tplFile].replace(
       reg,
       (match, urlPath, hrefPath, srcPath) => {
         const relativePath = urlPath ?? hrefPath ?? srcPath;
-        // 去掉路径开头的 @ 符号
-        // 转义\/
+        /**
+         * 去掉路径开头的 @ 符号
+         * 转义\/
+         */
         const absolutePath = join(basePath, relativePath.substr(1)).replace(
           /\\/g,
           "/"

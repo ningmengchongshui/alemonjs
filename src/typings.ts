@@ -1,37 +1,15 @@
-import { ScreenshotOptions } from "puppeteer";
-
-export interface PictureOptions {
-  /**
-   * 插件名
-   */
-  AppName: string;
-  /**
-   * 模板地址模板地址
-   */
-  tplFile: string;
-  /**
-   * 截图参数
-   */
-  SOptions?: ScreenshotOptions;
-  /**
-   * 任意数据对象
-   */
-  data?: any;
-  /**
-   * 截图元素
-   */
-  tab?: string;
-  /**
-   * 时差
-   */
-  timeout?: number;
-}
-
-// 截图文件类型
-export enum ScreenshotType {
-  JPEG = "jpeg",
-  PNG = "png",
-  WEBP = "webp",
+/**
+ * 平台枚举
+ */
+export enum PlatformEnum {
+  qq = "qq",
+  kook = "kook",
+  discord = "discord",
+  villa = "villa",
+  qqgroup = "qqgroup",
+  wechat = "wechat",
+  telegram = "telegram",
+  dodo = "dodo",
 }
 
 /**
@@ -110,86 +88,20 @@ export enum EventType {
 }
 
 /**
- * 应用类型
- */
-export interface AppType {
-  [key: string]: object;
-}
-
-/**
- * 指令类型
- */
-export type CmdType = {
-  [Event in EventEnum]: CmdItemType[];
-};
-
-/**
- * 权限类型
- */
-export interface PermissionsType {
-  /**
-   * 子频道权限
-   */
-  state: boolean;
-  /**
-   * 可查看
-   */
-  look: boolean;
-  /**
-   * 可管理
-   */
-  manage: boolean;
-  /**
-   * 可发言
-   */
-  speak: boolean;
-  /**
-   * 可直播
-   */
-  broadcast: boolean;
-  /**
-   * 权限权重
-   */
-  botmiss: number;
-}
-
-/**
- * 用户类型
- */
-export interface UserType {
-  /**
-   * 用户编号
-   */
-  id: string;
-  /**
-   * 用户名称
-   */
-  name: string;
-  /**
-   * 用户头像地址
-   */
-  avatar: string;
-  /**
-   * 是否是机器人
-   */
-  bot: boolean;
-}
-
-/**
  * 阿柠檬消息类型
  */
 export interface AMessage {
   /**
    * 平台 qq | kook | discord | villa
    */
-  platform: string;
+  platform: PlatformEnum;
   /**
    * 当前机器人的信息
    */
-  bot?: {
+  bot: {
     id: string;
     name: string;
-    avatar: string;
+    avatar?: string;
   };
   /**
    * 事件类型
@@ -279,7 +191,7 @@ export interface AMessage {
    * @param img  消息 | buffer
    * @returns
    */
-  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
+  reply?(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
 
   /**
    * 发送卡片
@@ -373,98 +285,98 @@ export interface AMessage {
 }
 
 /**
+ * 用户类型
+ */
+export interface UserType {
+  /**
+   * 用户编号
+   */
+  id: string;
+  /**
+   * 用户名称
+   */
+  name: string;
+  /**
+   * 用户头像地址
+   */
+  avatar: string;
+  /**
+   * 是否是机器人
+   */
+  bot: boolean;
+}
+
+/**
  * 权限类型
  */
 export interface permissionsType {
-  statement?: {
-    // 可否发表态
-    create: boolean;
-    update: boolean;
-    // 可否删除表态
-    delete: boolean;
-  };
-  speak?: {
-    // 可否发言
-    create: boolean;
-    update: boolean;
-    // 可否撤回
-    delete: boolean;
-  };
-  // 可否艾特成员
+  /**
+   * 可否艾特成员
+   */
   at?: boolean;
-  // 可否艾特全体成员
+  /**
+   * 可否艾特全体成员
+   */
   atAll?: boolean;
-  // 可否艾特频道
+  /**
+   * 可否艾特频道
+   */
   atChannel?: boolean;
+  /**
+   * 表态
+   */
+  statement?: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
+  };
+  /**
+   * 发言
+   */
+  speak?: {
+    create?: boolean;
+    update?: boolean;
+    delete?: boolean;
+  };
+  /**
+   * 禁言
+   */
   prohibition?: {
     member?: boolean;
     all?: boolean;
   };
-  // 身份组可否可建
+  /**
+   * 身份组
+   */
   identityGroup?: {
     create?: boolean;
     update?: boolean;
     delete?: boolean;
   };
-  // 子频道
-  channel: {
+  /**
+   * 子频道
+   */
+  channel?: {
     create?: boolean;
     update?: boolean;
     delete?: boolean;
   };
-  // 公告
-  Notice: {
+  /**
+   * 公告/全局公告
+   */
+  Notice?: {
     create?: boolean;
     update?: boolean;
     delete?: boolean;
   };
-  // 精华
-  essence: {
+  /**
+   * 精华 / 顶置 / 精选
+   */
+  essence?: {
     create?: boolean;
     update?: boolean;
     delete?: boolean;
   };
-}
-
-/**
- * 父类属性
- * @param name 类名
- * @param dsc 类说明
- * @param event 事件响应
- * @param eventType 事件类型
- * @param priority 正则指令匹配数组
- * @param rule 事件类型
- */
-export interface SuperType {
-  name?: string;
-  dsc?: string;
-  event?: EventEnum;
-  eventType?: EventType;
-  priority?: number;
-  rule?: {
-    //正则
-    reg?: RegExp | string;
-    //方法(函数)
-    fnc: string;
-    // 指令示例
-    dsc?: string;
-    // 指令说明
-    doc?: string;
-  }[];
-}
-
-/**
- * 指令可枚举类型
- */
-export interface CmdItemType {
-  reg: RegExp | string;
-  priority: number;
-  event: EventEnum;
-  eventType: EventType;
-  belong: "plugins" | "example";
-  AppName: string;
-  fncName: string;
-  fnc: Function;
 }
 
 /**

@@ -7,10 +7,31 @@ import {
 } from "fs";
 import { join } from "path";
 import lodash from "lodash";
-import { AMessage, CmdType, CmdItemType, EventEnum } from "./typings.js";
+import { AMessage, EventType, EventEnum } from "./typings.js";
 import { getMessage } from "./message.js";
 import { getApp, delApp, getAppKey } from "./app.js";
 import { conversationHandlers, getConversationState } from "./dialogue.js";
+
+/**
+ * 指令可枚举类型
+ */
+interface CmdItemType {
+  reg: RegExp | string;
+  priority: number;
+  event: EventEnum;
+  eventType: EventType;
+  belong: "plugins" | "example";
+  AppName: string;
+  fncName: string;
+  fnc: Function;
+}
+
+/**
+ * 指令类型
+ */
+type CmdType = {
+  [Event in EventEnum]: CmdItemType[];
+};
 
 /**
  * 指令合集
@@ -315,19 +336,19 @@ export async function InstructionMatching(e: AMessage) {
         const res = await fnc(e)
           .then((res: boolean) => {
             console.info(
-              `[${data.event}][${data.belong}][${data.AppName}][${
+              `\n[${data.event}][${data.belong}][${data.AppName}][${
                 data.fncName
               }][${true}]`
             );
             return res;
           })
           .catch((err: any) => {
+            console.error(err);
             console.error(
-              `[${data.event}][${data.belong}][${data.AppName}][${
+              `\n[${data.event}][${data.belong}][${data.AppName}][${
                 data.fncName
               }][${false}]`
             );
-            console.error(err);
             return false;
           });
         if (res) break;
@@ -358,25 +379,27 @@ export async function typeMessage(e: AMessage) {
       const res = await fnc(e)
         .then((res: boolean) => {
           console.info(
-            `[${data.event}][${data.belong}][${data.AppName}][${
+            `\n[${data.event}][${data.belong}][${data.AppName}][${
               data.fncName
             }][${true}]`
           );
           return res;
         })
         .catch((err: any) => {
+          console.error(err);
           console.error(
-            `[${data.event}][${data.belong}][${data.AppName}][${
+            `\n[${data.event}][${data.belong}][${data.AppName}][${
               data.fncName
             }][${false}]`
           );
-          console.error(err);
           return false;
         });
-      if (res) break;
+      if (res) {
+        break;
+      }
     } catch (err) {
       logErr(err, data);
-      return false;
+      continue;
     }
   }
   return true;
@@ -390,7 +413,7 @@ export async function typeMessage(e: AMessage) {
 function logErr(err: any, data: CmdItemType) {
   console.error(err);
   console.error(
-    `[${data.event}][${data.belong}][${data.AppName}][${
+    `\n[${data.event}][${data.belong}][${data.AppName}][${
       data.fncName
     }][${false}]`
   );

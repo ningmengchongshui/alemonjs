@@ -1,5 +1,5 @@
-import { EventEnum, SuperType, EventType } from "./typings.js";
-class plugin {
+import { EventEnum, EventType } from "./typings.js";
+export class plugin {
   /**
    * 模块名
    */
@@ -42,13 +42,14 @@ class plugin {
     doc?: string;
   }[];
   /**
-   * @param name 类名标记  用于特殊需要时的唯一标记
-   * @param dsc 类名描述   用于描述该类的主要作用
+   * @param name 类名标记
+   * @param dsc 类名描述
    * @param event 事件类型
    * @param eventType 消息类型
    * @param priority 优先级      数字越小优先级越高
-   * @param rule.reg 命令正则      RegExp(rule.reg)
-   * @param rule.fnc 命令执行方法    function
+   * @param rule.reg 命令正则    RegExp | string
+   * @param rule.fnc 命令函数    function
+   * @param rule.dsc 指令示范    sdc
    * @param rule.doc 指令文档    doc
    */
   constructor({
@@ -58,7 +59,19 @@ class plugin {
     eventType = EventType.CREATE,
     priority = 5000,
     rule = [],
-  }: SuperType) {
+  }: {
+    name?: string;
+    dsc?: string;
+    event?: EventEnum;
+    eventType?: EventType;
+    priority?: number;
+    rule?: {
+      reg?: RegExp | string;
+      fnc: string;
+      dsc?: string;
+      doc?: string;
+    }[];
+  }) {
     this.name = name;
     this.dsc = dsc;
     this.event = event;
@@ -67,4 +80,3 @@ class plugin {
     this.rule = rule;
   }
 }
-export { plugin };

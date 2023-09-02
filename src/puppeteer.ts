@@ -60,7 +60,6 @@ export async function screenshot(
    * 检测是否开启
    */
   if (isBrowser == false) {
-    console.info("[puppeteer]实例启动");
     if (!(await startChrom())) return false;
   }
   if (pic <= RestartControl) {
@@ -73,10 +72,10 @@ export async function screenshot(
      * 重置次数
      */
     pic = 0;
-    console.info("[puppeteer]过载关闭");
+    console.info("[puppeteer] close");
     isBrowser = false;
     browser.close().catch((err) => console.error(err));
-    console.info("[puppeteer]重启准备");
+    console.info("[puppeteer] reopen");
     if (!(await startChrom())) return false;
     pic++;
   }
@@ -108,10 +107,9 @@ export async function startPage(
      * 开始
      */
     if (!isBrowser) {
-      console.info("[puppeteer]实例启动");
       if (!(await startChrom())) return false;
     }
-    console.info("[puppeteer]开始截图");
+    console.info("[puppeteer] start");
     /**
      * 实例化
      */
@@ -129,7 +127,7 @@ export async function startPage(
     /**
      * 得到图片
      */
-    console.info("[puppeteer]截图成功");
+    console.info("[puppeteer] success");
     return await body.screenshot(SOptions).catch((err) => {
       console.error(err);
       return false;
@@ -148,12 +146,12 @@ export async function startChrom(): Promise<boolean> {
   try {
     browser = await puppeteer.launch(LaunchCfg);
     isBrowser = true;
-    console.info("[puppeteer]启动成功");
+    console.info("[puppeteer] open success");
     return true;
   } catch (err) {
     console.error(err);
     isBrowser = false;
-    console.error("[puppeteer]启动失败");
+    console.error("[puppeteer] open fail");
     return false;
   }
 }
