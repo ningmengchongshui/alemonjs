@@ -36,7 +36,7 @@ if (process.platform == 'linux' || process.platform == 'android') {
    * 获取路径
    */
   try {
-    const chromiumPath = execSync(map[0]).toString().split(' ')[1].trim()
+    const chromiumPath = execSync(map[0]).toString().split(' ')[1]
     if (chromiumPath) {
       skipDownload = true
       executablePath = chromiumPath
@@ -52,7 +52,7 @@ if (process.platform == 'linux' || process.platform == 'android') {
    * 但存在 whereis firefox
    */
   try {
-    const firefoxPath = execSync(map[1]).toString().split(' ')[1].trim()
+    const firefoxPath = execSync(map[1]).toString().split(' ')[1]
     if (firefoxPath) {
       skipDownload = true
       executablePath = firefoxPath
