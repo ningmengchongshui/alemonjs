@@ -10,7 +10,10 @@ export const obtainingImages = async (
   data: object
 ): Promise<string | false | Buffer> =>
   await createPicture({
-    AppName, // 插件名
+    /**
+     * 插件名
+     */
+    AppName,
     tplFile: `${DirPath}${directory}`,
     data
   }).catch(err => {

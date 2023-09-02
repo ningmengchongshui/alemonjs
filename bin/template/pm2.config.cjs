@@ -2,7 +2,7 @@ const ars = process.argv.slice(4)
 module.exports = {
   apps: [
     {
-      name: 'alemon',
+      name: 'alemonb',
       script: 'pm2-run.js',
       instances: 1,
       autorestart: true,
@@ -13,8 +13,8 @@ module.exports = {
       watch: false,
       autodump: true,
       merge_logs: true,
-      error_file: './logs/alemon.log',
-      out_file: './logs/alemon.log',
+      error_file: './logs/bot.log',
+      out_file: './logs/bot.log',
       log_max_size: '10M',
       log_rotate_interval: 'daily',
       log_date_format: 'YYYY-MM-DD HH:mm:ss',

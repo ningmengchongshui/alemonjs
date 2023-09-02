@@ -1,5 +1,5 @@
 {
-  "name": "alemon-bot",
+  "name": "alemonb",
   "version": "1.0.1",
   "description": "阿柠檬机器人",
   "author": "ningmengchongshui",
@@ -12,7 +12,7 @@
     "start": "pm2 startOrRestart pm2.config.cjs",
     "stop": "pm2 stop pm2.config.cjs",
     "delete": "pm2 delete pm2.config.cjs",
-    "logs": "pm2 logs alemon",
+    "logs": "pm2 logs alemonb",
     "restart": "pm2 restart all",
     "list": "pm2 list",
     "startup": "pm2 startup",
@@ -22,25 +22,17 @@
     "kill": "pm2 kill",
     "pull:l": "find . -type d -name '.git' -execdir git pull --all \\;",
     "pull:w": "git pull && cd plugins && for /d %i in (*) do (echo Updating %i && cd %i && git pull && cd ..)",
-    "build": "npx rollup -c",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "alemon": "^1.5.5",
-    "alemon-bot": "^1.0.1",
+    "alemon-bot": "^1.0.2",
     "alemon-ffmpeg": "^1.0.1",
     "alemon-redis": "^1.0.3",
-    "art-template": "^4.13.2",
-    "axios": "^1.4.0",
-    "express": "^4.18.2",
-    "image-size": "^1.0.2",
     "mysql2": "^3.5.2",
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
-    "@rollup/plugin-multi-entry": "^6.0.0",
-    "@rollup/plugin-typescript": "^11.1.3",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
@@ -53,8 +45,7 @@
     "pre-commit": "^1.2.2",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
-    "typescript": ">=5.0.4 <5.1.0",
-    "rollup": "^3.28.1"
+    "typescript": ">=5.0.4 <5.1.0"
   },
   "pre-commit": [
     "lint",

@@ -30,7 +30,6 @@ npm run restart   # 重启所有程序
 npm run update    # 更新pm2版本
 npm run monit     # 机器人时时监控
 npm run kill      # 杀死所有实例
-npm run build     # 编译所有插件
 npm run startup   # 设置系统重启脚本
 npm run save      # 保存系统自启动程序
 npm run pull:l    # Linux系统更新所有插件

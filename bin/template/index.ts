@@ -1,47 +1,29 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 import { createAlemon } from 'alemon-bot'
-import { cmdInit } from 'alemon'
-
 // import ffmpeg from 'alemon-ffmpeg'
 // await ffmpeg()
 
-const ars = process.argv.slice(2)
-
 /**
- * 插件加载控制
+ * 控制
  */
-
-let T = false
-
-const arr = []
-
-for await (const item of ars) {
-  /**
-   * 不能启动相同的机器人
-   */
-
-  if (arr.indexOf(item) != -1) {
-    // 启动过了
-    continue
-  }
-
+const arr: string[] = []
+/**
+ * 指令合集
+ */
+const args = process.argv.slice(2)
+/**
+ * 推送插件启动到最后
+ */
+args.push('alemon')
+/**
+ * 开始启动
+ */
+for await (const item of args) {
+  if (arr.indexOf(item) != -1) continue
+  if (!createAlemon[item]) continue
   arr.push(item)
-
-  /**
-   * 存在且成功启动至少一个机器人
-   */
-  if (createAlemon[item] && (await createAlemon[item]())) {
-    T = true
-  }
+  await createAlemon[item]()
 }
-
-if (T) {
-  /**
-   * 加载插件
-   */
-  await cmdInit()
-}
-
 /**
  * 监听退出,防止ts-node退出报错
  */
