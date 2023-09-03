@@ -1,5 +1,5 @@
 const os = require('os')
-const { existsSync } = require('fs')
+const { existsSync, realpathSync } = require('fs')
 const { execSync } = require('child_process')
 const arch = os.arch()
 /**
@@ -10,7 +10,6 @@ let skipDownload = false
  * Path
  */
 let executablePath
-
 /**
  * windows path
  */
@@ -26,16 +25,14 @@ if (process.platform == 'linux' || process.platform == 'android') {
     'whereis chromium',
     'whereis firefox'
   ]
-
   /**
    * get path
    */
   for (const item of chromium) {
     try {
-      const chromiumPath = execSync(item).toString().split(' ')[1].trim()
+      const chromiumPath = execSync(item).toString().split(' ')[1]?.trim()
       if (chromiumPath) {
         skipDownload = true
-        console.log(chromiumPath, '111111')
         executablePath = realpathSync(chromiumPath)
         console.info('[Chromium] start')
         break
@@ -45,7 +42,6 @@ if (process.platform == 'linux' || process.platform == 'android') {
       continue
     }
   }
-
   /**
    * not path
    */
@@ -67,7 +63,6 @@ if (process.platform == 'linux' || process.platform == 'android') {
       }
     }
   }
-
   /**
    * arm64/arrch64
    */
@@ -83,7 +78,6 @@ if (process.platform == 'linux' || process.platform == 'android') {
   executablePath = win32Edge
   console.info('[Win32 Edge] start')
 }
-
 /**
  * @type {import("puppeteer").Configuration}
  */

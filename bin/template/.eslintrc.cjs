@@ -3,7 +3,11 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier'
+  ],
   overrides: [
     {
       env: {
@@ -11,14 +15,14 @@ module.exports = {
       },
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
-        sourceType: 'script'
+        sourcEventEnum: 'script'
       }
     }
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourcEventEnum: 'module'
   },
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
