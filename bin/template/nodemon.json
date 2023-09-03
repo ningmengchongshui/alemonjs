@@ -10,7 +10,7 @@
     "*-data",
     "*-player",
     "plugins/*/*.json",
-    "plugins/*/apps.js"
+    "plugins/*/*.js"
   ],
   "delay": 1000,
   "verbose": true,
