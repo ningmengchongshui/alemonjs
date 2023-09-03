@@ -443,3 +443,173 @@ export interface markdownType {
    */
   block?(txt: string): string;
 }
+
+/**
+ * 撤回控制器
+ */
+export interface WithdrawController {
+  /**
+   * 撤回消息
+   */
+  withdraw: Function;
+  /**
+   * 撤回表态
+   */
+  withdrawReaction: Function;
+}
+
+/**
+ * 频道控制器
+ */
+export interface GuildController {
+  /**
+   * 得到频道列表
+   */
+  getGuild: Function;
+  /**
+   * 得到指定频道信息
+   */
+  getGuildMsg: Function;
+  /**
+   * 得到指定频道用户
+   */
+  getGuildUsers: Function;
+  /**
+   * 删除指定频道用户
+   */
+  deleteGuildUser: Function;
+  /**
+   * 创建频道公告
+   */
+  createGuildAnnounce: Function;
+  /**
+   * 删除频道公告
+   */
+  deleteGuildAnnounce: Function;
+}
+
+/**
+ * 子频道控制器
+ */
+export interface ChannelController {
+  /**
+   * 得到子频道列表
+   */
+  getChannel: Function;
+  /**
+   * 得到子频道信息
+   */
+  getChannelMsg: Function;
+  /**
+   * 创建子频道
+   */
+  createChannel: Function;
+  /**
+   * 更新子频道
+   */
+  updateChannel: Function;
+  /**
+   * 删除子频道
+   */
+  deleteChannel: Function;
+  /**
+   * 得到子频道权限
+   */
+  getChannelPermissions: Function;
+  /**
+   * 更新子频道权限
+   */
+  updateChannelPermissions: Function;
+  /**
+   * 创建子频道精华
+   */
+  createChannelAnnounce: Function;
+  /**
+   * 创建子频道精华
+   */
+  deleteChannelAnnounce: Function;
+  /**
+   * 创建
+   */
+  createChannelEssence: Function;
+  /**
+   * 得到
+   */
+  getChannelEssence: Function;
+  /**
+   * 删除
+   */
+  deleteChannelEssence: Function;
+}
+
+/**
+ * 身分组控制器
+ */
+export interface IdentityGroupController {
+  /**
+   * 得到身分组
+   */
+  getIdentityGroup: Function;
+  /**
+   * 得到身分组信息
+   */
+  getIdentityGroupMsg: Function;
+  /**
+   * 创建身分组
+   */
+  createIdentityGroup: Function;
+  /**
+   * 更新身分组
+   */
+  updateIdentityGroup: Function;
+  /**
+   * 删除身分组
+   */
+  deleteIdentityGroup: Function;
+  /**
+   * 得到身分组权限
+   */
+  getIdentityGroupPermissions: Function;
+  /**
+   * 更新身份组权限
+   */
+  updateIdentityGroupPermissions: Function;
+}
+
+/**
+ * 用户控制器
+ */
+export interface UserController {
+  /**
+   * 得到用户信息
+   */
+  getUserMsg: Function;
+}
+
+/**
+ * 禁言控制器
+ */
+export interface MuteController {
+  /**
+   * 全体禁言
+   */
+  muteAll: Function;
+  /**
+   * 成员禁言
+   */
+  muteMember: Function;
+  /**
+   * 部分成员禁言
+   */
+  muteMembers: Function;
+}
+
+/**
+ * 表态控制器
+ */
+export interface ReactionController {
+  /**
+   * 得到表态列表
+   */
+  getReaction: Function;
+}
