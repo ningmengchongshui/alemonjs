@@ -8,3 +8,4 @@ log
 /bin/template/example
 /bin/template/data
 /bin/template/plugins/alemon-plugin/alemon-plugin.json
+/bin/template/plugins/alemon-plugin/apps.js
