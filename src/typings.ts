@@ -7,7 +7,7 @@ export interface AMessage
     MsgBase,
     Serverbase,
     BotBase,
-    replyType {}
+    ApiBase {}
 
 /**
  * 事件相关
@@ -223,106 +223,6 @@ interface UserBase {
   permissions?: permissionsType;
 }
 
-interface replyType {
-  /**
-   * 消息发送机制
-   * @param content 消息 | buffer
-   * @param img  消息 | buffer
-   * @returns
-   */
-  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
-
-  /**
-   * 发送卡片
-   * @param obj
-   */
-  replyCard?(obj: CacrdType): Promise<boolean>;
-
-  /**
-   * 回复消息
-   * @param obj
-   */
-  replyByMid?(
-    mid: string,
-    content?: string | string[] | Buffer,
-    img?: Buffer
-  ): Promise<boolean>;
-
-  /**
-   * 回复卡片
-   * @param obj
-   */
-  replyByMidCard?(mid: string, obj: object): Promise<boolean>;
-
-  /**
-   * 撤回指定消息
-   * @param cid 频道编号
-   * @param mid 消息编号
-   * @param hideTip 是否隐藏
-   * @returns
-   */
-  replyDelete?(cid: string, mid: string, hideTip: boolean): Promise<any>;
-
-  /**
-   * 公信转私信
-   * @param content 内容 | buffer
-   * @param obj 消息对象 | buffer
-   * @returns
-   */
-  replyPrivate?(
-    content?: string | string[] | Buffer,
-    obj?: Buffer
-  ): Promise<boolean>;
-
-  /**
-   * 发送表态
-   * @param boj
-   */
-  replyEmoji?(mid: string, boj: any): Promise<boolean>;
-
-  /**
-   * 删除表态
-   * @param boj 表情对象
-   * @returns
-   */
-  deleteEmoji?(mid: string, boj: any): Promise<boolean>;
-
-  /**
-   * 获取当前用户下的所有频道列表
-   * @returns
-   */
-  getGuildList?(): Promise<boolean | any[]>;
-
-  /**
-   * 获取频道详情
-   * @param gid 频道编号
-   * @returns
-   */
-  getGuildMsg?(gid: string): Promise<boolean | any>;
-
-  /**
-   * 获取子频道列表
-   * @param gid 频道编号
-   * @returns
-   */
-  getChannels?(gid: string): Promise<boolean | any[]>;
-
-  /**
-   * 获取子频道详情
-   * @param cid 子频道编号
-   * @returns
-   */
-  getChannel?(cid: string): Promise<boolean | any>;
-
-  /**
-   * 获取频道下指定成员的信息
-   * @param gid 频道
-   * @param uid 用户
-   * @returns
-   */
-  getGuildMemberMsg?(gid: string, uid: string): Promise<boolean | any>;
-}
-
 /**
  * 用户类型
  */
@@ -435,7 +335,7 @@ export interface markdownType {
    * 艾特频道
    * @param channel_id
    */
-  atChannel(channel_id: string): string;
+  atChannel?(channel_id: string): string;
   /**
    *
    * @param role_id 角色
@@ -483,6 +383,83 @@ export interface markdownType {
   block?(txt: string): string;
 }
 
+interface ApiBase
+  extends replyController,
+    WithdrawController,
+    GuildController,
+    GuildController,
+    ChannelController,
+    IdentityGroupController,
+    UserController,
+    MuteController,
+    ReactionController {}
+
+interface replyController {
+  /**
+   * 消息发送机制
+   * @param content 消息 | buffer
+   * @param img  消息 | buffer
+   * @returns
+   */
+  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
+
+  /**
+   * 发送卡片
+   * @param obj
+   */
+  replyCard?(obj: CardType): Promise<boolean>;
+
+  /**
+   * 回复消息
+   * @param obj
+   */
+  replyByMid?(
+    mid: string,
+    content?: string | string[] | Buffer,
+    img?: Buffer
+  ): Promise<boolean>;
+
+  /**
+   * 回复卡片
+   * @param obj
+   */
+  replyByMidCard?(mid: string, obj: CardType): Promise<boolean>;
+
+  /**
+   * 撤回指定消息
+   * @param cid 频道编号
+   * @param mid 消息编号
+   * @param hideTip 是否隐藏
+   * @returns
+   */
+  replyDelete?(cid: string, mid: string, hideTip: boolean): Promise<any>;
+
+  /**
+   * 公信转私信
+   * QQ频道使用
+   * @param content 内容 | buffer
+   * @param obj 消息对象 | buffer
+   * @returns
+   */
+  replyPrivate?(
+    content?: string | string[] | Buffer,
+    obj?: Buffer
+  ): Promise<boolean>;
+
+  /**
+   * 发送表态
+   * @param boj
+   */
+  replyEmoji?(mid: string, boj: any): Promise<boolean>;
+
+  /**
+   * 删除表态
+   * @param boj 表情对象
+   * @returns
+   */
+  deleteEmoji?(mid: string, boj: any): Promise<boolean>;
+}
+
 /**
  * 撤回控制器
  */
@@ -490,11 +467,11 @@ export interface WithdrawController {
   /**
    * 撤回消息
    */
-  withdraw: Function;
+  withdraw?: Function;
   /**
    * 撤回表态
    */
-  withdrawReaction: Function;
+  withdrawReaction?: Function;
 }
 
 /**
@@ -504,27 +481,27 @@ export interface GuildController {
   /**
    * 得到频道列表
    */
-  getGuild: Function;
+  getGuild?: Function;
   /**
    * 得到指定频道信息
    */
-  getGuildMsg: Function;
+  getGuildMsg?: Function;
   /**
    * 得到指定频道用户
    */
-  getGuildUsers: Function;
+  getGuildUsers?: Function;
   /**
    * 删除指定频道用户
    */
-  deleteGuildUser: Function;
+  deleteGuildUser?: Function;
   /**
    * 创建频道公告
    */
-  createGuildAnnounce: Function;
+  createGuildAnnounce?: Function;
   /**
    * 删除频道公告
    */
-  deleteGuildAnnounce: Function;
+  deleteGuildAnnounce?: Function;
 }
 
 /**
@@ -534,51 +511,51 @@ export interface ChannelController {
   /**
    * 得到子频道列表
    */
-  getChannel: Function;
+  getChannel?: Function;
   /**
    * 得到子频道信息
    */
-  getChannelMsg: Function;
+  getChannelMsg?: Function;
   /**
    * 创建子频道
    */
-  createChannel: Function;
+  createChannel?: Function;
   /**
    * 更新子频道
    */
-  updateChannel: Function;
+  updateChannel?: Function;
   /**
    * 删除子频道
    */
-  deleteChannel: Function;
+  deleteChannel?: Function;
   /**
    * 得到子频道权限
    */
-  getChannelPermissions: Function;
+  getChannelPermissions?: Function;
   /**
    * 更新子频道权限
    */
-  updateChannelPermissions: Function;
+  updateChannelPermissions?: Function;
   /**
    * 创建子频道精华
    */
-  createChannelAnnounce: Function;
+  createChannelAnnounce?: Function;
   /**
    * 创建子频道精华
    */
-  deleteChannelAnnounce: Function;
+  deleteChannelAnnounce?: Function;
   /**
    * 创建
    */
-  createChannelEssence: Function;
+  createChannelEssence?: Function;
   /**
    * 得到
    */
-  getChannelEssence: Function;
+  getChannelEssence?: Function;
   /**
    * 删除
    */
-  deleteChannelEssence: Function;
+  deleteChannelEssence?: Function;
 }
 
 /**
@@ -588,31 +565,31 @@ export interface IdentityGroupController {
   /**
    * 得到身分组
    */
-  getIdentityGroup: Function;
+  getIdentityGroup?: Function;
   /**
    * 得到身分组信息
    */
-  getIdentityGroupMsg: Function;
+  getIdentityGroupMsg?: Function;
   /**
    * 创建身分组
    */
-  createIdentityGroup: Function;
+  createIdentityGroup?: Function;
   /**
    * 更新身分组
    */
-  updateIdentityGroup: Function;
+  updateIdentityGroup?: Function;
   /**
    * 删除身分组
    */
-  deleteIdentityGroup: Function;
+  deleteIdentityGroup?: Function;
   /**
    * 得到身分组权限
    */
-  getIdentityGroupPermissions: Function;
+  getIdentityGroupPermissions?: Function;
   /**
    * 更新身份组权限
    */
-  updateIdentityGroupPermissions: Function;
+  updateIdentityGroupPermissions?: Function;
 }
 
 /**
@@ -622,7 +599,7 @@ export interface UserController {
   /**
    * 得到用户信息
    */
-  getUserMsg: Function;
+  getUserMsg?: Function;
 }
 
 /**
@@ -632,15 +609,15 @@ export interface MuteController {
   /**
    * 全体禁言
    */
-  muteAll: Function;
+  muteAll?: Function;
   /**
    * 成员禁言
    */
-  muteMember: Function;
+  muteMember?: Function;
   /**
    * 部分成员禁言
    */
-  muteMembers: Function;
+  muteMembers?: Function;
 }
 
 /**
@@ -650,7 +627,7 @@ export interface ReactionController {
   /**
    * 得到表态列表
    */
-  getReaction: Function;
+  getReaction?: Function;
 }
 
 export const CacrdEnum = [
@@ -766,7 +743,7 @@ export const CacrdEnum = [
   "kook_card",
 ] as const;
 
-export interface CacrdType {
+export interface CardType {
   type: (typeof EventEnum)[number];
   card: any[];
 }
