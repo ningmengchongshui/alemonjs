@@ -1,8 +1,16 @@
 import { readdirSync, mkdirSync } from "fs";
-import { join } from "path";
+import { join, dirname, basename } from "path";
 import { setMessage } from "./message.js";
 import { setApp } from "./app.js";
-
+import { fileURLToPath } from "url";
+/**
+ * 得到执行文件夹名
+ * @param {} url
+ * @returns
+ */
+export function getAppName(url: string | URL) {
+  return basename(dirname(fileURLToPath(url)));
+}
 /**
  * 递归得到所有文件绝对路径
  * @param dirPath 指定目录下
@@ -21,7 +29,6 @@ export function getAllJsAndTsFilesSync(dirPath) {
   }
   return files;
 }
-
 /**
  * 集成工程
  * @param AppName 目录名

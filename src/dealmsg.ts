@@ -18,8 +18,8 @@ import { conversationHandlers, getConversationState } from "./dialogue.js";
 interface CmdItemType {
   reg: RegExp | string;
   priority: number;
-  event: EventEnum;
-  eventType: EventType;
+  event: (typeof EventEnum)[number];
+  eventType: (typeof EventType)[number];
   belong: "plugins" | "example";
   AppName: string;
   fncName: string;
@@ -30,7 +30,7 @@ interface CmdItemType {
  * 指令类型
  */
 type CmdType = {
-  [Event in EventEnum]: CmdItemType[];
+  [Event in (typeof EventEnum)[number]]: CmdItemType[];
 };
 
 /**
@@ -60,7 +60,11 @@ export function getPluginHelp(AppName: string) {
  * @param appname
  * @param belong
  */
-async function synthesis(AppsObj: object, appname: string, belong: string) {
+async function synthesis(
+  AppsObj: object,
+  appname: string,
+  belong: "plugins" | "example"
+) {
   for (const item in AppsObj) {
     let keys = new AppsObj[item]();
     /**
@@ -319,7 +323,7 @@ export async function InstructionMatching(e: AMessage) {
      * 发现message
      */
     if (item == "message") {
-      e.event = EventEnum.message;
+      e.event = "message";
       e.eventType = undefined;
     }
     /**

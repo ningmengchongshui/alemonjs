@@ -15,77 +15,73 @@ export declare const PlatformEnum: [
 /**
  * 消息枚举
  */
-export enum EventEnum {
+export declare const EventEnum: [
   /**
    * 频道消息
    */
-  GUILD = "GUILD",
+  "GUILD",
   /**
    * 子频道消息
    */
-  CHANNEL = "CHANNEL",
+  "CHANNEL",
   /**
    * 成员频道进出变动消息
    */
-  GUILD_MEMBERS = "GUILD_MEMBERS",
+  "GUILD_MEMBERS",
   /**
    * 审核消息
    */
-  MESSAGE_AUDIT = "MESSAGE_AUDIT",
+  "MESSAGE_AUDIT",
   /**
    * 私聊会话消息
    */
-  DIRECT_MESSAGE = "DIRECT_MESSAGE",
+  "DIRECT_MESSAGE",
   /**
    * 论坛主题
    */
-  FORUMS_THREAD = "FORUMS_THREAD",
+  "FORUMS_THREAD",
   /**
    * 论坛POST
    */
-  FORUMS_POST = "FORUMS_POST",
+  "FORUMS_POST",
   /**
    * 论坛评论
    */
-  FORUMS_REPLY = "FORUMS_REPLY",
+  "FORUMS_REPLY",
   /**
    * 会话消息:公私合并
    */
-  MESSAGES = "MESSAGES",
+  "MESSAGES",
   /**
    * 小写兼容层
    */
-  message = "message",
+  "message",
   /**
    * 频道表情点击会话消息
    */
-  GUILD_MESSAGE_REACTIONS = "GUILD_MESSAGE_REACTIONS",
+  "GUILD_MESSAGE_REACTIONS",
   /**
    * 互动事件监听
    */
-  INTERACTION = "INTERACTION",
+  "INTERACTION",
   /**
    * 音频事件
    */
-  AUDIO_FREQUENCY = "AUDIO_FREQUENCY",
+  "AUDIO_FREQUENCY",
   /**
    * 麦克风事件
    */
-  AUDIO_MICROPHONE = "AUDIO_MICROPHONE",
+  "AUDIO_MICROPHONE",
   /**
    * 兼容不响应
    */
-  "notice.*.poke" = "notice.*.poke",
-}
+  "notice.*.poke"
+];
 
 /**
  * 消息判断
  */
-export enum EventType {
-  CREATE = "CREATE",
-  UPDATE = "UPDATE",
-  DELETE = "DELETE",
-}
+export declare const EventType: ["CREATE", "UPDATE", "DELETE"];
 
 /**
  * 阿柠檬消息类型
@@ -106,17 +102,25 @@ export interface AMessage {
   /**
    * 事件类型
    */
-  event: EventEnum;
+  event: (typeof EventEnum)[number];
   /**
    * 消息类型
    */
-  eventType: EventType;
+  eventType: (typeof EventType)[number];
   /**
-   * 频道编号
+   * 频道编号 | 服务器 | 群名
    */
   guild_id: string;
   /**
-   * 子频道编号 ?
+   *  频道名 |  服务器名 | 群号
+   */
+  guild_name?: string;
+  /**
+   * 子频道名 | 房间名 | 群名
+   */
+  channel_name?: string;
+  /**
+   * 子频道编号 | 房间编号 | 群号
    */
   channel_id?: string;
   /**

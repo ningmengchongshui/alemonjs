@@ -11,11 +11,11 @@ export class plugin {
   /**
    * 事件枚举
    */
-  event?: EventEnum;
+  event?: (typeof EventEnum)[number];
   /**
    * 事件类型
    */
-  eventType?: EventType;
+  eventType?: (typeof EventType)[number];
   /**
    * 匹配优先级
    */
@@ -55,15 +55,15 @@ export class plugin {
   constructor({
     name = "your-name",
     dsc = "dsc",
-    event = EventEnum.MESSAGES,
-    eventType = EventType.CREATE,
+    event = "MESSAGES",
+    eventType = "CREATE",
     priority = 5000,
     rule = [],
   }: {
     name?: string;
     dsc?: string;
-    event?: EventEnum;
-    eventType?: EventType;
+    event?: (typeof EventEnum)[number];
+    eventType?: (typeof EventType)[number];
     priority?: number;
     rule?: {
       reg?: RegExp | string;
