@@ -400,7 +400,11 @@ interface replyController {
    * @param img  消息 | buffer
    * @returns
    */
-  reply(content?: string | string[] | Buffer, img?: Buffer): Promise<boolean>;
+  reply(
+    content?: string | string[] | Buffer,
+    img?: Buffer | string,
+    name?: string
+  ): Promise<boolean>;
 
   /**
    * 发送卡片
@@ -415,7 +419,8 @@ interface replyController {
   replyByMid?(
     mid: string,
     content?: string | string[] | Buffer,
-    img?: Buffer
+    img?: Buffer | string,
+    name?: string
   ): Promise<boolean>;
 
   /**
