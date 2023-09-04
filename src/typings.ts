@@ -1,4 +1,33 @@
 /**
+ * 阿柠檬消息类型
+ */
+export interface AMessage
+  extends EventBase,
+    UserBase,
+    MsgBase,
+    Serverbase,
+    BotBase,
+    replyType {}
+
+/**
+ * 事件相关
+ */
+interface EventBase {
+  /**
+   * 平台 qq | kook | discord | villa
+   */
+  platform: (typeof PlatformEnum)[number];
+  /**
+   * 事件类型
+   */
+  event: (typeof EventEnum)[number];
+  /**
+   * 消息类型
+   */
+  eventType: (typeof EventType)[number];
+}
+
+/**
  * 平台枚举
  */
 export const PlatformEnum = [
@@ -84,29 +113,20 @@ export const EventEnum = [
 export const EventType = ["CREATE", "UPDATE", "DELETE"] as const;
 
 /**
- * 阿柠檬消息类型
+ * 机器人相关
  */
-export interface AMessage {
-  /**
-   * 平台 qq | kook | discord | villa
-   */
-  platform: (typeof PlatformEnum)[number];
-  /**
-   * 当前机器人的信息
-   */
+interface BotBase {
   bot: {
     id: string;
     name: string;
     avatar?: string;
   };
-  /**
-   * 事件类型
-   */
-  event: (typeof EventEnum)[number];
-  /**
-   * 消息类型
-   */
-  eventType: (typeof EventType)[number];
+}
+
+/***
+ * 服务器相关
+ */
+interface Serverbase {
   /**
    * 频道编号 | 服务器 | 群名
    */
@@ -131,14 +151,12 @@ export interface AMessage {
    * 是否是群聊
    */
   isGroup: boolean;
-  /**
-   * 是否是撤回
-   */
-  isRecall: boolean;
-  /**
-   * 是否是主人
-   */
-  isMaster: boolean;
+}
+
+/**
+ * 消息相关
+ */
+interface MsgBase {
   /**
    * 是否有@
    */
@@ -170,6 +188,20 @@ export interface AMessage {
    */
   msg: string;
   /**
+   * 快捷接口
+   */
+  segment: markdownType;
+  /**
+   * 是否是撤回
+   */
+  isRecall: boolean;
+}
+
+/**
+ * 用户相关
+ */
+interface UserBase {
+  /**
    * 用户编号
    */
   user_id: string;
@@ -182,13 +214,16 @@ export interface AMessage {
    */
   user_avatar: string;
   /**
-   * 快捷接口
+   * 是否是主人
    */
-  segment: markdownType;
+  isMaster: boolean;
   /**
    * 权限
    */
   permissions?: permissionsType;
+}
+
+interface replyType {
   /**
    * 消息发送机制
    * @param content 消息 | buffer
@@ -201,7 +236,7 @@ export interface AMessage {
    * 发送卡片
    * @param obj
    */
-  replyCard?(obj?: object): Promise<boolean>;
+  replyCard?(obj: CacrdType): Promise<boolean>;
 
   /**
    * 回复消息
@@ -616,4 +651,122 @@ export interface ReactionController {
    * 得到表态列表
    */
   getReaction: Function;
+}
+
+export const CacrdEnum = [
+  /**
+   * qqgroup 图片
+   */
+  "qqgroup_json",
+  /**
+   * qqgroup 图片，支持http://,base64://
+   */
+  "qqgroup_image",
+  /**
+   * qqgroup 经典表情(id=0~324)
+   */
+  "qqgroup_face",
+  /**
+   * qqgroup 小表情(id规则不明)
+   */
+  "qqgroup_sface",
+  /**
+   * qqgroup
+   * @deprecated 将CQ码转换为消息链
+   */
+  "qqgroup_fromCqcode",
+  /**
+   * qqgroup
+   * id 0~6
+   */
+  "qqgroup_poke",
+  /**
+   * qqgroup
+   * 位置分享
+   */
+  "qqgroup_location",
+  /**
+   * qqgroup
+   * 链接分享
+   */
+  "qqgroup_share",
+  /**
+   * qqgroup
+   */
+  "qqgroup_fake",
+  /**
+   * qqgroup
+   * 音乐
+   */
+  "qqgroup_music",
+  /**
+   * qqgroup
+   * 一种特殊消息(官方客户端无法解析)
+   */
+  "qqgroup_mirai",
+  /*
+   * qqgroup
+   * 转发
+   */
+  "qqgroup_xml",
+  /**
+   * qqgroup
+   * 视频，
+   * 仅支持本地文件
+   */
+  "qqgroup_video",
+  /**
+   * qqgroup
+   * 语音，
+   * 支持http://,base64://
+   */
+  "qqgroup_record",
+  /**
+   * qqgroup
+   * 闪照，
+   * 支持http://,base64://
+   */
+  "qqgroup_flash",
+  /**
+   * qqgroup
+   * mention@提及
+   * @param qq 全体成员:"all", 频道:tiny_id
+   */
+  "qqgroup_at",
+  /**
+   * qqgroup
+   * 骰子(id=1~6)
+   */
+  "qqgroup_dice",
+  /**
+   * qqgroup
+   * 猜拳(id=1~3)
+   */
+  "qqgroup_rps",
+  /**
+   * qqgroup
+   * 原创表情(file规则不明)
+   */
+  "qqgroup_bface",
+  /**
+   * @deprecated 文本，建议直接使用字符串
+   */
+  "qqgroup_text",
+  /**
+   * qq频道
+   */
+  "qq_embed",
+  /**
+   * QQ频道
+   */
+  "qq_ark",
+  /**
+   * kook
+   */
+  "kook_card",
+] as const;
+
+export interface CacrdType {
+  type: (typeof EventEnum)[number];
+  card: any[];
 }
