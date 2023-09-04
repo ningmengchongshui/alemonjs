@@ -4,12 +4,20 @@ import { setMessage } from "./message.js";
 import { setApp } from "./app.js";
 import { fileURLToPath } from "url";
 /**
- * 得到执行文件夹名
+ * 得到执行路径
+ * @param url
+ * @returns
+ */
+export function getAppPath(url: string | URL) {
+  return dirname(fileURLToPath(url)).replace(/\\/g, "/");
+}
+/**
+ * 得到执行目录
  * @param {} url
  * @returns
  */
 export function getAppName(url: string | URL) {
-  return basename(dirname(fileURLToPath(url)));
+  return basename(getAppPath(url));
 }
 /**
  * 递归得到所有文件绝对路径

@@ -391,8 +391,7 @@ interface ApiBase
     ChannelController,
     IdentityGroupController,
     UserController,
-    MuteController,
-    ReactionController {}
+    MuteController {}
 
 interface replyController {
   /**
@@ -458,6 +457,20 @@ interface replyController {
    * @returns
    */
   deleteEmoji?(mid: string, boj: any): Promise<boolean>;
+
+  /**
+   * 更新表态
+   * @param mid
+   * @param boj
+   */
+  updateEmoji?(mid: string, boj: any): Promise<boolean>;
+
+  /**
+   * 得到指定消息的表态
+   * @param mid
+   * @param boj
+   */
+  getEmoji?(mid: string): Promise<any[]>;
 }
 
 /**
@@ -618,28 +631,6 @@ export interface MuteController {
    * 部分成员禁言
    */
   muteMembers?: Function;
-}
-
-/**
- * 表态控制器
- */
-export interface ReactionController {
-  /**
-   * 得到表态列表
-   */
-  getReaction?: Function;
-  /**
-   * 删除表态
-   */
-  deleteReaction?: Function;
-  /**
-   * 更新表态
-   */
-  updateReaction?: Function;
-  /**
-   * 创建表态
-   */
-  createReaction?: Function;
 }
 
 export const CacrdEnum = [
