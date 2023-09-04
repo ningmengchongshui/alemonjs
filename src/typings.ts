@@ -628,6 +628,18 @@ export interface ReactionController {
    * 得到表态列表
    */
   getReaction?: Function;
+  /**
+   * 删除表态
+   */
+  deleteReaction?: Function;
+  /**
+   * 更新表态
+   */
+  updateReaction?: Function;
+  /**
+   * 创建表态
+   */
+  createReaction?: Function;
 }
 
 export const CacrdEnum = [
@@ -743,7 +755,7 @@ export const CacrdEnum = [
   "kook_card",
 ] as const;
 
-export interface CardType {
+interface CardType {
   type: (typeof EventEnum)[number];
   card: any[];
 }
