@@ -27,7 +27,7 @@ export class TestShow extends plugin {
           reg: /^\/柠檬图标$/,
           fnc: 'sculpture',
           dsc: '/柠檬图标',
-          doc: '看看机器人定制的本地图标'
+          doc: '看看定制的本地图标'
         }
       ]
     })

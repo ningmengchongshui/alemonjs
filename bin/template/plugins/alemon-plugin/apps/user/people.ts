@@ -1,10 +1,10 @@
-import { plugin, AMessage, EventType, EventEnum } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 export class TestPeople extends plugin {
   constructor() {
     super({
       dsc: '成员加入',
-      event: EventEnum.GUILD_MEMBERS,
-      eventType: EventType.CREATE,
+      event: 'GUILD_MEMBERS',
+      eventType: 'CREATE',
       rule: [
         {
           fnc: 'peopleAdd',
@@ -28,8 +28,8 @@ export class PeopleDelete extends plugin {
   constructor() {
     super({
       dsc: '成员更新',
-      event: EventEnum.GUILD_MEMBERS,
-      eventType: EventType.UPDATE,
+      event: 'GUILD_MEMBERS',
+      eventType: 'UPDATE',
       rule: [
         {
           fnc: 'peopleDelete',
@@ -53,8 +53,8 @@ export class PeopleUpdata extends plugin {
   constructor() {
     super({
       dsc: '成员退出',
-      event: EventEnum.GUILD_MEMBERS,
-      eventType: EventType.DELETE,
+      event: 'GUILD_MEMBERS',
+      eventType: 'DELETE',
       rule: [
         {
           fnc: 'peopleUpdata',

@@ -1,9 +1,9 @@
-import { plugin, AMessage, EventType } from 'alemon'
+import { plugin, AMessage } from 'alemon'
 export class IsRecall extends plugin {
   constructor() {
     super({
       dsc: '撤回消息',
-      eventType: EventType.DELETE,
+      eventType: 'DELETE',
       rule: [
         {
           fnc: 'onrecall',

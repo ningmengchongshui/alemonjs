@@ -8,7 +8,7 @@ export class TestMessage extends plugin {
           reg: /^\/数组消息$/,
           fnc: 'getArrMsg',
           dsc: '/数组消息',
-          doc: '数组类型消息也是支持的'
+          doc: '数组类型消息示范'
         }
       ]
     })
