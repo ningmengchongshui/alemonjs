@@ -231,7 +231,7 @@ async function loadPlugins(dir: string) {
 function dataInit() {
   ExampleArr = [];
   PluginsArr = [];
-  for (const item in EventEnum) {
+  for (const item of EventEnum) {
     if (isNaN(Number(item))) {
       Command[item] = [];
     }
