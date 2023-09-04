@@ -747,6 +747,6 @@ export const CacrdEnum = [
 ] as const;
 
 interface CardType {
-  type: (typeof EventEnum)[number];
+  type: (typeof CacrdEnum)[number];
   card: any[];
 }
