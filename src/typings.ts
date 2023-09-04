@@ -1,7 +1,7 @@
 /**
  * 平台枚举
  */
-export declare const PlatformEnum: [
+export const PlatformEnum = [
   "qq",
   "kook",
   "discord",
@@ -9,13 +9,13 @@ export declare const PlatformEnum: [
   "qqgroup",
   "wechat",
   "telegram",
-  "dodo"
-];
+  "dodo",
+] as const;
 
 /**
  * 消息枚举
  */
-export declare const EventEnum: [
+export const EventEnum = [
   /**
    * 频道消息
    */
@@ -75,13 +75,13 @@ export declare const EventEnum: [
   /**
    * 兼容不响应
    */
-  "notice.*.poke"
-];
+  "notice.*.poke",
+] as const;
 
 /**
  * 消息判断
  */
-export declare const EventType: ["CREATE", "UPDATE", "DELETE"];
+export const EventType = ["CREATE", "UPDATE", "DELETE"] as const;
 
 /**
  * 阿柠檬消息类型
