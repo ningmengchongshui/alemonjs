@@ -404,9 +404,9 @@ interface replyController {
 
   /**
    * 发送卡片
-   * @param obj
+   * @param arr
    */
-  replyCard?(obj: CardType): Promise<boolean>;
+  replyCard?(arr: CardType[]): Promise<boolean>;
 
   /**
    * 回复消息
@@ -420,9 +420,10 @@ interface replyController {
 
   /**
    * 回复卡片
-   * @param obj
+   * @param mid
+   * @param arr
    */
-  replyByMidCard?(mid: string, obj: CardType): Promise<boolean>;
+  replyByMidCard?(mid: string, arr: CardType[]): Promise<boolean>;
 
   /**
    * 撤回指定消息
@@ -746,7 +747,7 @@ export const CacrdEnum = [
   "kook_card",
 ] as const;
 
-interface CardType {
+export interface CardType {
   type: (typeof CacrdEnum)[number];
-  card: any[];
+  card: any;
 }
