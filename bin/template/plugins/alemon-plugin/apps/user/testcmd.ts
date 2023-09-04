@@ -6,13 +6,13 @@ export class TestCmd extends plugin {
       dsc: '特殊消息',
       rule: [
         {
-          reg: /^\/回复我$/, //正则指令
+          reg: /^(#|\/)回复我$/, //正则指令
           fnc: 'replyCat', //函数匹配10
           dsc: '/回复我',
           doc: '响应回复消息'
         },
         {
-          reg: /^\/泰裤辣$/, //正则指令
+          reg: /^(#|\/)泰裤辣$/, //正则指令
           fnc: 'getCool', //函数匹配10
           dsc: '/泰裤辣',
           doc: '得到一个卡片示范效果'
@@ -41,29 +41,31 @@ export class TestCmd extends plugin {
    */
   async getCool(e: AMessage): Promise<boolean> {
     if (e.replyCard) {
-      e.replyCard({
-        type: 'embed',
-        card: {
-          embed: {
-            title: '新人任务',
-            prompt: '新人任务',
-            thumbnail: {
-              url: 'http://tva1.sinaimg.cn/bmiddle/6af89bc8gw1f8ub7pm00oj202k022t8i.jpg'
-            },
-            fields: [
-              {
-                name: '一库一库'
+      e.replyCard([
+        {
+          type: 'qq_embed',
+          card: {
+            embed: {
+              title: '新人任务',
+              prompt: '新人任务',
+              thumbnail: {
+                url: 'http://tva1.sinaimg.cn/bmiddle/6af89bc8gw1f8ub7pm00oj202k022t8i.jpg'
               },
-              {
-                name: '一库一库'
-              },
-              {
-                name: '😁继续努力'
-              }
-            ]
+              fields: [
+                {
+                  name: '一库一库'
+                },
+                {
+                  name: '一库一库'
+                },
+                {
+                  name: '😁继续努力'
+                }
+              ]
+            }
           }
         }
-      }).catch(err => {
+      ]).catch(err => {
         console.log(err)
       })
     }

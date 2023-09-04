@@ -1,9 +1,0 @@
-{
-  "name": "alemon-plugin",
-  "version": "1.0.0",
-  "description": "阿柠檬测试插件",
-  "author": "ningmengchongshui",
-  "license": "GPL-2.0",
-  "private": true,
-  "type": "module"
-}

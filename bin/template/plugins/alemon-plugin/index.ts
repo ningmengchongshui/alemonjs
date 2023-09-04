@@ -1,10 +1,8 @@
-import { dirname, basename } from 'path'
-import { fileURLToPath } from 'url'
-import { createApp, compilationTools } from 'alemon'
+import { createApp, compilationTools, getAppName } from 'alemon'
 /**
  * 项目名称
  */
-const AppName = basename(dirname(fileURLToPath(import.meta.url)))
+const AppName = getAppName(import.meta.url)
 /**
  * 加载模块
  */

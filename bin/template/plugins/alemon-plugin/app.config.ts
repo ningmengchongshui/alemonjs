@@ -1,7 +1,4 @@
-import { dirname, basename } from 'path'
-import { fileURLToPath } from 'url'
-export const DirPath = dirname(fileURLToPath(import.meta.url)).replace(
-  /\\/g,
-  '/'
-)
+import { getAppPath } from 'alemon'
+import { basename } from 'path'
+export const DirPath = getAppPath(import.meta.url)
 export const AppName = basename(DirPath)

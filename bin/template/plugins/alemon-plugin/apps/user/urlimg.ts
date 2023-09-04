@@ -5,7 +5,7 @@ export class TestUrl extends plugin {
       dsc: '开发简单示例演示',
       rule: [
         {
-          reg: /^\/原神黄历$/,
+          reg: /^(#|\/)原神黄历$/,
           fnc: 'getAlmanac',
           dsc: '/柠檬帮助',
           doc: '获取所有指令'

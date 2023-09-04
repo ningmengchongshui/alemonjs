@@ -14,7 +14,7 @@ export class TestGroupme extends plugin {
       /* 指令集 */
       rule: [
         {
-          reg: /^\/私聊我$/,
+          reg: /^(#|\/)私聊我$/,
           fnc: 'isGroup',
           dsc: '/私聊我',
           doc: '解除QQ频道私聊禁止'
