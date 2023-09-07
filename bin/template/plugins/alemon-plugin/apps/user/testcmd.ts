@@ -6,13 +6,13 @@ export class TestCmd extends plugin {
       dsc: '特殊消息',
       rule: [
         {
-          reg: /^(#|\/)回复我$/, //正则指令
+          reg: /^(#|\/)?回复我$/, //正则指令
           fnc: 'replyCat', //函数匹配10
           dsc: '/回复我',
           doc: '响应回复消息'
         },
         {
-          reg: /^(#|\/)泰裤辣$/, //正则指令
+          reg: /^(#|\/)?泰裤辣$/, //正则指令
           fnc: 'getCool', //函数匹配10
           dsc: '/泰裤辣',
           doc: '得到一个卡片示范效果'

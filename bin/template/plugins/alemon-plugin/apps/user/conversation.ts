@@ -11,7 +11,7 @@ export class TestConversation extends plugin {
       dsc: '对话机示范',
       rule: [
         {
-          reg: /^(#|\/)你好呀$/,
+          reg: /^(#|\/)?你好呀$/,
           fnc: 'startConversation',
           dsc: '/你好呀',
           doc: '对话机开始触发'

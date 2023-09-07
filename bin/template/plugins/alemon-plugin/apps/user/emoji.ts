@@ -5,13 +5,13 @@ export class TestEmonij extends plugin {
       dsc: '表态示范',
       rule: [
         {
-          reg: /^(#|\/)你得意什么$/,
+          reg: /^(#|\/)?你得意什么$/,
           fnc: 'onrecall',
           dsc: '/你得意什么',
           doc: '发个表态'
         },
         {
-          reg: /^(#|\/)艾特一下$/,
+          reg: /^(#|\/)?艾特一下$/,
           fnc: 'AtOne',
           dsc: '/艾特一下',
           doc: '响应所有艾特'

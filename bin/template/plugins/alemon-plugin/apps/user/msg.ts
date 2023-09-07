@@ -5,7 +5,7 @@ export class TestMessage extends plugin {
       dsc: '开发简单示例演示',
       rule: [
         {
-          reg: /^(#|\/)数组消息$/,
+          reg: /^(#|\/)?数组消息$/,
           fnc: 'getArrMsg',
           dsc: '/数组消息',
           doc: '数组类型消息也是支持的'
