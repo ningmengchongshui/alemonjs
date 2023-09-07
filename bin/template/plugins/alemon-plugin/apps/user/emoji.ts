@@ -44,6 +44,9 @@ export class TestEmonij extends plugin {
     if (e.segment.atChannel && e.channel_id) {
       e.reply(e.segment.atChannel(e.channel_id))
     }
+    if (e.segment.link) {
+      e.reply(e.segment.link('阿柠檬', 'https://alemonjs.com'))
+    }
     return false
   }
 }
