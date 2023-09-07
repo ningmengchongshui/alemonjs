@@ -52,7 +52,8 @@ if (process.platform == 'linux' || process.platform == 'android') {
     const arr = [
       '/usr/bin/chromium',
       '/snap/bin/chromium',
-      '/usr/bin/chromium-browser'
+      '/usr/bin/chromium-browser',
+      '/opt/google/chrome/chrome'
     ]
     for (const item of arr) {
       if (existsSync(item)) {

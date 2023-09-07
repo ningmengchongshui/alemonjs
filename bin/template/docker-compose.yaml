@@ -1,0 +1,23 @@
+version: "3"
+services:
+  alemon:
+    container_name: alemon
+    build:
+      context: ./
+    restart: always
+    ports:
+      - 8088:8088
+    volumes:
+      - ./.npmrc:/app/.npmrc
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./index.ts:/app/index.ts
+      - ./config:/app/config
+      - ./example:/app/example
+      - ./plugins:/app/plugins
+      - ./.puppeteerrc.cjs:/app/.puppeteerrc.cjs
+      - ./docker.mjs:/app/docker.mjs
+    deploy:
+      resources:
+        limits:
+          memory: 2G
