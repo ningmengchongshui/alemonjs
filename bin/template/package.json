@@ -27,7 +27,7 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "alemon-bot": "^1.1.1",
+    "alemon-bot": "^1.1.2",
     "alemon-ffmpeg": "^1.0.1",
     "alemon-redis": "^1.0.4",
     "mysql2": "^3.5.2",
