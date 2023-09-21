@@ -24,7 +24,7 @@ export function getAppName(url: string | URL) {
  * @param dirPath 指定目录下
  * @returns
  */
-export function getAllJsAndTsFilesSync(dirPath) {
+export function getAllJsAndTsFilesSync(dirPath:string) {
   const files: any = [];
   const entries = readdirSync(dirPath, { withFileTypes: true });
   for (const entry of entries) {

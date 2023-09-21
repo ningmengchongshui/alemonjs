@@ -5,7 +5,7 @@ import {
   writeFileSync,
   readFileSync,
 } from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
 import lodash from "lodash";
 import { AMessage, EventType, EventEnum } from "./typings.js";
 import { getMessage } from "./message.js";
@@ -37,21 +37,61 @@ type CmdType = {
  * 指令合集
  */
 const Command: CmdType = {} as CmdType;
-/**
- * example插件集合
- */
-let ExampleArr = [];
+
 /**
  * plugins插件集合
  */
 let PluginsArr = [];
 
+/**
+ * 指令json
+ */
 let plugins: object = {};
 
+/**
+ * 默认执行地址
+ */
+let route = 'src/main.ts'
+
+/**
+ * 执行文件 
+ */
+let address = join(process.cwd(), route)
+
+/**
+ * 执行地址
+ */
+let addressMenu = ''
+
+/**
+ * 设置入口文件
+ * @param route 
+ */
+export function setMainAddress(rt = route) {
+  address = join(process.cwd(), rt)
+  addressMenu = dirname(address)
+}
+
+/**
+ * 得到机器人帮助
+ * @param AppName 
+ * @returns 
+ */
 export function getPluginHelp(AppName: string) {
-  // 地址
-  const basePath = join(process.cwd(), "plugins", AppName, `${AppName}.json`);
+  // 放到src目录下？
+  const basePath = join(addressMenu, `${AppName}.json`);
   return JSON.parse(readFileSync(basePath, "utf8"));
+}
+
+/**
+ * 创建机器人帮助
+ */
+function createPluginHelp() {
+  for (const item in plugins) {
+    const basePath = join(addressMenu, `${item}.json`);
+    const jsonData = JSON.stringify(plugins[item], null, 2);
+    writeFileSync(basePath, jsonData, "utf-8");
+  }
 }
 
 /**
@@ -93,33 +133,34 @@ async function synthesis(
         continue;
       }
       if (typeof key["reg"] === "string" || key["reg"] instanceof RegExp) {
+        // 控制消息
         const event = keys["event"] ?? "MESSAGE";
+        // 控制类型
         const eventType = keys["eventType"] ?? "CREATE";
-        const priority = keys["priority"] ?? 9999;
+        // 先看指令优先级,没有就看类优先级,再没有则默认优先级
+        const priority = key["priority"] ?? keys["priority"] ?? 9000;
+        // 得到函数名
         const fncName = key["fnc"];
+        // 得到函数
         const fnc = keys[fncName];
+        // 得到解析
         const reg = key["reg"];
         const doc = key["doc"] ?? "";
         const dsc = key["dsc"] ?? "";
-        /**
-         * json记录
-         */
-        if (belong == "plugins") {
-          if (!plugins[appname]) {
-            plugins[appname] = [];
-          }
-          plugins[appname].push({
-            event: event,
-            eventType: eventType,
-            reg: String(reg),
-            dsc,
-            doc,
-            priority,
-          });
+        // 没有记载
+        if (!plugins[appname]) {
+          plugins[appname] = [];
         }
-        /**
-         * 保存
-         */
+        // 推送
+        plugins[appname].push({
+          event: event,
+          eventType: eventType,
+          reg: String(reg),
+          dsc,
+          doc,
+          priority,
+        });
+        // 保存
         Command[event].push({
           belong,
           event: event,
@@ -137,47 +178,19 @@ async function synthesis(
 }
 
 /**
- * 加载简单插件
- * @param dir
+ * 加载主入口
+ * @param dir 
+ * @returns 
  */
-async function loadExample(dir: string) {
-  /**
-   * 初始化
-   */
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  /**
-   * 读取文件
-   */
-  const readDir = readdirSync(dir);
-  /**
-   * 正则匹配ts文件并返回
-   */
-  const flies = readDir.filter((item) => /.(ts|js)$/.test(item));
-  /**
-   * 所有的子插件集成
-   */
-  for await (let appname of flies) {
-    if (!existsSync(`${dir}/${appname}`)) {
-      continue;
-    }
-    /**
-     * 得到插件名
-     */
-    const AppName = appname.replace(/\.(ts|js)$/, "");
-    const apps = {};
-    const Program = await import(`file://${dir}/${appname}`).catch((err) => {
-      console.error(`file://${dir}/${appname}`);
-      console.error(err);
-      return {};
-    });
-    for (const item in Program) {
-      if (Program[item].prototype) {
-        apps[item] = Program[item];
-      }
-    }
-    await synthesis(apps, AppName, "example");
-    ExampleArr.push(AppName);
-  }
+async function loadMain() {
+  // 确保目录存在
+  if (!existsSync(address)) mkdirSync(address, { recursive: true });
+  // 直接读取直接执行 
+  await import(`file://${address}`).catch((err) => {
+    console.error(`file://${address}`);
+    console.error(err);
+    process.exit();
+  });
   return;
 }
 
@@ -212,11 +225,11 @@ async function loadPlugins(dir: string) {
       });
     }
   }
+  // 所有插件读取完之后,得到插件集
   const APPARR = getAppKey();
-  /**
-   * 获取插件方法
-   */
+  // 获取插件方法
   for await (let item of APPARR) {
+    // 得到该插件的指令集
     const apps = getApp(item);
     await synthesis(apps, item, "plugins");
     PluginsArr.push(item);
@@ -229,7 +242,6 @@ async function loadPlugins(dir: string) {
  * 初始化应用
  */
 function dataInit() {
-  ExampleArr = [];
   PluginsArr = [];
   for (const item of EventEnum) {
     if (isNaN(Number(item))) {
@@ -244,41 +256,29 @@ function dataInit() {
  */
 export async function cmdInit() {
   dataInit();
+  // 加载主入口
+  await loadMain();
+  // 加载插件
   await loadPlugins(join(process.cwd(), "/plugins"));
-  await loadExample(join(process.cwd(), "/example"));
   /**
    * 排序
    */
   for (const val in Command) {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
-
   /**
    * 生成指令集合
    */
-  for (const item in plugins) {
-    const basePath = join(process.cwd(), "plugins", item, `${item}.json`);
-    const jsonData = JSON.stringify(plugins[item], null, 2);
-    writeFileSync(basePath, jsonData, "utf-8");
-  }
-
+  createPluginHelp()
+  /**
+   * 
+   */
   console.info(
-    `[LOAD] Plugins*${PluginsArr.length} Example*${ExampleArr.length}`
+    `[LOAD] Plugins*${PluginsArr.length} `
   );
   return;
 }
 
-/**
- * 得到插件信息
- * @param key 插件类型
- * @returns
- */
-export async function getLoadMsg(key: "example" | "plugins") {
-  return {
-    example: () => ExampleArr,
-    plugins: () => PluginsArr,
-  }[key];
-}
 
 /**
  * 指令匹配
@@ -340,8 +340,7 @@ export async function InstructionMatching(e: AMessage) {
         const res = await fnc(e)
           .then((res: boolean) => {
             console.info(
-              `\n[${data.event}][${data.belong}][${data.AppName}][${
-                data.fncName
+              `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName
               }][${true}]`
             );
             return res;
@@ -349,8 +348,7 @@ export async function InstructionMatching(e: AMessage) {
           .catch((err: any) => {
             console.error(err);
             console.error(
-              `\n[${data.event}][${data.belong}][${data.AppName}][${
-                data.fncName
+              `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName
               }][${false}]`
             );
             return false;
@@ -383,8 +381,7 @@ export async function typeMessage(e: AMessage) {
       const res = await fnc(e)
         .then((res: boolean) => {
           console.info(
-            `\n[${data.event}][${data.belong}][${data.AppName}][${
-              data.fncName
+            `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName
             }][${true}]`
           );
           return res;
@@ -392,8 +389,7 @@ export async function typeMessage(e: AMessage) {
         .catch((err: any) => {
           console.error(err);
           console.error(
-            `\n[${data.event}][${data.belong}][${data.AppName}][${
-              data.fncName
+            `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName
             }][${false}]`
           );
           return false;
@@ -417,8 +413,7 @@ export async function typeMessage(e: AMessage) {
 function logErr(err: any, data: CmdItemType) {
   console.error(err);
   console.error(
-    `\n[${data.event}][${data.belong}][${data.AppName}][${
-      data.fncName
+    `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName
     }][${false}]`
   );
   return;
