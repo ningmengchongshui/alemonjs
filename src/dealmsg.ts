@@ -51,7 +51,7 @@ let plugins: object = {};
 /**
  * 默认执行地址
  */
-let route = '/src'
+let route = '/help'
 
 /**
  * 执行文件 
@@ -81,6 +81,9 @@ export function getPluginHelp(AppName: string) {
  * 创建机器人帮助
  */
 function createPluginHelp() {
+  // 不存在
+  if (!existsSync(addressMenu)) mkdirSync(addressMenu, { recursive: true });
+  // 创建help
   for (const item in plugins) {
     const basePath = join(addressMenu, `${item}.json`);
     const jsonData = JSON.stringify(plugins[item], null, 2);
