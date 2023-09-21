@@ -171,8 +171,6 @@ async function synthesis(
   return;
 }
 
-
-
 /**
  * 加载应用插件
  * @param dir
@@ -204,16 +202,6 @@ async function loadPlugins(dir: string) {
       });
     }
   }
-  // 所有插件读取完之后,得到插件集
-  const APPARR = getAppKey();
-  // 获取插件方法
-  for await (let item of APPARR) {
-    // 得到该插件的指令集
-    const apps = getApp(item);
-    await synthesis(apps, item, "plugins");
-    PluginsArr.push(item);
-    delApp(item);
-  }
   return;
 }
 
@@ -230,18 +218,42 @@ function dataInit() {
   return;
 }
 
+
 /**
- * 启动加载
+ * 应用初始化
+ * @returns 
  */
-export async function cmdInit() {
+export async function appsInit() {
   /**
-   * 数据初始化
+   * 清空当前的apps
    */
   dataInit();
   /**
-   * 加载插件
+   * 得到所有插件名
    */
-  await loadPlugins(join(process.cwd(), "/plugins"));
+  const APPARR = getAppKey();
+  /**
+   * 导出所有插件名
+   */
+  for await (let item of APPARR) {
+    /**
+     * 获取插件集
+     */
+    const apps = getApp(item);
+    /**
+     * 分析插件集
+     */
+    await synthesis(apps, item, "plugins");
+    /**
+     * 记录该插件
+     */
+    PluginsArr.push(item);
+    /**
+     * 删除指集
+     */
+    delApp(item);
+  }
+
   /**
    * 排序
    */
@@ -249,15 +261,32 @@ export async function cmdInit() {
     Command[val] = lodash.orderBy(Command[val], ["priority"], ["asc"]);
   }
   /**
-   * 生成指令集合
+   * 生成指令json
    */
   createPluginHelp()
   /**
-   * 
+   * 打印
    */
   console.info(
     `[LOAD] Plugins*${PluginsArr.length} `
   );
+  return
+}
+
+/**
+ * 加载初始化
+ * @param T 
+ * @returns 
+ */
+export async function cmdInit(T = true) {
+  /**
+   * 加载插件
+   */
+  await loadPlugins(join(process.cwd(), "/plugins"));
+  /**
+   * 取消集成
+   */
+  if (T) await appsInit()
   return;
 }
 

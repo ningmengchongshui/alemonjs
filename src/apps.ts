@@ -3,7 +3,7 @@ import { join, dirname, basename } from "path";
 import { setMessage } from "./message.js";
 import { setApp } from "./app.js";
 import { fileURLToPath } from "url";
-import { cmdInit, setAppsHelp } from "./dealmsg.js";
+import { appsInit, setAppsHelp } from "./dealmsg.js";
 /**
  * 得到执行路径
  * @param url
@@ -200,7 +200,7 @@ export function createApp(AppName: string) {
         console.error(err);
       }
       // 存在挂载指令则重新加载
-      if(instruct) cmdInit()
+      if(instruct) appsInit()
     },
   };
 }
