@@ -7,8 +7,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "app": "ts-node index.ts",
-    "login": "ts-node index.ts login",
+    "dev": "nodemon src/main.ts",
+    "app": "ts-node src/main.ts",
+    "login": "ts-node src/main.ts login",
     "start": "pm2 startOrRestart pm2.config.cjs",
     "stop": "pm2 stop pm2.config.cjs",
     "restart": "pm2 restart pm2.config.cjs",
@@ -26,9 +27,9 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "alemon-bot": "^1.0.12",
+    "alemon-bot": "^1.1.1",
     "alemon-ffmpeg": "^1.0.1",
-    "alemon-redis": "^1.0.3",
+    "alemon-redis": "^1.0.4",
     "mysql2": "^3.5.2",
     "sequelize": "^6.32.1"
   },
@@ -52,8 +53,8 @@
     "format"
   ],
   "workspaces": [
-    "example",
-    "plugins/*"
+    "plugins/*",
+    "example"
   ],
   "engines": {
     "node": ">=16.3.0"

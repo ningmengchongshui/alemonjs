@@ -2,5 +2,10 @@ node_modules
 /.cache/
 /config/
 /data/
+/help/
 /logs/
 /dist/
+deploy.sh
+alemon.toml 
+example.js 
+apps.js

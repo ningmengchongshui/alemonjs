@@ -1,6 +1,6 @@
 {
   "name": "create-alemon",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "alemon",
   "author": "ningmengchongshui",
   "main": "bin/index.js",

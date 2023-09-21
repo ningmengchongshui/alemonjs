@@ -40,6 +40,7 @@ npm run pull:w    # Windows系统更新所有插件
 开发者
 
 ```shell
+npm run dev # 热加载模式启动
 npm run format # 格式化代码
 npm run lint   # 检查代码
 ```
