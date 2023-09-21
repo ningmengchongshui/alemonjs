@@ -3,6 +3,7 @@ import { join, dirname, basename } from "path";
 import { setMessage } from "./message.js";
 import { setApp } from "./app.js";
 import { fileURLToPath } from "url";
+import { cmdInit, setAppsHelp } from "./dealmsg.js";
 /**
  * 得到执行路径
  * @param url
@@ -124,6 +125,16 @@ export function createApp(AppName: string) {
    */
   let acount = 0;
   return {
+    /**
+     * 设置指令json地址
+     * @param rt = '/src'
+     */
+    setHelp:setAppsHelp,
+    /**
+     * 重定义消息
+     * @param fnc 
+     * @returns 
+     */
     setMessage: (fnc: Function) => {
       try {
         setMessage(AppName, fnc);
@@ -182,14 +193,14 @@ export function createApp(AppName: string) {
      * 挂起应用
      * @returns
      */
-    mount: () => {
+    mount: (instruct?:string) => {
       try {
         setApp(AppName, apps);
-        return true;
       } catch (err) {
         console.error(err);
-        return false;
       }
+      // 存在挂载指令则重新加载
+      if(instruct) cmdInit()
     },
   };
 }

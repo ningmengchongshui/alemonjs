@@ -5,7 +5,7 @@ import {
   writeFileSync,
   readFileSync,
 } from "fs";
-import { dirname, join } from "path";
+import { join } from "path";
 import lodash from "lodash";
 import { AMessage, EventType, EventEnum } from "./typings.js";
 import { getMessage } from "./message.js";
@@ -51,25 +51,19 @@ let plugins: object = {};
 /**
  * 默认执行地址
  */
-let route = 'src/main.ts'
+let route = '/src'
 
 /**
  * 执行文件 
  */
-let address = join(process.cwd(), route)
+let addressMenu = join(process.cwd(), route)
 
 /**
- * 执行地址
+ * 设置指令json地址
+ * @param rt = '/src' 
  */
-let addressMenu = ''
-
-/**
- * 设置入口文件
- * @param route 
- */
-export function setMainAddress(rt = route) {
-  address = join(process.cwd(), rt)
-  addressMenu = dirname(address)
+export function setAppsHelp(rt = route) {
+  addressMenu = join(process.cwd(), rt)
 }
 
 /**
@@ -177,22 +171,7 @@ async function synthesis(
   return;
 }
 
-/**
- * 加载主入口
- * @param dir 
- * @returns 
- */
-async function loadMain() {
-  // 确保目录存在
-  if (!existsSync(address)) mkdirSync(address, { recursive: true });
-  // 直接读取直接执行 
-  await import(`file://${address}`).catch((err) => {
-    console.error(`file://${address}`);
-    console.error(err);
-    process.exit();
-  });
-  return;
-}
+
 
 /**
  * 加载应用插件
@@ -255,10 +234,13 @@ function dataInit() {
  * 启动加载
  */
 export async function cmdInit() {
+  /**
+   * 数据初始化
+   */
   dataInit();
-  // 加载主入口
-  await loadMain();
-  // 加载插件
+  /**
+   * 加载插件
+   */
   await loadPlugins(join(process.cwd(), "/plugins"));
   /**
    * 排序
