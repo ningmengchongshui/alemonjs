@@ -14,7 +14,7 @@ export interface AMessage
  */
 interface EventBase {
   /**
-   * 平台 qq | kook | discord | villa
+   * 平台 qq | kook | discord | villa | ntqq
    */
   platform: (typeof PlatformEnum)[number];
   /**
@@ -35,7 +35,7 @@ export const PlatformEnum = [
   "kook",
   "discord",
   "villa",
-  "qqgroup",
+  "ntqq",
   "wechat",
   "telegram",
   "dodo",
@@ -640,104 +640,6 @@ export interface MuteController {
 }
 
 export const CacrdEnum = [
-  /**
-   * qqgroup 图片
-   */
-  "qqgroup_json",
-  /**
-   * qqgroup 图片，支持http://,base64://
-   */
-  "qqgroup_image",
-  /**
-   * qqgroup 经典表情(id=0~324)
-   */
-  "qqgroup_face",
-  /**
-   * qqgroup 小表情(id规则不明)
-   */
-  "qqgroup_sface",
-  /**
-   * qqgroup
-   * @deprecated 将CQ码转换为消息链
-   */
-  "qqgroup_fromCqcode",
-  /**
-   * qqgroup
-   * id 0~6
-   */
-  "qqgroup_poke",
-  /**
-   * qqgroup
-   * 位置分享
-   */
-  "qqgroup_location",
-  /**
-   * qqgroup
-   * 链接分享
-   */
-  "qqgroup_share",
-  /**
-   * qqgroup
-   */
-  "qqgroup_fake",
-  /**
-   * qqgroup
-   * 音乐
-   */
-  "qqgroup_music",
-  /**
-   * qqgroup
-   * 一种特殊消息(官方客户端无法解析)
-   */
-  "qqgroup_mirai",
-  /*
-   * qqgroup
-   * 转发
-   */
-  "qqgroup_xml",
-  /**
-   * qqgroup
-   * 视频，
-   * 仅支持本地文件
-   */
-  "qqgroup_video",
-  /**
-   * qqgroup
-   * 语音，
-   * 支持http://,base64://
-   */
-  "qqgroup_record",
-  /**
-   * qqgroup
-   * 闪照，
-   * 支持http://,base64://
-   */
-  "qqgroup_flash",
-  /**
-   * qqgroup
-   * mention@提及
-   * @param qq 全体成员:"all", 频道:tiny_id
-   */
-  "qqgroup_at",
-  /**
-   * qqgroup
-   * 骰子(id=1~6)
-   */
-  "qqgroup_dice",
-  /**
-   * qqgroup
-   * 猜拳(id=1~3)
-   */
-  "qqgroup_rps",
-  /**
-   * qqgroup
-   * 原创表情(file规则不明)
-   */
-  "qqgroup_bface",
-  /**
-   * @deprecated 文本，建议直接使用字符串
-   */
-  "qqgroup_text",
   /**
    * qq频道
    */
