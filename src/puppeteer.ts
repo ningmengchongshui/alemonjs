@@ -38,6 +38,14 @@ export function setLanchConfig(val: PuppeteerLaunchOptions) {
 }
 
 /**
+ * 得到pup配置
+ * @returns 
+ */
+export function getLanchConfig(){
+  return LaunchCfg
+}
+
+/**
  * 截图并返回buffer
  * @param htmlPath 绝对路径
  * @param tab 截图元素位
