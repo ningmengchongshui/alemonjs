@@ -1,4 +1,5 @@
-import { existsSync, mkdirSync, readdirSync, writeFileSync, readFileSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs'
+import { writeFile } from 'fs/promises'
 import { join } from 'path'
 import lodash from 'lodash'
 import { AMessage, EventType, EventEnum } from './typings.js'
@@ -58,6 +59,12 @@ const route = '/help'
 let addressMenu = join(process.cwd(), route)
 
 /**
+ * 大正则
+ */
+
+let mergedRegex: RegExp
+
+/**
  * 设置指令json地址
  * @param rt '/help'
  */
@@ -85,7 +92,8 @@ function createPluginHelp() {
   for (const item in plugins) {
     const basePath = join(addressMenu, `${item}.json`)
     const jsonData = JSON.stringify(plugins[item], null, 2)
-    writeFileSync(basePath, jsonData, 'utf-8')
+    // 异步创建避免阻塞
+    writeFile(basePath, jsonData, 'utf-8')
   }
 }
 
@@ -118,8 +126,8 @@ async function synthesis(AppsObj: object, appname: string, belong: 'plugins' | '
 
       // 如果类型正确
       if (typeof key['reg'] === 'string' || key['reg'] instanceof RegExp) {
-        // 控制消息
-        const event = keys['event'] ?? 'MESSAGE'
+        // 存在正则就必须是MESSAGE
+        const event = 'MESSAGE'
         // 控制类型
         const eventType = keys['eventType'] ?? 'CREATE'
         // 先看指令优先级,没有就看类优先级,再没有则默认优先级
@@ -290,12 +298,28 @@ export async function appsInit() {
   for (const val in Command) {
     Command[val] = lodash.orderBy(Command[val], ['priority'], ['asc'])
   }
+
+  const mergedRegexArr = []
+  for (const val in Command) {
+    for (const data of Command[val]) {
+      if (data.reg !== undefined && data.eventType !== undefined) {
+        mergedRegexArr.push(data.reg)
+      }
+    }
+  }
+
+  // 机器人整体指令正则
+  mergedRegex = new RegExp(mergedRegexArr.map(regex => regex.source).join('|'))
+
+  console.log('大正则', mergedRegex)
+
   /**
    * 排序
    */
   for (const val in CommandNotR) {
     CommandNotR[val] = lodash.orderBy(CommandNotR[val], ['priority'], ['asc'])
   }
+
   /**
    * 生成指令json
    */
@@ -355,51 +379,53 @@ export async function InstructionMatching(e: AMessage) {
   }
 
   /**
-   * 消息类型兼容层
+   * 大正则判断
    */
-  const msgarr = ['MESSAGES']
-  if (e.event == 'MESSAGES') {
-    msgarr.push('message')
+
+  if (!mergedRegex.test(e.msg)) {
+    console.log('不合理消息屏蔽了')
+    // 屏蔽所有不可匹配的消息
+    return
   }
 
-  for await (const item of msgarr) {
-    /**
-     * 发现message
-     */
-    if (item == 'message') {
-      e.event = 'message'
-      e.eventType = undefined
+  const regexCache = {} // 正则表达式缓存对象
+
+  /**
+   * 循环所有指令
+   */
+  for await (const data of Command[e.event]) {
+    if (data.reg === undefined || e.eventType != data.eventType) {
+      continue
     }
-    /**
-     * 循环所有指令
-     */
-    for await (const data of Command[e.event]) {
-      if (data.reg === undefined) continue
-      if (!new RegExp(data.reg).test(e.msg)) continue
-      if (e.eventType != data.eventType) continue
-      try {
-        const { fnc, AppName } = data
-        const AppFnc = getMessage(AppName)
-        if (typeof AppFnc == 'function') e = AppFnc(e)
-        const res = await fnc(e)
-          .then((res: boolean) => {
-            console.info(
-              `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${true}]`
-            )
-            return res
-          })
-          .catch((err: any) => {
-            console.error(err)
-            console.error(
-              `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${false}]`
-            )
-            return false
-          })
-        if (res) break
-      } catch (err) {
-        logErr(err, data)
-        return false
-      }
+    const regKey = data.reg.toString()
+    if (!regexCache[regKey]) {
+      regexCache[regKey] = new RegExp(data.reg)
+    }
+    if (!regexCache[regKey].test(e.msg)) {
+      continue
+    }
+    const { fnc, AppName } = data
+    const AppFnc = getMessage(AppName)
+    try {
+      if (typeof AppFnc == 'function') e = AppFnc(e)
+      const res = await fnc(e)
+        .then((res: boolean) => {
+          console.info(
+            `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${true}]`
+          )
+          return res
+        })
+        .catch((err: any) => {
+          console.error(err)
+          console.error(
+            `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${false}]`
+          )
+          return false
+        })
+      if (res) break
+    } catch (err) {
+      logErr(err, data)
+      return false
     }
   }
 
