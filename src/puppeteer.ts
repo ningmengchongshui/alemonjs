@@ -1,47 +1,43 @@
-import puppeteer, {
-  Browser,
-  PuppeteerLaunchOptions,
-  ScreenshotOptions,
-} from "puppeteer";
+import puppeteer, { Browser, PuppeteerLaunchOptions, ScreenshotOptions } from 'puppeteer'
 
 /**
  * 截图次数
  */
-let pic: number = 0;
+let pic = 0
 
 /**
  * 重启控制
  */
-const RestartControl: number = 30;
+const RestartControl = 30
 
 /**
  * 实例
  */
-let browser: Browser;
+let browser: Browser
 
 /**
  * 实例控制
  */
-let isBrowser: boolean = false;
+let isBrowser = false
 
 /**
  * 实例配置
  */
-let LaunchCfg: PuppeteerLaunchOptions;
+let LaunchCfg: PuppeteerLaunchOptions
 
 /**
  * 配置浏览器参数
  * @param val
  */
 export function setLanchConfig(val: PuppeteerLaunchOptions) {
-  LaunchCfg = val;
+  LaunchCfg = val
 }
 
 /**
  * 得到pup配置
- * @returns 
+ * @returns
  */
-export function getLanchConfig(){
+export function getLanchConfig() {
   return LaunchCfg
 }
 
@@ -57,43 +53,43 @@ export function getLanchConfig(){
 export async function screenshot(
   htmlPath: string | Buffer | URL,
   Options: {
-    SOptions: ScreenshotOptions;
-    tab?: string;
-    timeout?: number;
+    SOptions: ScreenshotOptions
+    tab?: string
+    timeout?: number
   }
 ): Promise<string | false | Buffer> {
-  const { SOptions, tab = "body", timeout = 120000 } = Options;
+  const { SOptions, tab = 'body', timeout = 120000 } = Options
 
   /**
    * 检测是否开启
    */
   if (isBrowser == false) {
-    if (!(await startChrom())) return false;
+    if (!(await startChrom())) return false
   }
   if (pic <= RestartControl) {
     /**
      * 记录次数
      */
-    pic++;
+    pic++
   } else {
     /**
      * 重置次数
      */
-    pic = 0;
-    console.info("[puppeteer] close");
-    isBrowser = false;
-    browser.close().catch((err) => console.error(err));
-    console.info("[puppeteer] reopen");
-    if (!(await startChrom())) return false;
-    pic++;
+    pic = 0
+    console.info('[puppeteer] close')
+    isBrowser = false
+    browser.close().catch(err => console.error(err))
+    console.info('[puppeteer] reopen')
+    if (!(await startChrom())) return false
+    pic++
   }
   /**
    * 开始截图
    */
-  return await startPage(htmlPath, SOptions, tab, timeout).catch((err) => {
-    console.error(err);
-    return false;
-  });
+  return await startPage(htmlPath, SOptions, tab, timeout).catch(err => {
+    console.error(err)
+    return false
+  })
 }
 
 /**
@@ -115,34 +111,34 @@ export async function startPage(
      * 开始
      */
     if (!isBrowser) {
-      if (!(await startChrom())) return false;
+      if (!(await startChrom())) return false
     }
-    console.info("[puppeteer] start");
+    console.info('[puppeteer] start')
     /**
      * 实例化
      */
-    const page = await browser.newPage();
+    const page = await browser.newPage()
     /**
      * 挂载网页
      */
     await page.goto(`file://${htmlPath}`, {
-      timeout,
-    });
+      timeout
+    })
     /**
      * 获取元素
      */
-    const body = await page.$(tab);
+    const body = await page.$(tab)
     /**
      * 得到图片
      */
-    console.info("[puppeteer] success");
-    return await body.screenshot(SOptions).catch((err) => {
-      console.error(err);
-      return false;
-    });
+    console.info('[puppeteer] success')
+    return await body.screenshot(SOptions).catch(err => {
+      console.error(err)
+      return false
+    })
   } catch (err) {
-    console.error(err);
-    return false;
+    console.error(err)
+    return false
   }
 }
 
@@ -152,14 +148,14 @@ export async function startPage(
  */
 export async function startChrom(): Promise<boolean> {
   try {
-    browser = await puppeteer.launch(LaunchCfg);
-    isBrowser = true;
-    console.info("[puppeteer] open success");
-    return true;
+    browser = await puppeteer.launch(LaunchCfg)
+    isBrowser = true
+    console.info('[puppeteer] open success')
+    return true
   } catch (err) {
-    console.error(err);
-    isBrowser = false;
-    console.error("[puppeteer] open fail");
-    return false;
+    console.error(err)
+    isBrowser = false
+    console.error('[puppeteer] open fail')
+    return false
   }
 }

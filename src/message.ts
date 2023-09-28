@@ -1,5 +1,5 @@
 // 消息控制
-const MSG = {};
+const MSG = {}
 
 /**
  * 得到消息
@@ -7,22 +7,22 @@ const MSG = {};
  * @returns
  */
 export function getMessage(key: string) {
-  return MSG[key];
+  return MSG[key]
 }
 /**
  * 设置消息
  * @param key 插件名
  * @param fnc 方法
  */
-export function setMessage(key: string, fnc: Function) {
-  MSG[key] = fnc;
-  return;
+export function setMessage(key: string, fnc: (...args: any[]) => any) {
+  MSG[key] = fnc
+  return
 }
 /**
  * 删除消息
  * @param key 插件名
  */
 export function delMessage(key: string) {
-  delete MSG[key];
-  return;
+  delete MSG[key]
+  return
 }

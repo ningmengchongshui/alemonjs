@@ -1,5 +1,5 @@
 // 插件控制
-const APP = {};
+const APP = {}
 
 /**
  * 得到应用
@@ -7,7 +7,7 @@ const APP = {};
  * @returns
  */
 export function getApp(key: any): object {
-  return APP[key];
+  return APP[key]
 }
 
 /**
@@ -16,8 +16,8 @@ export function getApp(key: any): object {
  * @param value  应用合集
  */
 export function setApp(key: any, value: any): void {
-  APP[key] = value;
-  return;
+  APP[key] = value
+  return
 }
 
 /**
@@ -25,8 +25,8 @@ export function setApp(key: any, value: any): void {
  * @param key 插件名
  */
 export function delApp(key: any): void {
-  delete APP[key];
-  return;
+  delete APP[key]
+  return
 }
 
 /**
@@ -34,9 +34,9 @@ export function delApp(key: any): void {
  * @returns
  */
 export function getAppKey() {
-  const arr = [];
-  for (let key in APP) {
-    arr.push(key);
+  const arr = []
+  for (const key in APP) {
+    arr.push(key)
   }
-  return arr;
+  return arr
 }

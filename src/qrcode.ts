@@ -1,5 +1,5 @@
-import { toDataURL } from "qrcode";
-import { writeFile, readFile } from "fs";
+import { toDataURL } from 'qrcode'
+import { writeFile, readFile } from 'fs'
 
 /**
  * 链接转化为二维码
@@ -7,36 +7,33 @@ import { writeFile, readFile } from "fs";
  * @param localpath 可选,要保存的路径
  * @returns
  */
-export async function createQrcode(
-  text: string,
-  localpath?: string
-): Promise<false | Buffer> {
+export async function createQrcode(text: string, localpath?: string): Promise<false | Buffer> {
   try {
     const qrDataURL = await new Promise<string>((resolve, reject) => {
       toDataURL(
         text,
         {
           margin: 2,
-          width: 500,
+          width: 500
         },
         (err: any, qrDataURL: any) => {
           if (err) {
-            console.error(err);
-            reject(err);
+            console.error(err)
+            reject(err)
           } else {
-            resolve(qrDataURL);
+            resolve(qrDataURL)
           }
         }
-      );
-    });
-    const bufferData = Buffer.from(qrDataURL.split(",")[1], "base64");
+      )
+    })
+    const bufferData = Buffer.from(qrDataURL.split(',')[1], 'base64')
     if (localpath != undefined) {
-      setBuffer(localpath, bufferData);
+      setBuffer(localpath, bufferData)
     }
-    return bufferData;
+    return bufferData
   } catch (err) {
-    console.error(err);
-    return false;
+    console.error(err)
+    return false
   }
 }
 
@@ -47,19 +44,16 @@ export async function createQrcode(
  */
 export const getBuffer = (localpath: string): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
-    readFile(
-      localpath,
-      (err: NodeJS.ErrnoException | null, bufferData: Buffer) => {
-        if (err) {
-          reject(err);
-        } else {
-          console.info("[BUFFER][READ]", localpath);
-          resolve(bufferData);
-        }
+    readFile(localpath, (err: NodeJS.ErrnoException | null, bufferData: Buffer) => {
+      if (err) {
+        reject(err)
+      } else {
+        console.info('[BUFFER][READ]', localpath)
+        resolve(bufferData)
       }
-    );
-  });
-};
+    })
+  })
+}
 
 /**
  * 写入buffer
@@ -68,8 +62,8 @@ export const getBuffer = (localpath: string): Promise<Buffer> => {
  */
 export const setBuffer = (localpath: string, bufferData: Buffer) => {
   writeFile(localpath, bufferData, (err: NodeJS.ErrnoException | null) => {
-    if (err) throw err;
-    console.info("[BUFFER][SET]", localpath);
-  });
-  return;
-};
+    if (err) throw err
+    console.info('[BUFFER][SET]', localpath)
+  })
+  return
+}
