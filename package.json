@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "app": "node lib/index.js",
-    "tsc": "npx tsc",
+    "tsc": "tsc",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },

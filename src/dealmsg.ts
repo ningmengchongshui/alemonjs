@@ -11,7 +11,7 @@ import { conversationHandlers, getConversationState } from './dialogue.js'
  * 指令可枚举类型
  */
 interface CmdItemType {
-  reg: RegExp | string
+  reg: RegExp
   priority: number
   event: (typeof EventEnum)[number]
   eventType: (typeof EventType)[number]
@@ -104,8 +104,14 @@ function createPluginHelp() {
  * @param belong
  */
 async function synthesis(AppsObj: object, appname: string, belong: 'plugins' | 'example') {
+  // 没有记载
+  if (!plugins[appname]) {
+    plugins[appname] = []
+  }
   for (const item in AppsObj) {
     const keys = new AppsObj[item]()
+    // 控制类型
+    const eventType = keys['eventType'] ?? 'CREATE'
     /**
      * 不合法
      */
@@ -123,27 +129,21 @@ async function synthesis(AppsObj: object, appname: string, belong: 'plugins' | '
          */
         continue
       }
+      // 先看指令优先级,没有就看类优先级,再没有则默认优先级
+      const priority = key['priority'] ?? keys['priority'] ?? 9000
+      // 得到函数名
+      const fncName = key['fnc']
+      // 得到函数
+      const fnc = keys[fncName]
+      const doc = key['doc'] ?? ''
+      const dsc = key['dsc'] ?? ''
 
       // 如果类型正确
       if (typeof key['reg'] === 'string' || key['reg'] instanceof RegExp) {
-        // 存在正则就必须是MESSAGE
-        const event = 'MESSAGE'
-        // 控制类型
-        const eventType = keys['eventType'] ?? 'CREATE'
-        // 先看指令优先级,没有就看类优先级,再没有则默认优先级
-        const priority = key['priority'] ?? keys['priority'] ?? 9000
-        // 得到函数名
-        const fncName = key['fnc']
-        // 得到函数
-        const fnc = keys[fncName]
+        // 存在正则就必须是MESSAGES
+        const event = 'MESSAGES'
         // 得到解析
         const reg = key['reg']
-        const doc = key['doc'] ?? ''
-        const dsc = key['dsc'] ?? ''
-        // 没有记载
-        if (!plugins[appname]) {
-          plugins[appname] = []
-        }
         // 推送
         plugins[appname].push({
           event: event,
@@ -158,7 +158,7 @@ async function synthesis(AppsObj: object, appname: string, belong: 'plugins' | '
           belong,
           event: event,
           eventType: eventType,
-          reg,
+          reg: new RegExp(reg),
           priority,
           fncName,
           fnc,
@@ -167,20 +167,6 @@ async function synthesis(AppsObj: object, appname: string, belong: 'plugins' | '
       } else {
         // 控制消息 -- 类型必须要存在的
         const event = keys['event']
-        // 控制类型 -- 控制类型可默认
-        const eventType = keys['eventType'] ?? 'CREATE'
-        // 先看指令优先级,没有就看类优先级,再没有则默认优先级
-        const priority = key['priority'] ?? keys['priority'] ?? 9000
-        // 得到函数名
-        const fncName = key['fnc']
-        // 得到函数
-        const fnc = keys[fncName]
-        const doc = key['doc'] ?? ''
-        const dsc = key['dsc'] ?? ''
-        // 没有记载
-        if (!plugins[appname]) {
-          plugins[appname] = []
-        }
         // 推送
         plugins[appname].push({
           event: event,
@@ -311,8 +297,6 @@ export async function appsInit() {
   // 机器人整体指令正则
   mergedRegex = new RegExp(mergedRegexArr.map(regex => regex.source).join('|'))
 
-  console.log('大正则', mergedRegex)
-
   /**
    * 排序
    */
@@ -383,32 +367,22 @@ export async function InstructionMatching(e: AMessage) {
    */
 
   if (!mergedRegex.test(e.msg)) {
-    console.log('不合理消息屏蔽了')
     // 屏蔽所有不可匹配的消息
     return
   }
 
-  const regexCache = {} // 正则表达式缓存对象
-
   /**
-   * 循环所有指令
+   * 循环所有指令 用 awwat确保指令顺序
    */
   for await (const data of Command[e.event]) {
-    if (data.reg === undefined || e.eventType != data.eventType) {
+    if (e.eventType != data.eventType || data.reg === undefined || !data.reg.test(e.msg)) {
       continue
     }
-    const regKey = data.reg.toString()
-    if (!regexCache[regKey]) {
-      regexCache[regKey] = new RegExp(data.reg)
-    }
-    if (!regexCache[regKey].test(e.msg)) {
-      continue
-    }
-    const { fnc, AppName } = data
-    const AppFnc = getMessage(AppName)
+    const AppFnc = getMessage(data.AppName)
     try {
       if (typeof AppFnc == 'function') e = AppFnc(e)
-      const res = await fnc(e)
+      const res = await data
+        .fnc(e)
         .then((res: boolean) => {
           console.info(
             `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${true}]`
@@ -444,10 +418,10 @@ export async function typeMessage(e: AMessage) {
   for (const data of CommandNotR[e.event]) {
     if (e.eventType != data.eventType) continue
     try {
-      const { fnc, AppName } = data
-      const AppFnc = getMessage(AppName)
+      const AppFnc = getMessage(data.AppName)
       if (typeof AppFnc == 'function') e = AppFnc(e)
-      const res = await fnc(e)
+      const res = await data
+        .fnc(e)
         .then((res: boolean) => {
           console.info(
             `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${true}]`
