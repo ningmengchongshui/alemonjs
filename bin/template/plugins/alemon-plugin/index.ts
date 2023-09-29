@@ -1,27 +1,12 @@
-import { createApp, compilationTools, getAppName } from 'alemon'
-/**
- * 项目名称
- */
-const AppName = getAppName(import.meta.url)
-/**
- * 加载模块
- */
-const hello = await compilationTools({
-  input: `plugins/${AppName}/apps/**/*.ts`,
-  file: `plugins/${AppName}/apps.js`,
-  external: ['alemon', 'path', 'fs', 'url']
-}).finally(() => {
+import { createApp, compilationTools } from 'alemon'
+import { config, AppName } from './app.config.js'
+// 加载模块
+const hello = await compilationTools(config).finally(() => {
   console.log('《测试插件》启动')
 })
-/**
- * 创建应用
- */
+// 创建应用
 const app = createApp(AppName)
-/**
- * 设置
- */
+// 设置
 app.component(hello)
-/**
- * 挂载
- */
+// 挂载
 app.mount()

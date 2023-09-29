@@ -1,15 +1,21 @@
-if (process.argv.slice(2).includes('discord') && !process.argv.slice(2).includes('not')) {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-}
 import { createBot } from 'alemon-bot'
-
-// 自动加载ffmpeg
-// import ffmpeg from 'alemon-ffmpeg'
-// await ffmpeg()
+import { createApp } from 'alemon'
+import config from './config.js'
 
 // 创建机器人
-await createBot(process.argv.slice(2))
-  .then(alemon => alemon())
-  .catch((err: any) => {
-    console.log('AlemonBot:', err)
-  })
+const AlemonBot = await createBot()
+
+// 创建插件
+const { compilationTools } = await AlemonBot({
+  mount: true
+})
+
+// 加载模块
+const alemon = await compilationTools(config)
+
+// 创建应用
+const app = createApp('alemon')
+// 设置模块
+app.component(alemon)
+// 挂载
+app.mount('#app')
