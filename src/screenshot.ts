@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync, watch, mkdirSync } from 'fs'
-import { join, basename } from 'path'
-import template from 'art-template'
 import lodash from 'lodash'
+import template from 'art-template'
+import { join, basename } from 'path'
+import { readFileSync, writeFileSync, watch, mkdirSync } from 'fs'
 import { ScreenshotOptions } from 'puppeteer'
 import { screenshot } from './puppeteer.js'
 export interface PictureOptions {

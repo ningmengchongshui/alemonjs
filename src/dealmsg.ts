@@ -1,10 +1,11 @@
-import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs'
-import { writeFile } from 'fs/promises'
 import { join } from 'path'
+import { writeFile } from 'fs/promises'
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs'
 import lodash from 'lodash'
-import { AMessage, EventType, EventEnum } from './typings.js'
 import { getMessage } from './message.js'
 import { getApp, delApp, getAppKey } from './app.js'
+import { compilationTools, integration } from './build.js'
+import { AMessage, EventType, EventEnum } from './typings.js'
 import { conversationHandlers, getConversationState } from './dialogue.js'
 
 /**
@@ -316,19 +317,22 @@ export async function appsInit() {
 }
 
 /**
- * 加载初始化
- * @param T
+ *  初始化应用 mount = ture 则直接应用
+ * @param param0 { mount = false, address = '/plugins' }
  * @returns
  */
-export async function cmdInit(T = true) {
+export async function cmdInit({ mount = false, address = '/plugins' }) {
   /**
    * 加载插件
    */
-  await loadPlugins(join(process.cwd(), '/plugins'))
+  await loadPlugins(join(process.cwd(), address))
   /**
    * 取消集成
    */
-  if (T) await appsInit()
+  if (mount) {
+    return { compilationTools, integration }
+  }
+  await appsInit()
   return
 }
 
