@@ -316,6 +316,10 @@ export async function appsInit() {
   return
 }
 
+export function getMergedRegex() {
+  return mergedRegex
+}
+
 /**
  *  初始化应用 mount = ture 则直接应用
  * @param param0 { mount = false, address = '/plugins' }
@@ -342,21 +346,15 @@ export async function cmdInit({ mount = false, address = '/plugins' }) {
  * @returns
  */
 export async function InstructionMatching(e: AMessage) {
-  if (e.isRecall) return true
-  /**
-   * 匹配不到事件
-   */
-  if (!Command[e.event]) return true
-
   /**
    * 获取对话状态
    */
   const state = await getConversationState(e.user_id)
-
   /**
    * 获取对话处理函数
    */
   const handler = conversationHandlers.get(e.user_id)
+
   if (handler && state) {
     /**
      * 如果用户处于对话状态
@@ -365,15 +363,10 @@ export async function InstructionMatching(e: AMessage) {
     await handler(e, state)
     return true
   }
-
   /**
-   * 大正则判断
+   *  撤回事件 匹配不到事件 或者 大正则不匹配
    */
-
-  if (!mergedRegex.test(e.msg)) {
-    // 屏蔽所有不可匹配的消息
-    return
-  }
+  if (e.isRecall || !Command[e.event] || !mergedRegex.test(e.msg)) return true
 
   /**
    * 循环所有指令 用 awwat确保指令顺序
@@ -394,13 +387,18 @@ export async function InstructionMatching(e: AMessage) {
           return res
         })
         .catch((err: any) => {
-          console.error(err)
+          console.error(
+            `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${err}]`
+          )
           console.error(
             `\n[${data.event}][${data.belong}][${data.AppName}][${data.fncName}][${false}]`
           )
           return false
         })
-      if (res) break
+      // 不是false都直接中断匹配
+      if (res !== false) {
+        break
+      }
     } catch (err) {
       logErr(err, data)
       return false
