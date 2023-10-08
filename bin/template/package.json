@@ -7,7 +7,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/main.ts",
+    "dev:nuxt": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "server": "node ./.output/server/index.mjs",
+    "dev:app": "nodemon src/main.ts",
     "app": "ts-node src/main.ts",
     "login": "ts-node src/main.ts login",
     "start": "pm2 startOrRestart pm2.config.cjs",
@@ -27,6 +33,7 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "query-string": "^8.1.0",
     "alemon-bot": "^1.1.7",
     "alemon-ffmpeg": "^1.0.1",
     "alemon-redis": "^1.0.5",
@@ -34,6 +41,13 @@
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
+    "@nuxt/typescript-build": "^3.0.1",
+    "@nuxt/bridge": "^0.10.1",
+    "@nuxt/devtools": "latest",
+    "nuxt": "^3.7.4",
+    "vue-router": "^4.2.5",
+    "vue": "^3.3.4",
+    "less": "^4.2.0",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",

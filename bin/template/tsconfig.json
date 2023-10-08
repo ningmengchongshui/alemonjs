@@ -27,14 +27,20 @@
     // 是否抑制隐式any索引的错误，默认：false
     "suppressImplicitAnyIndexErrors": true, //抑制
     // 类型声明
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
   // 要编译的路径列表（用于指定那些ts文件需要被编译），
-  "include": ["example", "plugins", "src"],
+  "include": [
+    "example",
+    "plugins",
+    "src"
+  ],
   // 要排除的、不编译的文件，它也可以指定一个列表，
   "exclude": [
     ".cache",
@@ -43,6 +49,7 @@
     "config",
     "data",
     "logs",
-    "help"
+    "help",
+    "./.nuxt/tsconfig.json"
   ]
 }

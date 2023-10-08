@@ -1,11 +1,41 @@
+# Node dependencies
 node_modules
-/.cache/
-/config/
-/data/
+
+# alemon dev/config
 /help/
+/plugins/
+/example/
+/data/
+
+# Logs
 /logs/
-/dist/
 deploy.sh
-alemon.toml 
-example.js 
+
+# config
+alemon.toml
+
+# app
+example.js
 apps.js
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example

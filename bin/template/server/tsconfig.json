@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    // 编译后目录
+    "outDir": "dist"
+  },
+  "extends": "../.nuxt/tsconfig.server.json"
+}

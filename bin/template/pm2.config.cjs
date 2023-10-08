@@ -1,6 +1,14 @@
 const ars = process.argv.slice(4)
 module.exports = {
   apps: [
+    // web端
+    {
+      name: 'alemonc',
+      port: '3000',
+      exec_mode: 'cluster',
+      instances: 'max',
+      script: './.output/server/index.mjs'
+    },
     {
       name: 'alemonb',
       script: 'pm2-run.js',
