@@ -172,6 +172,11 @@ export interface urlScreenshotOptions {
  */
 export async function screenshotByUrl(val: urlScreenshotOptions) {
   if (!pupStartCheck()) return false
+  if (!isBrowser) {
+    if (!(await startChrom())) return false
+  }
+  console.info('[puppeteer] start')
+
   const { url, time, rand, params, tab, cache } = val
   if (!pageCache[url]) {
     pageCache[url] = await browser.newPage()
@@ -180,7 +185,7 @@ export async function screenshotByUrl(val: urlScreenshotOptions) {
   /**
    * 启用页面缓存
    */
-  await pageCache[url].setCacheEnabled(cache ?? true)
+  await pageCache[url].setCacheEnabled(cache == undefined ? true : cache)
   /**
    * 启动网页
    */
