@@ -3,7 +3,7 @@ import template from 'art-template'
 import { join, basename } from 'path'
 import { readFileSync, writeFileSync, watch, mkdirSync } from 'fs'
 import { ScreenshotOptions } from 'puppeteer'
-import { screenshot } from './puppeteer.js'
+import { screenshotByFile } from './puppeteer.js'
 export interface PictureOptions {
   /**
    * 插件名
@@ -80,7 +80,7 @@ function watchCT(tplFile: string) {
  * @param Options
  * @returns
  */
-export async function createPicture(Options: PictureOptions): Promise<string | false | Buffer> {
+export async function createPicture(Options: PictureOptions) {
   const { AppName, tplFile, data, tab, timeout, SOptions = { type: 'jpeg', quality: 90 } } = Options
 
   /**
@@ -157,7 +157,7 @@ export async function createPicture(Options: PictureOptions): Promise<string | f
   /**
    * 对生成后的地址截图
    */
-  return await screenshot(AdressHtml, {
+  return await screenshotByFile(AdressHtml, {
     SOptions,
     tab,
     timeout

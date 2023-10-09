@@ -81,7 +81,7 @@ export async function pupStartCheck() {
  * @param timeout 响应检查
  * @returns
  */
-export async function screenshot(
+export async function screenshotByFile(
   htmlPath: string | Buffer | URL,
   Options: {
     SOptions: ScreenshotOptions
@@ -120,7 +120,7 @@ export async function screenshot(
      */
     console.info('[puppeteer] success')
 
-    const buff = await body.screenshot(SOptions).catch(err => {
+    const buff: string | false | Buffer = await body.screenshot(SOptions).catch(err => {
       console.error(err)
       return false
     })
@@ -194,13 +194,18 @@ export async function screenshotByUrl(val: urlScreenshotOptions) {
   /**
    * 截图
    */
-  const buff = await body.screenshot(
-    rand ?? {
-      type: 'jpeg',
-      quality: 90,
-      path: ''
-    }
-  )
+  const buff: string | false | Buffer = await body
+    .screenshot(
+      rand ?? {
+        type: 'jpeg',
+        quality: 90,
+        path: ''
+      }
+    )
+    .catch(err => {
+      console.error(err)
+      return false
+    })
 
   /**
    * 关闭
