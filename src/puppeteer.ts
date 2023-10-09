@@ -1,4 +1,4 @@
-import puppeteer, { Browser, PuppeteerLaunchOptions, ScreenshotOptions } from 'puppeteer'
+import puppeteer, { Browser, PuppeteerLaunchOptions, ScreenshotOptions, Page } from 'puppeteer'
 import queryString from 'querystring'
 /**
  * 截图次数
@@ -6,9 +6,9 @@ import queryString from 'querystring'
 let pic = 0
 
 /**
- * 重启控制
+ *  超过200次截图重启工具
  */
-const RestartControl = 30
+const RestartControl = 200
 
 /**
  * 实例
@@ -19,6 +19,22 @@ let browser: Browser
  * 实例控制
  */
 let isBrowser = false
+
+/**
+ * 对每个页面进行缓存
+ */
+const pageCache: {
+  [key: string]: Page
+} = {}
+
+/**
+ * 清除缓存
+ */
+function delCache() {
+  for (const item in pageCache) {
+    delete pageCache[item]
+  }
+}
 
 /**
  * 实例配置
@@ -63,6 +79,7 @@ export async function pupStartCheck() {
      */
     pic = 0
     console.info('[puppeteer] close')
+    delCache()
     isBrowser = false
     browser.close().catch(err => console.error(err))
     console.info('[puppeteer] reopen')
@@ -90,9 +107,7 @@ export async function screenshotByFile(
   }
 ) {
   if (!pupStartCheck()) return false
-
   const { SOptions, tab = 'body', timeout = 120000 } = Options
-
   try {
     /**
      * 开始
@@ -119,22 +134,18 @@ export async function screenshotByFile(
      * 得到图片
      */
     console.info('[puppeteer] success')
-
     const buff: string | false | Buffer = await body.screenshot(SOptions).catch(err => {
       console.error(err)
       return false
     })
-
     /**
      * 关闭
      */
     page.close().catch((err: any) => console.error(err))
-
     /**
      * 空的
      */
     if (!buff) console.error('[puppeteer]', htmlPath)
-
     return buff
   } catch (err) {
     console.error(err)
@@ -161,28 +172,26 @@ export interface urlScreenshotOptions {
  */
 export async function screenshotByUrl(val: urlScreenshotOptions) {
   if (!pupStartCheck()) return false
-
   const { url, time, rand, params, tab, cache } = val
-
-  const query = queryString.stringify(params ?? {})
-
-  const isurl = `${url}?${query}`
-
-  const page = await browser.newPage()
+  if (!pageCache[url]) {
+    pageCache[url] = await browser.newPage()
+  }
+  const isurl = params == undefined ? url : `${url}?${queryString.stringify(params ?? {})}`
   /**
    * 启用页面缓存
    */
-  await page.setCacheEnabled(cache ?? true)
+  await pageCache[url].setCacheEnabled(cache ?? true)
   /**
-   *
+   * 启动网页
    */
-  await page.goto(isurl)
+  await pageCache[url].goto(isurl)
   console.info(`open ${isurl}`)
   /**
-   * 获取
+   * 找到元素
    */
-  const body = await page.$(tab ?? 'body')
+  const body = await pageCache[url].$(tab ?? 'body')
   if (!body) {
+    delete pageCache[url]
     console.error(`tab err`)
     return false
   }
@@ -190,7 +199,6 @@ export async function screenshotByUrl(val: urlScreenshotOptions) {
    * 延迟
    */
   await new Promise(resolve => setTimeout(resolve, time ?? 1000))
-
   /**
    * 截图
    */
@@ -206,16 +214,13 @@ export async function screenshotByUrl(val: urlScreenshotOptions) {
       console.error(err)
       return false
     })
-
-  /**
-   * 关闭
-   */
-  page.close().catch((err: any) => console.error(err))
   /**
    * 打印错误
    */
-  if (!buff) console.error(`buff err:${url}`)
-
+  if (!buff) {
+    delete pageCache[url]
+    console.error(`buff err:${url}`)
+  }
   return buff
 }
 
@@ -227,11 +232,13 @@ export async function startChrom(): Promise<boolean> {
   try {
     browser = await puppeteer.launch(LaunchCfg)
     isBrowser = true
+    delCache()
     console.info('[puppeteer] open success')
     return true
   } catch (err) {
     console.error(err)
     isBrowser = false
+    delCache()
     console.error('[puppeteer] open fail')
     return false
   }

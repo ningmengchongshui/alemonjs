@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs'
 import lodash from 'lodash'
 import { getMessage } from './message.js'
 import { getApp, delApp, getAppKey } from './app.js'
-import { compilationTools, integration } from './build.js'
+import { compilationTools } from './build.js'
 import { AMessage, EventType, EventEnum } from './typings.js'
 import { conversationHandlers, getConversationState } from './dialogue.js'
 

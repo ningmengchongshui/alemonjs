@@ -1,51 +1,22 @@
 import lodash from 'lodash'
-import template from 'art-template'
 import { join, basename } from 'path'
-import { readFileSync, writeFileSync, watch, mkdirSync } from 'fs'
-import { ScreenshotOptions } from 'puppeteer'
-import { screenshotByFile } from './puppeteer.js'
-export interface PictureOptions {
-  /**
-   * 插件名
-   */
-  AppName: string
-  /**
-   * 模板地址模板地址
-   */
-  tplFile: string
-  /**
-   * 截图参数
-   */
-  SOptions?: ScreenshotOptions
-  /**
-   * 任意数据对象
-   */
-  data?: any
-  /**
-   * 截图元素
-   */
-  tab?: string
-  /**
-   * 时差
-   */
-  timeout?: number
-}
-
+import { readFileSync, watch, mkdirSync } from 'fs'
 /**
- * 模板缓存
+ * 源码缓存
  */
 const html = {}
-
 /**
  * 监听器
  */
 const watcher = {}
-
 /**
- * 地址缓存
+ * 数据缓存
  */
 const CacheData = {}
-
+/**
+ * 模板缓存
+ */
+const absolutePathTemplateCache = {}
 /**
  * 缓存监听
  * @param tplFile 模板地址
@@ -74,95 +45,96 @@ function watchCT(tplFile: string) {
       delete watcher[tplFile]
     })
 }
-
 /**
- *
+ * 如果control为真则需重新用art渲染
  * @param Options
  * @returns
  */
-export async function createPicture(Options: PictureOptions) {
-  const { AppName, tplFile, data, tab, timeout, SOptions = { type: 'jpeg', quality: 90 } } = Options
-
+export function createStr(Options: {
+  /**
+   * 插件名
+   */
+  AppName: string
+  /**
+   * 模板地址模板地址
+   */
+  tplFile: string
+  /**
+   * 任意数据对象
+   */
+  data?: any
+}) {
+  const { AppName, tplFile, data } = Options
   /**
    * 插件路径
    */
   const basePath = join(process.cwd(), 'plugins', AppName)
-
   /**
    * 写入地址
    */
   const AdressHtml = join(process.cwd(), 'data', AppName, basename(tplFile))
-
   /**
    * 确保写入目录存在
    */
   mkdirSync(join(process.cwd(), 'data', AppName), { recursive: true })
-
   /**
    * 判断初始模板是否改变
    */
-  let T = false
-
+  let control = false
+  /**
+   * 缓存不存在
+   */
   if (!html[tplFile]) {
     /**
-     * 如果模板不存在,则读取模板
+     * 读取文件
      */
-    try {
-      html[tplFile] = readFileSync(tplFile, 'utf8')
-    } catch (err) {
-      console.error('[HTML][ERROR]', tplFile, err)
-      return false
-    }
+    html[tplFile] = readFileSync(tplFile, 'utf8')
     /**
      * 读取后监听文件
      */
     watchCT(tplFile)
-    T = true
+    control = true
   }
-
   /**
    * 模板对象不同需要更新数据
    */
-  if (!lodash.isEqual(CacheData[tplFile], data)) {
-    CacheData[tplFile] = data
-    T = true
+  if (!lodash.isEqual(CacheData[tplFile], data ?? {})) {
+    CacheData[tplFile] = data ?? {}
+    control = true
   }
 
   /**
    * 模板更改和数据更改都会生成生成html
    */
-  if (T) {
+  if (control) {
     const reg = /url\(['"](@[^'"]+)['"]\)|href=['"](@[^'"]+)['"]|src=['"](@[^'"]+)['"]/g
-    const absolutePathTemplate = html[tplFile].replace(reg, (match, urlPath, hrefPath, srcPath) => {
-      const relativePath = urlPath ?? hrefPath ?? srcPath
-      /**
-       * 去掉路径开头的 @ 符号
-       * 转义\/
-       */
-      const absolutePath = join(basePath, relativePath.substr(1)).replace(/\\/g, '/')
-      if (urlPath) return `url('${absolutePath}')`
-      if (hrefPath) return `href='${absolutePath}'`
-      if (srcPath) return `src='${absolutePath}'`
-    })
-    /**
-     * 写入对生成地址写入模板
-     */
-    writeFileSync(AdressHtml, template.render(absolutePathTemplate, CacheData[tplFile]))
+    absolutePathTemplateCache[tplFile] = html[tplFile].replace(
+      reg,
+      (match, urlPath, hrefPath, srcPath) => {
+        const relativePath = urlPath ?? hrefPath ?? srcPath
+        /**
+         * 去掉路径开头的 @ 符号
+         * 转义\/
+         */
+        const absolutePath = join(basePath, relativePath.substr(1)).replace(/\\/g, '/')
+        if (urlPath) return `url('${absolutePath}')`
+        if (hrefPath) return `href='${absolutePath}'`
+        if (srcPath) return `src='${absolutePath}'`
+      }
+    )
     /**
      * 打印反馈生成后的地址
      */
     console.info('[HTML][CREATE]', AdressHtml)
   }
 
-  /**
-   * 对生成后的地址截图
-   */
-  return await screenshotByFile(AdressHtml, {
-    SOptions,
-    tab,
-    timeout
-  }).catch((err: any) => {
-    console.error(err)
-    return false
-  })
+  return {
+    control,
+    // 模板地址
+    AdressHtml,
+    // 模板字符
+    template: absolutePathTemplateCache[tplFile],
+    // 模板数据
+    data: CacheData[tplFile]
+  }
 }
