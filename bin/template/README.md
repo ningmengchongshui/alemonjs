@@ -1,18 +1,6 @@
 ## 阿柠檬机器人
 
-安装
-
-```sh
-npm init alemon@latest -y
-```
-
-进入机器目录
-
-```sh
-npm run alemon-bot
-```
-
-运行 QQ 机器人
+运行机器人
 
 ```sh
 npm run nuxt    # 启动开发框架
