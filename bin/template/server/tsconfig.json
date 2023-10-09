@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     // 编译后目录
-    "outDir": "dist"
+    "outDir": "dist",
+    // 版本控制
+    "ignoreDeprecations": "5.0",
+    // 是否抑制隐式any索引的错误，默认：false
+    "suppressImplicitAnyIndexErrors": true //抑制
   },
   "extends": "../.nuxt/tsconfig.server.json"
 }
