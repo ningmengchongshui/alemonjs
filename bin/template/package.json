@@ -33,21 +33,21 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "query-string": "^8.1.0",
-    "alemon-bot": "^1.1.7",
+    "alemon-bot": "^1.1.8",
     "alemon-ffmpeg": "^1.0.1",
-    "alemon-redis": "^1.0.5",
-    "mysql2": "^3.5.2",
-    "sequelize": "^6.32.1"
+    "alemon-redis": "^1.0.5"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^3.0.1",
     "@nuxt/bridge": "^0.10.1",
     "@nuxt/devtools": "latest",
+    "@nuxt/typescript-build": "^3.0.1",
+    "@vant/nuxt": "^1.0.3",
     "nuxt": "^3.7.4",
-    "vue-router": "^4.2.5",
-    "vue": "^3.3.4",
+    "vant": "^4.7.1",
     "less": "^4.2.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5",
+    "query-string": "^8.1.0",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
