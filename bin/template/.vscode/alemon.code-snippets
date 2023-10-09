@@ -1,5 +1,25 @@
 {
-  "plugin-ts": {
+  "Vue TypeScript Setup": {
+    "prefix": "template",
+    "body": [
+      "<script lang=\"ts\" setup>",
+      "import { ref } from 'vue'",
+      "const val = ref<string>('示例')",
+      "</script>",
+      "<template>",
+      "  <div class=\"test\">",
+      "    {{ val }}",
+      "  </div>",
+      "</template>",
+      "<style scoped>",
+      "  .test {",
+      "    font-size: 30px;",
+      "  }",
+      "</style>"
+    ],
+    "description": "Vue文件模板"
+  },
+  "Plugin TypeScript": {
     "scope": "typescript",
     "prefix": "plugin",
     "body": [
@@ -24,9 +44,9 @@
       "  }",
       "}\n"
     ],
-    "description": "生成功能插件模板"
+    "description": "plugin文件模板"
   },
-  "plugin-js": {
+  "Plugin Javascript": {
     "scope": "javascript",
     "prefix": "plugin",
     "body": [
@@ -51,6 +71,6 @@
       "  }",
       "}\n"
     ],
-    "description": "生成功能插件模板"
+    "description": "plugin文件模板"
   }
 }

@@ -7,10 +7,7 @@ import { DirPath, AppName } from '../../app.config.js'
  * @param data 数据
  * @returns
  */
-export const obtainingImages = async (
-  directory: string,
-  data: object
-): Promise<string | false | Buffer> => {
+export function obtainingImages(directory: string, data: object) {
   // 解析字符串
   const { control, template, AdressHtml } = createStr({
     AppName,
