@@ -10,8 +10,9 @@
     "help",
     "*-data",
     "*-player",
-    "plugins/*/*.json",
-    "plugins/*/*.js"
+    "application/*/*.json",
+    "application/*/*.js",
+    "apps.js"
   ],
   "delay": 1000,
   "verbose": true,
@@ -19,8 +20,9 @@
     "ts": "ts-node"
   },
   "watch": [
-    "plugins",
-    "example"
+    "application",
+    "example",
+    "src"
   ],
   "env": {
     "NODE_ENV": "development"

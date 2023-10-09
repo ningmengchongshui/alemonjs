@@ -11,11 +11,11 @@ const compilationTools = await AlemonBot({
 })
 
 // 加载模块
-const alemon = await compilationTools(config)
+const example = await compilationTools(config)
 
 // 创建应用
-const app = createApp('alemon')
+const app = createApp('example')
 // 设置模块
-app.component(alemon)
+app.component(example)
 // 挂载
 app.mount('#app')
