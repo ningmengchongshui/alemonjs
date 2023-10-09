@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import http from 'http'
 import https from 'https'
+import { join } from 'path'
 
 /**
  * 异步请求图片
@@ -26,12 +27,12 @@ export function getUrlbuffer(url: string): Promise<Buffer> {
 
 /**
  * 读取本地图片
- * @param path 绝对路径
+ * @param path 根路径
  * @returns
  */
 export function getPathBuffer(path: string): Buffer {
   // 读取本地图片
-  const image = readFileSync(path)
+  const image = readFileSync(join(process.cwd(), path))
   // 将图片转换为 Buffer 对象
   const BufferImage = Buffer.from(image)
   return BufferImage

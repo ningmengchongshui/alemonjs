@@ -1,5 +1,5 @@
 import puppeteer, { Browser, PuppeteerLaunchOptions, ScreenshotOptions } from 'puppeteer'
-
+import queryString from 'querystring'
 /**
  * 截图次数
  */
@@ -42,24 +42,10 @@ export function getLanchConfig() {
 }
 
 /**
- * 截图并返回buffer
- * @param htmlPath 绝对路径
- * @param tab 截图元素位
- * @param type 图片类型
- * @param quality 清晰度
- * @param timeout 响应检查
+ * 启动检查
  * @returns
  */
-export async function screenshot(
-  htmlPath: string | Buffer | URL,
-  Options: {
-    SOptions: ScreenshotOptions
-    tab?: string
-    timeout?: number
-  }
-): Promise<string | false | Buffer> {
-  const { SOptions, tab = 'body', timeout = 120000 } = Options
-
+export async function pupStartCheck() {
   /**
    * 检测是否开启
    */
@@ -83,29 +69,30 @@ export async function screenshot(
     if (!(await startChrom())) return false
     pic++
   }
-  /**
-   * 开始截图
-   */
-  return await startPage(htmlPath, SOptions, tab, timeout).catch(err => {
-    console.error(err)
-    return false
-  })
+  return true
 }
 
 /**
- * 开始截图
- * @param htmlPath  绝对路径
- * @param SOptions  { type 图片类型 , quality 清晰度   }
- * @param tab  截图元素位
- * @param timeout  响应检查
+ * 截图并返回buffer
+ * @param htmlPath 绝对路径
+ * @param tab 截图元素位
+ * @param type 图片类型
+ * @param quality 清晰度
+ * @param timeout 响应检查
  * @returns
  */
-export async function startPage(
+export async function screenshot(
   htmlPath: string | Buffer | URL,
-  SOptions: ScreenshotOptions,
-  tab: string,
-  timeout: number
-): Promise<string | false | Buffer> {
+  Options: {
+    SOptions: ScreenshotOptions
+    tab?: string
+    timeout?: number
+  }
+) {
+  if (!pupStartCheck()) return false
+
+  const { SOptions, tab = 'body', timeout = 120000 } = Options
+
   try {
     /**
      * 开始
@@ -132,14 +119,99 @@ export async function startPage(
      * 得到图片
      */
     console.info('[puppeteer] success')
-    return await body.screenshot(SOptions).catch(err => {
+
+    const buff = await body.screenshot(SOptions).catch(err => {
       console.error(err)
       return false
     })
+
+    /**
+     * 关闭
+     */
+    page.close().catch((err: any) => console.error(err))
+
+    /**
+     * 空的
+     */
+    if (!buff) console.error('[puppeteer]', htmlPath)
+
+    return buff
   } catch (err) {
     console.error(err)
     return false
   }
+}
+
+/**
+ * url截图选项
+ */
+export interface urlScreenshotOptions {
+  url: string
+  time?: number
+  rand?: ScreenshotOptions
+  params?: any
+  tab?: string
+  cache?: boolean
+}
+
+/**
+ * 截图
+ * @param val
+ * @returns
+ */
+export async function screenshotByUrl(val: urlScreenshotOptions) {
+  if (!pupStartCheck()) return false
+
+  const { url, time, rand, params, tab, cache } = val
+
+  const query = queryString.stringify(params ?? {})
+
+  const isurl = `${url}?${query}`
+
+  const page = await browser.newPage()
+  /**
+   * 启用页面缓存
+   */
+  await page.setCacheEnabled(cache ?? true)
+  /**
+   *
+   */
+  await page.goto(isurl)
+  console.info(`open ${isurl}`)
+  /**
+   * 获取
+   */
+  const body = await page.$(tab ?? 'body')
+  if (!body) {
+    console.error(`tab err`)
+    return false
+  }
+  /**
+   * 延迟
+   */
+  await new Promise(resolve => setTimeout(resolve, time ?? 1000))
+
+  /**
+   * 截图
+   */
+  const buff = await body.screenshot(
+    rand ?? {
+      type: 'jpeg',
+      quality: 90,
+      path: ''
+    }
+  )
+
+  /**
+   * 关闭
+   */
+  page.close().catch((err: any) => console.error(err))
+  /**
+   * 打印错误
+   */
+  if (!buff) console.error(`buff err:${url}`)
+
+  return buff
 }
 
 /**

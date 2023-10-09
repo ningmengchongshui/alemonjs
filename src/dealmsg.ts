@@ -325,17 +325,19 @@ export function getMergedRegex() {
  * @param param0 { mount = false, address = '/plugins' }
  * @returns
  */
-export async function cmdInit({ mount = false, address = '/plugins' }) {
+export async function loadInit(val = { mount: false, address: '/plugins' }) {
+  const { mount, address } = val
   /**
    * 加载插件
    */
-  await loadPlugins(join(process.cwd(), address))
+  await loadPlugins(join(process.cwd(), address ?? '/plugins'))
   /**
    * 取消集成
    */
-  if (mount) {
-    return { compilationTools, integration }
-  }
+  if (mount) return compilationTools
+  /**
+   * 开始集成
+   */
   await appsInit()
   return
 }

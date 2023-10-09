@@ -1,13 +1,15 @@
 import { join } from 'path'
-import { readdirSync, mkdirSync } from 'fs'
+import { readdirSync, mkdirSync, existsSync } from 'fs'
 import { rollup, RollupOptions } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
+
 export interface compilationType {
   input: string
   file: string
   external?: string[]
 }
+
 /**
  * 编译插件
  * @param obj
@@ -50,7 +52,9 @@ export async function compilationTools(obj: compilationType) {
      * 使用 Rollup API 编译代码
      */
     const bundle = await rollup(config)
-
+    /**
+     * 判断
+     */
     if (config.output[0] && obj.file) {
       /**
        * 写入
@@ -80,7 +84,7 @@ export async function compilationTools(obj: compilationType) {
  * @returns
  */
 export function getAllJsAndTsFilesSync(dirPath: string) {
-  const files: any = []
+  const files: any[] = []
   const entries = readdirSync(dirPath, { withFileTypes: true })
   for (const entry of entries) {
     const fullPath = join(dirPath, entry.name)
@@ -92,6 +96,9 @@ export function getAllJsAndTsFilesSync(dirPath: string) {
   }
   return files
 }
+
+const pDir = join(process.cwd(), 'plugins')
+
 /**
  * 集成工程
  * @param AppName 目录名
@@ -100,20 +107,30 @@ export function getAllJsAndTsFilesSync(dirPath: string) {
  */
 export const integration = async (AppName: string, DirName = 'apps') => {
   /**
-   * 根目录锁定
-   */
-  const RootPath = join(process.cwd(), 'plugins', AppName)
-  /**
    * 集成
    */
   const apps = {}
+  /**
+   * 判断 plugins是否存在
+   */
+  if (!existsSync(pDir)) return {}
+  /**
+   * 插件目录
+   */
+  const RootPath = join(pDir, AppName)
+  /**
+   * 应用目录
+   */
+  const filepath = join(RootPath, DirName)
+  /**
+   * 确保存在
+   */
+  mkdirSync(filepath, { recursive: true })
   /**
    * 重名控制器
    */
   let acount = 0
   try {
-    const filepath = join(RootPath, DirName)
-    mkdirSync(filepath, { recursive: true })
     const arr = getAllJsAndTsFilesSync(filepath)
     for await (const AppDir of arr) {
       /**
