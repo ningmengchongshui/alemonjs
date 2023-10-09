@@ -5,7 +5,6 @@ logs
 log
 /bin/*.js
 /bin/template/config
-/bin/template/example
 /bin/template/data
-/bin/template/plugins/alemon-plugin/alemon-plugin.json
-/bin/template/plugins/alemon-plugin/apps.js
+/bin/template/application/alemon-plugin/alemon-plugin.json
+/bin/template/application/alemon-plugin/apps.js
