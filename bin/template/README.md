@@ -15,7 +15,16 @@ npm run alemon-bot
 运行 QQ 机器人
 
 ```shell
-npm run app qq  # 其他实例可更改discord kook villa
+npm run app qq  # 其他实例可更改discord kook villa ntqq
+```
+
+开发者
+
+```shell
+npm run nuxt # 启动帮助图
+npm run dev # 热加载模式启动
+npm run format # 格式化代码
+npm run lint   # 检查代码
 ```
 
 日常管理
@@ -35,14 +44,6 @@ npm run save      # 保存系统自启动程序
 npm run pull:l    # Linux系统更新所有插件
 npm run pull:w    # Windows系统更新所有插件
 
-```
-
-开发者
-
-```shell
-npm run dev # 热加载模式启动
-npm run format # 格式化代码
-npm run lint   # 检查代码
 ```
 
 > 更多指令请看[package.json](./package.json)

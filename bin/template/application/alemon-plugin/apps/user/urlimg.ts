@@ -25,9 +25,11 @@ export class TestUrl extends plugin {
    */
   async getAlmanac(e: AMessage): Promise<boolean> {
     /* 消息发送机制 */
-    e.reply(await getUrlbuffer('https://api.xingzhige.com/API/yshl/')).catch(err => {
-      console.log(err)
-    })
+    e.reply(await getUrlbuffer('https://api.xingzhige.com/API/yshl/')).catch(
+      err => {
+        console.log(err)
+      }
+    )
     return false
   }
 

@@ -7,13 +7,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev:nuxt": "nuxt dev",
+    "nuxt": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "server": "node ./.output/server/index.mjs",
-    "dev:app": "nodemon src/main.ts",
+    "dev": "nodemon src/main.ts",
     "app": "ts-node src/main.ts",
     "login": "ts-node src/main.ts login",
     "start": "pm2 startOrRestart pm2.config.cjs",
@@ -67,7 +67,7 @@
     "format"
   ],
   "workspaces": [
-    "plugins/*",
+    "application/*",
     "example"
   ],
   "engines": {

@@ -1,17 +1,47 @@
-.user {
-  display: grid;
+
+.body-point-font {
+  padding-left: 131px;
+  padding-top: 33px;
+  font-size: 27px;
+  color: #ffffff;
+  font-family: serif;
 }
 
-.user-c {
-  width: 100%;
-  height: 100%;
-  display: grid;
+.body-box-font-title {
+  padding-left: 175px;
+  padding-top: 18px;
+  font-size: 34px;
+  font-weight: 700;
+  font-family: serif;
 }
 
-.ever {
-  display: grid;
+.body-box-font-desc {
+  padding-left: 130px;
+  padding-top: 40px;
+  font-size: 28px;
+  font-family: serif;
 }
 
-.font {
-  font-size: 30px;
+.body-top {
+  height: 300px;
+  background: url('/img/help/top.jpg');
+  background-size: 100% 100%;
+}
+
+.body-point {
+  height: 100px;
+  background: url('/img/help/point.jpg');
+  background-size: 100% 100%;
+}
+
+.body-box {
+  height: 190px;
+  background: url('/img/help/box.jpg');
+  background-size: 100% 100%;
+}
+
+.body-buttom {
+  height: 120px;
+  background: url('/img/help/buttom.jpg');
+  background-size: 100% 100%;
 }
