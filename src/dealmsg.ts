@@ -325,7 +325,12 @@ export function getMergedRegex() {
  * @param param0 { mount = false, address = '/plugins' }
  * @returns
  */
-export async function loadInit(val = { mount: false, address: '/plugins' }) {
+export async function loadInit(
+  val: {
+    mount?: boolean
+    address?: string
+  } = { mount: false, address: '/plugins' }
+) {
   const { mount, address } = val
   /**
    * 加载插件

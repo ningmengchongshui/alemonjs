@@ -133,8 +133,6 @@ export function createStr(Options: {
     // 模板地址
     AdressHtml,
     // 模板字符
-    template: absolutePathTemplateCache[tplFile],
-    // 模板数据
-    data: CacheData[tplFile]
+    template: absolutePathTemplateCache[tplFile]
   }
 }
