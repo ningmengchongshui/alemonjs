@@ -10,9 +10,10 @@ import { compilationOptions } from './types.js'
  * @returns
  */
 export async function compilationTools(cfg: compilationOptions) {
+  const { aInput, aOutput } = cfg
   try {
     const config: RollupOptions = {
-      input: [cfg?.aInput],
+      input: [aInput],
       onwarn: (warning, warn) => {
         // 忽略与无法解析的导入相关的警告信息
         if (warning.code === 'UNRESOLVED_IMPORT') return
@@ -21,62 +22,44 @@ export async function compilationTools(cfg: compilationOptions) {
       },
       output: [
         {
-          /**
-           * 输出文件路径和名称
-           */
-          file: cfg?.aOutput,
+          // 输出文件路径和名称
+          file: aOutput,
           format: 'module',
-          /**
-           * 是否生成 sourcemap 文件
-           */
+          // 是否生成 sourcemap 文件
           sourcemap: false
         }
       ],
       plugins: [
         typescript({
-          /**
-           * 禁用声明文件的生成
-           */
+          // 禁用声明文件的生成
           declaration: false
         }),
         multiEntry({
-          /**
-           * 指定要匹配的文件路径模式
-           */
-          include: [cfg?.aOutput]
+          // 指定要匹配的文件路径模式
+          include: [aOutput]
         })
-      ],
-      // 新配置覆盖
-      ...cfg
+      ]
     }
-    /**
-     * 使用 Rollup API 编译代码
-     */
+    // 使用 Rollup API 编译代码
     const bundle = await rollup(config)
-    /**
-     * 判断
-     */
-    if (config.output[0] && cfg.aOutput) {
-      /**
-       * 写入
-       */
+    // 判断
+    if (config.output[0] && aOutput) {
+      // 写入
       await bundle.write(config.output[0])
-      /**
-       * 集成
-       */
-      const apps = await import(
-        `file://${join(process.cwd(), cfg?.aOutput)}`
-      ).catch(err => {
-        console.error(err)
-        return {}
-      })
+      // 集成
+      const apps = await import(`file://${join(process.cwd(), aOutput)}`).catch(
+        err => {
+          console.error(err)
+          return {}
+        }
+      )
       return apps
     } else {
       return {}
     }
   } catch (error) {
     console.error(error)
-    console.error('err:', cfg.input)
+    console.error('err:', aInput)
     return {}
   }
 }
