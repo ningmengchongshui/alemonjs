@@ -1,7 +1,3 @@
-## 配置说明
-
-> 新建/更改 alemon.toml 配置
-
 ## puppeteer
 
 ```toml

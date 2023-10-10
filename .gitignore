@@ -4,8 +4,7 @@ node_modules
 logs
 log
 /bin/*.js
-/bin/template/application/.nuxt
-/bin/template/application/*/apps.js
+/bin/template/plugins/*/apps.js
 /bin/template/config
 /bin/template/data
 apps.js

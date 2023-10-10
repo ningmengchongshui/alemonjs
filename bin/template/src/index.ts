@@ -1,6 +1,9 @@
-import { createBot } from 'alemonjs'
+import { createBot } from 'alemon-bot'
 
 // 创建机器人
-await createBot({
+const AlemonBot = await createBot()
+
+// 创建插件
+await AlemonBot({
   mount: false
 })

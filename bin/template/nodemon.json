@@ -10,9 +10,8 @@
     "help",
     "*-data",
     "*-player",
-    "application/*/*.json",
-    "application/*/*.js",
-    "apps.js"
+    "plugins/*/*.json",
+    "plugins/*/*.js"
   ],
   "delay": 1000,
   "verbose": true,
@@ -20,7 +19,7 @@
     "ts": "ts-node"
   },
   "watch": [
-    "application",
+    "plugins",
     "example",
     "src"
   ],

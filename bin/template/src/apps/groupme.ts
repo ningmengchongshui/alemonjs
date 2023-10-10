@@ -1,4 +1,4 @@
-import { plugin, AMessage } from 'alemonjs'
+import { plugin, AMessage } from 'alemon'
 /**
  * QQ频道专用方法
  * 当私聊机器人超过三次时,

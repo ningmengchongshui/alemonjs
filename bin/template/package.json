@@ -7,12 +7,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "nuxt": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "server": "node ./.output/server/index.mjs",
     "dev": "nodemon src/main.ts",
     "app": "ts-node src/main.ts",
     "login": "ts-node src/main.ts login",
@@ -20,7 +14,7 @@
     "stop": "pm2 stop pm2.config.cjs",
     "restart": "pm2 restart pm2.config.cjs",
     "delete": "pm2 delete pm2.config.cjs",
-    "logs": "pm2 logs",
+    "logs": "pm2 logs alemonb",
     "list": "pm2 list",
     "startup": "pm2 startup",
     "update": "pm2 update",
@@ -33,21 +27,14 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "alemonjs": "^1.0.0",
+    "alemon-bot": "^1.1.8",
     "alemon-ffmpeg": "^1.0.1",
-    "alemon-redis": "^1.0.5"
+    "alemon-redis": "^1.0.5",
+    "art-template": "^4.13.2",
+    "mysql2": "^3.5.2",
+    "sequelize": "^6.32.1"
   },
   "devDependencies": {
-    "@nuxt/bridge": "^0.10.1",
-    "@nuxt/devtools": "latest",
-    "@nuxt/typescript-build": "^3.0.1",
-    "@vant/nuxt": "^1.0.3",
-    "nuxt": "^3.7.4",
-    "vant": "^4.7.1",
-    "less": "^4.2.0",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.5",
-    "query-string": "^8.1.0",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
@@ -67,10 +54,10 @@
     "format"
   ],
   "workspaces": [
-    "application/*",
+    "plugins/*",
     "example"
   ],
   "engines": {
-    "node": ">=16.14.0"
+    "node": ">=16.3.0"
   }
 }

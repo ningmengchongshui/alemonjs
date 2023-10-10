@@ -1,4 +1,4 @@
-import { plugin, AMessage } from 'alemonjs'
+import { plugin, AMessage } from 'alemon'
 /**
  * QQ频道专用方法
  * 该ts插件指令的api只有qq频道能使用

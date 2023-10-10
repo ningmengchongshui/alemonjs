@@ -1,29 +1,9 @@
 {
-  "Vue TypeScript Setup": {
-    "prefix": "template",
-    "body": [
-      "<script lang=\"ts\" setup>",
-      "import { ref } from 'vue'",
-      "const val = ref<string>('示例')",
-      "</script>",
-      "<template>",
-      "  <div class=\"test\">",
-      "    {{ val }}",
-      "  </div>",
-      "</template>",
-      "<style scoped>",
-      "  .test {",
-      "    font-size: 30px;",
-      "  }",
-      "</style>"
-    ],
-    "description": "Vue文件模板"
-  },
-  "Plugin TypeScript": {
+  "plugin-ts": {
     "scope": "typescript",
     "prefix": "plugin",
     "body": [
-      "import { plugin , AMessage } from 'alemonjs'",
+      "import { plugin , AMessage } from 'alemon'",
       "\nexport class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",
@@ -44,13 +24,13 @@
       "  }",
       "}\n"
     ],
-    "description": "plugin文件模板"
+    "description": "生成功能插件模板"
   },
-  "Plugin Javascript": {
+  "plugin-js": {
     "scope": "javascript",
     "prefix": "plugin",
     "body": [
-      "import { plugin } from 'alemonjs'",
+      "import { plugin } from 'alemon'",
       "\nexport class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",
@@ -71,6 +51,6 @@
       "  }",
       "}\n"
     ],
-    "description": "plugin文件模板"
+    "description": "生成功能插件模板"
   }
 }

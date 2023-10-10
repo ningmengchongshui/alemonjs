@@ -1,13 +1,13 @@
 {
-  "name": "create-alemonjs",
-  "version": "1.0.0",
-  "description": "alemonjs",
+  "name": "create-alemon",
+  "version": "1.2.0",
+  "description": "alemon",
   "author": "ningmengchongshui",
   "main": "bin/index.js",
   "license": "GPL-2.0",
   "type": "module",
   "scripts": {
-    "prepare": "tsc",
+    "tsc": "tsc",
     "dev": "node bin/index.js",
     "format": "npx prettier --write ."
   },
@@ -27,13 +27,13 @@
     "bin/template/.*"
   ],
   "bin": {
-    "create-alemonjs": "bin/index.js"
+    "create-alemon": "bin/index.js"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "keywords": [
-    "alemonjs"
+    "alemon"
   ],
   "engines": {
     "node": ">=16.7.0"
