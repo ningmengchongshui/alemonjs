@@ -8,7 +8,6 @@ onMounted(() => {
     query: { name }
   } = useRoute()
   ResServe(`/defset/${name ?? 'point'}.json`).then(ret => {
-    console.log('ret', ret)
     data.value = ret
   })
 })

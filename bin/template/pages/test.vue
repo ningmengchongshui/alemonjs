@@ -10,7 +10,6 @@ onMounted(() => {
     ResServe('/api/test', {
         name
     }).then(ret => {
-        data.value = ret
         console.log('测试接口', ret)
     })
 })
