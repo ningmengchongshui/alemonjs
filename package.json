@@ -1,7 +1,7 @@
 {
-  "name": "create-alemon",
-  "version": "1.1.10",
-  "description": "alemon",
+  "name": "create-alemonjs",
+  "version": "1.0.0",
+  "description": "alemonjs",
   "author": "ningmengchongshui",
   "main": "bin/index.js",
   "license": "GPL-2.0",
@@ -27,13 +27,13 @@
     "bin/template/.*"
   ],
   "bin": {
-    "create-alemon": "bin/index.js"
+    "create-alemonjs": "bin/index.js"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "keywords": [
-    "alemon"
+    "alemonjs"
   ],
   "engines": {
     "node": ">=16.7.0"

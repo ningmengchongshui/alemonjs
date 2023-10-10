@@ -1,5 +1,6 @@
+// 编译配置
 export default {
-  input: `example/**/*.ts`,
+  input: `src/apps/**/*.ts`,
   file: `apps.js`,
-  external: ['alemon']
+  external: ['alemonjs']
 }

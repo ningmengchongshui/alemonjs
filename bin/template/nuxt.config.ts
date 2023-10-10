@@ -1,5 +1,8 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineNuxtConfig } from 'nuxt/config'
+/**
+ * Nuxt框架配置
+ * https://nuxt.com/docs/api/configuration/nuxt-config
+ */
 export default defineNuxtConfig({
   // 更改模式
   nitro: {

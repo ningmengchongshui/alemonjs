@@ -9,6 +9,10 @@ import {
   Dialog,
   CollapseItem
 } from 'vant'
+/**
+ * vant组件库
+ * https://vant-ui.github.io/vant/#/zh-CN/
+ */
 export default defineNuxtPlugin(nuxtApp => {
   nuxtApp.vueApp
     .use(Icon)

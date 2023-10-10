@@ -2,12 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { ResServe } from '../components/fetch'
-// http://localhost:3000?name=help
+// http://localhost:3000?name=point
 onMounted(() => {
   const {
     query: { name }
   } = useRoute()
-  ResServe(`/defset/${name ?? 'help'}.json`).then(ret => {
+  ResServe(`/defset/${name ?? 'point'}.json`).then(ret => {
     console.log('ret', ret)
     data.value = ret
   })

@@ -1,4 +1,9 @@
 import { defineNuxtPlugin } from 'nuxt/app'
+/**
+ * 插件中间件
+ * 用于机器人图片在pc上缩放
+ * 非必须可删除
+ */
 export default defineNuxtPlugin(nuxtApp => {
   if (process.client) {
     const updateZoom = () => {

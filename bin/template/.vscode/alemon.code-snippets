@@ -23,7 +23,7 @@
     "scope": "typescript",
     "prefix": "plugin",
     "body": [
-      "import { plugin , AMessage } from 'alemon'",
+      "import { plugin , AMessage } from 'alemonjs'",
       "\nexport class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",
@@ -50,7 +50,7 @@
     "scope": "javascript",
     "prefix": "plugin",
     "body": [
-      "import { plugin } from 'alemon'",
+      "import { plugin } from 'alemonjs'",
       "\nexport class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",

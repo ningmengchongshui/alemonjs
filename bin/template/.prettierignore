@@ -2,12 +2,8 @@
 node_modules
 
 # alemon dev/config
-/help/
+/help/*.json
 /data/
-
-# Logs
-/logs/
-deploy.sh
 
 # config
 alemon.toml

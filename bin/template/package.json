@@ -20,7 +20,7 @@
     "stop": "pm2 stop pm2.config.cjs",
     "restart": "pm2 restart pm2.config.cjs",
     "delete": "pm2 delete pm2.config.cjs",
-    "logs": "pm2 logs alemonb",
+    "logs": "pm2 logs",
     "list": "pm2 list",
     "startup": "pm2 startup",
     "update": "pm2 update",
@@ -33,7 +33,7 @@
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "alemon-bot": "^1.1.8",
+    "alemonjs": "^1.0.0",
     "alemon-ffmpeg": "^1.0.1",
     "alemon-redis": "^1.0.5"
   },
@@ -71,6 +71,6 @@
     "example"
   ],
   "engines": {
-    "node": ">=16.3.0"
+    "node": ">=16.14.0"
   }
 }
