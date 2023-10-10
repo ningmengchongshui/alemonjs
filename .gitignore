@@ -1,10 +1,27 @@
+# 依赖
 node_modules
-*.logs
-*.log
-logs
-log
-/bin/*.js
-/bin/template/plugins/*/apps.js
-/bin/template/config
-/bin/template/data
+
+# 包
+lib
+types
+
+# 配置
+/config/
+
+# 插件
+/application/
+
+# 缓存
+/data/
+/help/
+
+# 额外生成物
+index.js
+alemon.toml
+alemon.json
 apps.js
+
+# 打印
+logs
+*.logs
+*.los

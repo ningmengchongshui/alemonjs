@@ -1,21 +1,27 @@
-# node
+# 依赖
 node_modules
 
-# got
-/.gitignore
+# 包
+lib
+types
 
-# doc
-/doc.md
+# 配置
+/config/
 
-# ts
-/tsconfig.json
-/bin/*.ts
-/.eslintrc.cjs
+# 插件
+/application/
 
-# template
+# 缓存
+/data/
+/help/
+
+# 额外生成物
+index.js
+alemon.toml
+alemon.json
 apps.js
-/bin/*.js
-/bin/template/application/.nuxt
-/bin/template/application/*/apps.js
-/bin/template/config
-/bin/template/data
+
+# 打印
+logs
+*.logs
+*.los

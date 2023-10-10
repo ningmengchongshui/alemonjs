@@ -3,9 +3,6 @@ node_modules
 /help/
 
 # apps
-/plugins/
-/example/
-example.js
 apps.js
 
 # cache
@@ -18,5 +15,4 @@ log
 *.logs
 
 # config
-
 alemon.toml

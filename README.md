@@ -15,5 +15,6 @@ npm run alemon-bot
 运行 QQ 机器人
 
 ```shell
-npm run app qq  # 其他实例可更改discord kook villa
+npm run app qq  
+# 其他实例可更改 discord kook villa ntqq
 ```
