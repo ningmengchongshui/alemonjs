@@ -3,13 +3,7 @@ import { readdirSync, mkdirSync, existsSync } from 'fs'
 import { rollup, RollupOptions } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
-
-export interface compilationType {
-  input: string
-  file: string
-  external?: string[]
-}
-
+import { compilationType } from './types.js'
 /**
  * 编译插件
  * @param obj

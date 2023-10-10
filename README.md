@@ -1,20 +1,10 @@
-## Almeon 阿柠檬跨平台开发框架
+## Almeon rollup
 
-[☞Alemon 官网](https://alemonjs.com)
+> 单元编译工具
 
 ```
-npm init almeon@latest -y
+npm init almeon-rollup
 ```
-
-### 共享平台
-
-> 仓库只做资源收集,对齐安全性不做任何检查,请谨慎选择
-
-查看 ☞[贡献资源](https://gitee.com/ningmengchongshui/alemon/tree/web/docs/root/examples/about/plugins.md)
-
-### 平台推送
-
-> 仅限签署开源协议的仓库、不开源将不做考虑范围内
 
 ## 开源协议
 
