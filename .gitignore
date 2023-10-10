@@ -4,7 +4,8 @@ node_modules
 logs
 log
 /bin/*.js
+/bin/template/application/.nuxt
+/bin/template/application/*/apps.js
 /bin/template/config
 /bin/template/data
-/bin/template/application/alemon-plugin/alemon-plugin.json
-/bin/template/application/alemon-plugin/apps.js
+apps.js
