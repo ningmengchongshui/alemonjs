@@ -46,8 +46,9 @@ async function createAlemon({ name, force = false }) {
     console.log(`------------------------------------`);
     console.log(`cd ${name}          #进入机器人目录`);
     console.log(`npm run app discord #启动discord机器人`);
-    console.log(`npm run app qq      #启动qq频道机器人`);
     console.log(`npm run app villa   #启动villa机器人`);
+    console.log(`npm run app qq      #启动qq频道机器人`);
+    console.log(`npm run app ntqq    #启动NTQQ机器人`);
     console.log(`npm run app kook    #启动KOOK机器人`);
   } catch (error) {
     console.log(`${name} ${error}`);

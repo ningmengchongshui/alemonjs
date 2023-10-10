@@ -7,8 +7,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "preserveConstEnums": true,
-    "types": [
-      "node"
+    "typeRoots": [
+      "node_modules/@types"
     ]
   },
   "include": [
