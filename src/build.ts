@@ -3,22 +3,28 @@ import { readdirSync, mkdirSync, existsSync } from 'fs'
 import { rollup, RollupOptions } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
-import { compilationType } from './types.js'
+import { compilationOptions } from './types.js'
 /**
  * 编译插件
- * @param obj
+ * @param cfg
  * @returns
  */
-export async function compilationTools(obj: compilationType) {
+export async function compilationTools(cfg: compilationOptions) {
   try {
     const config: RollupOptions = {
-      input: [obj?.input],
+      input: [cfg?.aInput],
+      onwarn: (warning, warn) => {
+        // 忽略与无法解析的导入相关的警告信息
+        if (warning.code === 'UNRESOLVED_IMPORT') return
+        // 继续使用默认的警告处理
+        warn(warning)
+      },
       output: [
         {
           /**
            * 输出文件路径和名称
            */
-          file: obj?.file,
+          file: cfg?.aOutput,
           format: 'module',
           /**
            * 是否生成 sourcemap 文件
@@ -37,10 +43,11 @@ export async function compilationTools(obj: compilationType) {
           /**
            * 指定要匹配的文件路径模式
            */
-          include: [obj.input]
+          include: [cfg?.aOutput]
         })
       ],
-      external: obj?.external ?? []
+      // 新配置覆盖
+      ...cfg
     }
     /**
      * 使用 Rollup API 编译代码
@@ -49,7 +56,7 @@ export async function compilationTools(obj: compilationType) {
     /**
      * 判断
      */
-    if (config.output[0] && obj.file) {
+    if (config.output[0] && cfg.aOutput) {
       /**
        * 写入
        */
@@ -57,7 +64,9 @@ export async function compilationTools(obj: compilationType) {
       /**
        * 集成
        */
-      const apps = await import(`file://${join(process.cwd(), obj?.file)}`).catch(err => {
+      const apps = await import(
+        `file://${join(process.cwd(), cfg?.aOutput)}`
+      ).catch(err => {
         console.error(err)
         return {}
       })
@@ -67,7 +76,7 @@ export async function compilationTools(obj: compilationType) {
     }
   } catch (error) {
     console.error(error)
-    console.error('err:', obj.input)
+    console.error('err:', cfg.input)
     return {}
   }
 }
