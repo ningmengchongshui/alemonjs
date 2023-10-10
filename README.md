@@ -3,7 +3,7 @@
 安装
 
 ```shell
-npm init alemon@latest -y
+npm init alemonjs@latest -y
 ```
 
 进入机器目录

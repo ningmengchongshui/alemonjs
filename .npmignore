@@ -1,8 +1,21 @@
+# node
 node_modules
+
+# got
 /.gitignore
+
+# doc
 /doc.md
+
+# ts
 /tsconfig.json
 /bin/*.ts
 /.eslintrc.cjs
 
-# tempalte
+# template
+apps.js
+/bin/*.js
+/bin/template/application/.nuxt
+/bin/template/application/*/apps.js
+/bin/template/config
+/bin/template/data

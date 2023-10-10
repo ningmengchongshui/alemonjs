@@ -13,5 +13,5 @@ npm link
 ### 启动
 
 ```
-npm init alemon
+npm init alemonjs
 ```

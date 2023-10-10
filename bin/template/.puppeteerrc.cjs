@@ -1,39 +1,35 @@
-const os = require('os')
-const { existsSync } = require('fs')
+const { arch } = require('os')
+const { existsSync, realpathSync } = require('fs')
 const { execSync } = require('child_process')
-const arch = os.arch()
-/**
- * Downloa
- */
+const isArch = arch()
+const platform = process.platform
+const win32Edge = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+// Downloa
 let skipDownload = false
-/**
- * Path
- */
+// Path
 let executablePath
-/**
- * linux | android
- */
-if (process.platform == 'linux' || process.platform == 'android') {
+if (process.platform == 'win32' && existsSync(win32Edge)) {
+  //  win32  Edge
+  skipDownload = true
+  executablePath = win32Edge
+  console.info('[Win32 Edge] start')
+} else if (platform == 'linux' || platform == 'android') {
+  // linux | android
   const chromium = [
-    'chrome-browser',
-    'chrome',
-    'chromium-browser',
-    'chromium',
-    'firefox'
+    'whereis chrome-browser',
+    'whereis chrome',
+    'whereis chromium-browser',
+    'whereis chromium',
+    'whereis firefox'
   ]
-  /**
-   * get path
-   */
+  // get path
   for (const item of chromium) {
     try {
-      const chromiumPath = execSync(`whereis ${item}`)
-        .toString()
-        .split(' ')[1]
-        ?.trim()
+      const chromiumPath = execSync(item).toString().split(' ')[1]?.trim()
       if (chromiumPath) {
         skipDownload = true
-        executablePath = chromiumPath
-        console.info(`[Chromium] start ${item}`)
+        executablePath = realpathSync(chromiumPath)
+        console.info('[Chromium] start')
         break
       }
     } catch (error) {
@@ -41,9 +37,7 @@ if (process.platform == 'linux' || process.platform == 'android') {
       continue
     }
   }
-  /**
-   * not path
-   */
+  // not path
   if (!skipDownload) {
     /**
      * search
@@ -51,8 +45,7 @@ if (process.platform == 'linux' || process.platform == 'android') {
     const arr = [
       '/usr/bin/chromium',
       '/snap/bin/chromium',
-      '/usr/bin/chromium-browser',
-      '/opt/google/chrome/chrome'
+      '/usr/bin/chromium-browser'
     ]
     for (const item of arr) {
       if (existsSync(item)) {
@@ -63,31 +56,10 @@ if (process.platform == 'linux' || process.platform == 'android') {
       }
     }
   }
-  /**
-   * arm64/arrch64
-   */
-  if (arch == 'arm64' || arch == 'aarch64') {
+  //  arm64/arrch64
+  if (isArch == 'arm64' || isArch == 'aarch64') {
     console.info('[arm64/aarch64] system')
     skipDownload = true
-  }
-} else if (process.platform == 'win32') {
-  /**
-   * windows path
-   */
-  const win32 = {
-    Chrome: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
-    Edge: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-  }
-  /**
-   * win32  Edge
-   */
-  for (const item in win32) {
-    if (existsSync(win32[item])) {
-      skipDownload = true
-      executablePath = win32[item]
-      console.info(`[Win32] start ${item}`)
-      break
-    }
   }
 }
 /**

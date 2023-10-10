@@ -3,7 +3,7 @@
 运行机器人
 
 ```sh
-npm run nuxt    # 启动开发框架
+npm run nuxt    # 启动前后端框架
 npm run app qq  # 其他实例可更改discord kook villa ntqq
 ```
 
@@ -18,13 +18,14 @@ npm run lint         # 检查代码
 启动准备
 
 ```sh
-npm run build     # 未打包必须先打包
+npm run build     # 未打包前后端必须先打包
 npm run start     # 后台启动程序
 ```
 
 日常管理
 
 ```sh
+npm run server         # 单独启动前后端
 npm run login          # 登录机器人
 npm run stop           # 停止后台程序
 npm run delete         # 删除程序
