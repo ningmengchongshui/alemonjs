@@ -7,7 +7,7 @@ import { plugin, AMessage } from 'alemon'
  * 除非机器人主动在子频道中开通私信并回复消息才能接触禁止状态~
  * 此时要注意频道主允许机器人主动私聊
  */
-export class TestGroupme extends plugin {
+export class BotGroupme extends plugin {
   constructor() {
     super({
       /* 说明集*/

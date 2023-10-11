@@ -3,7 +3,7 @@ node_modules
 /help/
 
 # apps
-apps.js
+.apps
 
 # cache
 /data/

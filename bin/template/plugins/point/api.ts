@@ -1,3 +1,3 @@
-export { obtainingImages } from './src/img/index.js'
-export { getJson } from './db/local/config.js'
-export * from './app.config.js'
+export * from './src/img/index.js'
+export * from './db/local/config.js'
+export * from './config.js'

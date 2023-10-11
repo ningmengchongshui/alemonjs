@@ -26,5 +26,5 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "ext": "js,ts,css,scss"
+  "ext": "js,ts,css,less,scss"
 }
