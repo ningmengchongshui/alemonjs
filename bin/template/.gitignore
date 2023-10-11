@@ -5,6 +5,8 @@ node_modules
 # apps
 .apps
 
+apps.js
+
 # cache
 /data/
 
