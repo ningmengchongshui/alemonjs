@@ -3,67 +3,55 @@ import { readdirSync, mkdirSync, existsSync } from 'fs'
 import { rollup, RollupOptions } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
-
-export interface compilationType {
-  input: string
-  file: string
-  external?: string[]
+export interface compilationOptions {
+  aInput: string
+  aOutput: string
 }
 
 /**
  * 编译插件
- * @param obj
+ * @param cfg
  * @returns
  */
-export async function compilationTools(obj: compilationType) {
+export async function compilationTools(cfg: compilationOptions) {
+  const { aInput, aOutput } = cfg
   try {
     const config: RollupOptions = {
-      input: [obj?.input],
+      input: [aInput],
+      onwarn: (warning, warn) => {
+        // 忽略与无法解析的导入相关的警告信息
+        if (warning.code === 'UNRESOLVED_IMPORT') return
+        // 继续使用默认的警告处理
+        warn(warning)
+      },
       output: [
         {
-          /**
-           * 输出文件路径和名称
-           */
-          file: obj?.file,
+          // 输出文件路径和名称
+          file: aOutput,
           format: 'module',
-          /**
-           * 是否生成 sourcemap 文件
-           */
+          // 是否生成 sourcemap 文件
           sourcemap: false
         }
       ],
       plugins: [
         typescript({
-          /**
-           * 禁用声明文件的生成
-           */
+          // 禁用声明文件的生成
           declaration: false
         }),
         multiEntry({
-          /**
-           * 指定要匹配的文件路径模式
-           */
-          include: [obj.input]
+          // 指定要匹配的文件路径模式
+          include: [aOutput]
         })
-      ],
-      external: obj?.external ?? []
+      ]
     }
-    /**
-     * 使用 Rollup API 编译代码
-     */
+    // 使用 Rollup API 编译代码
     const bundle = await rollup(config)
-    /**
-     * 判断
-     */
-    if (config.output[0] && obj.file) {
-      /**
-       * 写入
-       */
+    // 判断
+    if (config.output[0] && aOutput) {
+      // 写入
       await bundle.write(config.output[0])
-      /**
-       * 集成
-       */
-      const apps = await import(`file://${join(process.cwd(), obj?.file)}`).catch(err => {
+      // 集成
+      const apps = await import(`file://${join(process.cwd(), aOutput)}`).catch(err => {
         console.error(err)
         return {}
       })
@@ -73,7 +61,7 @@ export async function compilationTools(obj: compilationType) {
     }
   } catch (error) {
     console.error(error)
-    console.error('err:', obj.input)
+    console.error('err:', aInput)
     return {}
   }
 }
