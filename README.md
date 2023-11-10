@@ -1,9 +1,9 @@
-## Almeon rollup
+## Arollup
 
-> 单元编译工具
+> 基于 rollup 的单元编译工具
 
 ```
-npm init almeon-rollup
+npm init arollup
 ```
 
 ## 开源协议
