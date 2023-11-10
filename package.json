@@ -40,10 +40,6 @@
     ".": {
       "import": "./lib/index.js",
       "types": "./types/index.d.ts"
-    },
-    "./build": {
-      "import": "./build.js",
-      "types": "./build.d.ts"
     }
   },
   "publishConfig": {
