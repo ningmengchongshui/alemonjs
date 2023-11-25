@@ -15,7 +15,6 @@ function createFile(tar: string, dist: string) {
   const DistPkg = join(cwd, dist)
   if (!existsSync(DistPkg)) {
     mkdirSync(dirname(DistPkg), { recursive: true })
-    console.log('no file')
     writeFileSync(DistPkg, '')
   }
   copyFileSync(Pkg, DistPkg)
@@ -78,10 +77,6 @@ function dev() {
     }
   }
 }
-
-/**
- *
- */
 if (arg.includes('dev')) {
   dev()
 } else if (arg.includes('build')) {
