@@ -1,7 +1,7 @@
 import nodemon, { Settings } from 'nodemon'
 import { buildModulsApps } from './index.js'
 import { Anodemon } from './nodemon.js'
-export function defineAfloat(options: {
+export async function defineAfloat(options: {
   control?: boolean
   build?: {
     input: string
@@ -33,17 +33,18 @@ export function defineAfloat(options: {
         await buildModulsApps(options?.build)
       }
     }
+    await build()
     // 配置 nodemon
     nodemon(Anodemon)
     // 监听启动事件
-    nodemon.on('start', async () => {
+    nodemon.on('start', () => {
       console.log('[Afloat] start')
-      await build()
     })
     // 监听文件更改事件
-    nodemon.on('restart', message => {
+    nodemon.on('restart', async message => {
       console.log('[Afloat] restart')
       console.log(message)
+      await build()
     })
     // 监听退出事件
     nodemon.on('quit', () => {
