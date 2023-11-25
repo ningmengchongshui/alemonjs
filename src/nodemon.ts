@@ -1,4 +1,5 @@
-export const Anodemon = {
+import { Settings } from 'nodemon'
+export const Anodemon: Settings = {
   verbose: true,
   delay: 1000,
   restartable: 'rs',

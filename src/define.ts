@@ -1,5 +1,5 @@
-import nodemon from 'nodemon'
-import { compilationTools } from './index.js'
+import nodemon, { Settings } from 'nodemon'
+import { buildModulsApps } from './index.js'
 import { commandRun } from './run.js'
 import { Anodemon } from './nodemon.js'
 export function defineAfloat(options: {
@@ -8,23 +8,31 @@ export function defineAfloat(options: {
     output: string
   }
   main?: string
-  nodemon?: nodemon.Settings
+  nodemon?: Settings
 }) {
+  for (const item in options.nodemon) {
+    Anodemon[item] = options.nodemon[item]
+  }
+  const argv = process.argv.slice(2)
+  if (options.main) {
+    argv.unshift(options.main)
+  }
   if (options?.build?.input) {
     const dir = options?.build?.input.split('/')
-    Anodemon.watch.push(dir[0])
+    if (Array.isArray(Anodemon.watch)) {
+      Anodemon.watch.push(dir[0])
+    }
   }
   if (options?.build?.output) {
-    Anodemon.ignore.push(options.build.output)
+    if (Array.isArray(Anodemon.ignore)) {
+      Anodemon.ignore.push(options.build.output)
+    }
   }
   const call = async () => {
     if (options?.build?.input && options.build?.output) {
-      await compilationTools({
-        aInput: options?.build?.input ?? 'apps/**/*.ts',
-        aOutput: options.build?.output ?? 'alemon.app.js'
-      })
+      await buildModulsApps(options?.build)
     }
-    commandRun(process.argv.slice(2))
+    commandRun(argv)
   }
   console.log('Anodemon', Anodemon)
   // 配置 nodemon
