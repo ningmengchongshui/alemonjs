@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -9,8 +9,10 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "ts-node afloat.config.ts",
+    "build": "node bin/afloat.js build qq",
     "tsc": "tsc",
     "format": "prettier --write .",
+    "tsc:bin": "tsc --module NodeNext --declaration bin/afloat.ts",
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
@@ -32,6 +34,9 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8"
   },
+  "bin": {
+    "afloat": "./bin/afloat.js"
+  },
   "exports": {
     ".": {
       "import": "./lib/index.js",
@@ -39,6 +44,7 @@
     }
   },
   "files": [
+    "bin/afloat.js",
     "lib",
     "types",
     "package.json",

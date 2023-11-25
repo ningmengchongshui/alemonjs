@@ -1,6 +1,7 @@
 import { Settings } from 'nodemon'
+const args = [...process.argv]
 export const Anodemon: Settings = {
-  args: process.argv.splice(2),
+  args: args.splice(2),
   script: 'alemon.config.ts',
   verbose: true,
   delay: 1000,
