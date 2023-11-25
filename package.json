@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -9,7 +9,7 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "ts-node afloat.config.ts",
-    "build": "node bin/afloat.js build qq",
+    "build": "node bin/afloat.js build",
     "tsc": "tsc",
     "format": "prettier --write .",
     "tsc:bin": "tsc --module NodeNext --declaration bin/afloat.ts",

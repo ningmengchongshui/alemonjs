@@ -3,4 +3,6 @@ lib
 types
 bin/**/*d.ts
 bin/**/*.js
+alemon.app.js
+main.js
 *.log
