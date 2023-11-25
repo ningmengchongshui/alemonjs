@@ -11,7 +11,7 @@ export async function buildTools(
     input: string
     output: string
   } = {
-    input: 'apps/**/*.ts',
+    input: 'apps/**/*.{ts,js}',
     output: 'alemon.app.js'
   }
 ) {
@@ -53,7 +53,7 @@ export async function buildModulsApps(
     input: string
     output: string
   } = {
-    input: 'apps/**/*.ts',
+    input: 'apps/**/*.{ts,js}',
     output: 'alemon.app.js'
   }
 ) {

@@ -1,7 +1,6 @@
 import { RollupOptions } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
-
 /**
  * 创建编译配置
  * @param aInput
