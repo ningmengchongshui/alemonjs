@@ -10,12 +10,20 @@
     "declaration": true,
     "declarationDir": "types",
     "outDir": "lib",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "lib", "types"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "types"
+  ]
 }
