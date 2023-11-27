@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { buildModulsApps } from '../lib/index.js'
-import { spawn } from 'child_process'
 import { mkdirSync, copyFileSync, existsSync, writeFileSync } from 'fs'
 import { join, dirname } from 'path'
+import { buildModulsApps } from '../lib/index.js'
+import { commandRun } from '../run.js'
 
 const argv = [...process.argv]
 const arg = argv.splice(2)
@@ -55,30 +55,8 @@ async function build() {
   createFile('package.json', `${dir}/package.json`)
 }
 
-function dev() {
-  const msg = arg.join(' ')
-  const files = msg.match(/(\S+\.js|\S+\.ts)/g) ?? ['afloat.config.ts']
-  const argsWithoutFiles = msg.replace(/(\S+\.js|\S+\.ts)/g, '')
-  if (files && files[0]) {
-    const app = files[0]
-    if (!existsSync(join(process.cwd(), app))) {
-      console.info('no file', app)
-    } else {
-      const isTypeScript = app.endsWith('.ts')
-      const command = isTypeScript ? 'ts-node' : 'node'
-      const cmd = `${command} ${app} ${argsWithoutFiles}`
-      const childProcess = spawn(cmd, { shell: true })
-      childProcess.stdout.on('data', data => {
-        process.stdout.write(data.toString())
-      })
-      childProcess.stderr.on('data', data => {
-        process.stderr.write(data.toString())
-      })
-    }
-  }
-}
 if (arg.includes('dev')) {
-  dev()
+  commandRun(arg, 'afloat.config.ts')
 } else if (arg.includes('build')) {
   await build()
 }
