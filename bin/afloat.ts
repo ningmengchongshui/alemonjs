@@ -34,11 +34,6 @@ async function build() {
       : arg.indexOf('--o') != -1
       ? arg.indexOf('--o')
       : false
-  const put = output != false ? arg[output + 1] : 'alemon.app.js'
-  await buildModulsApps({
-    input: input != false ? arg[input + 1] : 'apps/**/*.{ts,js}',
-    output: put
-  })
   const dist =
     arg.indexOf('--d') != -1
       ? arg.indexOf('--d')
@@ -50,8 +45,11 @@ async function build() {
       ? arg.indexOf('--dist')
       : false
   const dir = dist != false ? arg[dist + 1] : 'dist'
-  createFile(put, `${dir}/${put}`)
-  createFile('main.js', `${dir}/main.js`)
+  const put = output != false ? arg[output + 1] : `${dir}/main.js`
+  await buildModulsApps({
+    input: input != false ? arg[input + 1] : 'main.{ts,js}',
+    output: put
+  })
   createFile('package.json', `${dir}/package.json`)
 }
 
