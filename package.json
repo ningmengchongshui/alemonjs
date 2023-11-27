@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -11,8 +11,10 @@
     "dev": "ts-node afloat.config.ts",
     "build": "node bin/afloat.js build",
     "tsc": "tsc",
-    "format": "prettier --write .",
     "tsc:bin": "tsc --module NodeNext --declaration bin/afloat.ts",
+    "tsc:logs": "tsc --module NodeNext --declaration ./logs.ts",
+    "tsc:run": "tsc --module NodeNext --declaration ./run.ts",
+    "format": "prettier --write .",
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
   "dependencies": {
@@ -41,10 +43,22 @@
     ".": {
       "import": "./lib/index.js",
       "types": "./types/index.d.ts"
+    },
+    "./run": {
+      "import": "./run.js",
+      "types": "./run.d.ts"
+    },
+    "./logs": {
+      "import": "./logs.js",
+      "types": "./logs.d.ts"
     }
   },
   "files": [
     "bin/afloat.js",
+    "logs.d.ts",
+    "logs.js",
+    "run.d.ts",
+    "run.js",
     "lib",
     "types",
     "package.json",

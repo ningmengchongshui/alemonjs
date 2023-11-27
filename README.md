@@ -1,9 +1,22 @@
-## Arollup
+## Afloat
 
-> 基于 rollup 的单元编译工具
+> 单元编译工具
 
+```sh
+npm init afloat
 ```
-npm init arollup
+
+```ts
+import { defineAfloat } from 'afloat'
+export default defineAfloat({
+  build: {
+    input: 'apps/**/*.{ts,js}',
+    output: 'alemon.app.js'
+  },
+  nodemon: {
+    watch: ['a.login.config.ts', 'a.env.ts', 'src', 'db']
+  }
+})
 ```
 
 ## 开源协议

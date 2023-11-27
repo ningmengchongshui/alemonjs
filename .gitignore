@@ -6,3 +6,11 @@ bin/**/*.js
 alemon.app.js
 main.js
 *.log
+
+#脚本类
+logs.js
+logs.d.ts
+run.js
+run.d.ts
+build.js
+build.d.ts
