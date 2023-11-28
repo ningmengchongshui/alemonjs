@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 import { mkdirSync, copyFileSync, existsSync, writeFileSync, cpSync } from 'fs'
-import { join, dirname, resolve } from 'path'
+import { join, dirname } from 'path'
 import { buildModulsApps, commandRun } from '../lib/index.js'
-import { fileURLToPath } from 'url'
 
 const argv = [...process.argv]
 const arg = argv.splice(2)
@@ -52,11 +51,8 @@ async function build() {
   })
   // 指定
   cpFile('package.json', `${dir}/package.json`)
-  const currentFilePath = fileURLToPath(import.meta.url)
-  const currentDirPath = dirname(currentFilePath)
-  const alemonCliPath = resolve(currentDirPath)
   // ./ 指的是当前下 ..指的是根目录下
-  const publicPath = join(alemonCliPath, '../public')
+  const publicPath = join(process.cwd(), '/public')
   // 先指定，生成了目录文件夹，再循环
   cpSync(publicPath, `./${dir}/public`, { recursive: true })
 }
