@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -8,8 +8,6 @@
   "types": "types",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "ts-node afloat.config.ts",
-    "build": "node bin/afloat.js build",
     "tsc": "tsc",
     "tsc:bin": "tsc --module NodeNext  bin/afloat.ts",
     "tsc:logs": "tsc --module NodeNext --declaration ./logs.ts",
@@ -55,10 +53,10 @@
   },
   "files": [
     "bin/afloat.js",
-    "logs.d.ts",
-    "logs.js",
-    "run.d.ts",
     "run.js",
+    "run.d.ts",
+    "log.js",
+    "log.d.ts",
     "lib",
     "types",
     "package.json",

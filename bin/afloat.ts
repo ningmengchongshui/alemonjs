@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import { mkdirSync, copyFileSync, existsSync, writeFileSync } from 'fs'
-import { join, dirname } from 'path'
-import { buildModulsApps } from '../lib/index.js'
-import { commandRun } from '../run.js'
+import { mkdirSync, copyFileSync, existsSync, writeFileSync, cpSync } from 'fs'
+import { join, dirname, resolve } from 'path'
+import { buildModulsApps, commandRun } from '../lib/index.js'
+import { fileURLToPath } from 'url'
 
 const argv = [...process.argv]
 const arg = argv.splice(2)
 const cwd = process.cwd()
 
-function createFile(tar: string, dist: string) {
+function cpFile(tar: string, dist: string) {
   const Pkg = join(cwd, tar)
   if (!existsSync(Pkg)) return
   const DistPkg = join(cwd, dist)
@@ -50,11 +50,21 @@ async function build() {
     input: input != false ? arg[input + 1] : 'main.{ts,js}',
     output: put
   })
-  createFile('package.json', `${dir}/package.json`)
+  // 指定
+  cpFile('package.json', `${dir}/package.json`)
+  const currentFilePath = fileURLToPath(import.meta.url)
+  const currentDirPath = dirname(currentFilePath)
+  const alemonCliPath = resolve(currentDirPath)
+  // ./ 指的是当前下 ..指的是根目录下
+  const publicPath = join(alemonCliPath, '../public')
+  // 先指定，生成了目录文件夹，再循环
+  cpSync(publicPath, `./${dir}/public`, { recursive: true })
 }
 
 if (arg.includes('dev')) {
   commandRun(arg, 'afloat.config.ts')
 } else if (arg.includes('build')) {
   await build()
+} else if (arg.includes('run')) {
+  commandRun(arg)
 }
