@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -9,9 +9,10 @@
   "main": "lib/index.js",
   "scripts": {
     "tsc": "tsc",
-    "tsc:bin": "tsc --module NodeNext  bin/afloat.ts",
-    "tsc:logs": "tsc --module NodeNext --declaration ./logs.ts",
-    "tsc:run": "tsc --module NodeNext --declaration ./run.ts",
+    "tsc:bin": "tsc --module NodeNext  ./bin/afloat.ts",
+    "tsc:logs": "tsc --module NodeNext --declaration ./utils/logs.ts",
+    "tsc:run": "tsc --module NodeNext --declaration ./utils/run.ts",
+    "tsc:pkg": "tsc --module NodeNext --declaration ./utils/pkg.ts",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.ts --fix --ignore-path .gitignore"
   },
@@ -42,23 +43,25 @@
       "import": "./lib/index.js",
       "types": "./types/index.d.ts"
     },
-    "./run": {
-      "import": "./run.js",
-      "types": "./run.d.ts"
+    "./utils/run": {
+      "import": "./utils/run.js",
+      "types": "./utils/run.d.ts"
     },
-    "./logs": {
-      "import": "./logs.js",
-      "types": "./logs.d.ts"
+    "./utils/logs": {
+      "import": "./utils/logs.js",
+      "types": "./utils/logs.d.ts"
+    },
+    "./utils/pkg": {
+      "import": "./utils/pkg.js",
+      "types": "./utils/pkg.d.ts"
     }
   },
   "files": [
-    "bin/afloat.js",
-    "run.js",
-    "run.d.ts",
-    "logs.js",
-    "logs.d.ts",
-    "lib",
-    "types",
+    "bin/*.js",
+    "utils/*.js",
+    "utils/*.d.ts",
+    "lib/**/*.js",
+    "types/**/*.d.ts",
     "package.json",
     "LICENSE",
     "README.md"

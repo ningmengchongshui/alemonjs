@@ -8,9 +8,9 @@ main.js
 *.log
 
 #脚本类
-logs.js
-logs.d.ts
-run.js
-run.d.ts
-build.js
-build.d.ts
+utils/logs.js
+utils/logs.d.ts
+utils/run.js
+utils/run.d.ts
+utils/pkg.js
+utils/pkg.d.ts

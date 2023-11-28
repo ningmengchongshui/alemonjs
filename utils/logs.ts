@@ -1,4 +1,4 @@
-import { reSetLogs } from './lib/log.js'
+import { reSetLogs } from '../lib/log.js'
 reSetLogs(() => {
   return `[AlemonJS] [${new Date().toLocaleDateString(undefined, {
     year: 'numeric',
