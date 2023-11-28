@@ -14,7 +14,7 @@ export default defineAfloat({
     output: 'alemon.app.js'
   },
   nodemon: {
-    watch: ['a.login.config.ts', 'a.env.ts', 'src', 'db']
+    watch: ['a.*.{ts,js}']
   }
 })
 ```
