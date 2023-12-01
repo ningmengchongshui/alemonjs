@@ -11,8 +11,7 @@ export const Anodemon: Settings = {
   },
   ignore: ['node_modules'],
   watch: [],
-  env: {
-    NODE_ENV: 'development'
-  },
-  ext: 'js,ts'
+  env: {},
+  ext: 'js,ts',
+  envDir: ''
 }

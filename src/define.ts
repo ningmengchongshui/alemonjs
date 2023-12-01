@@ -1,15 +1,23 @@
 import nodemon from 'nodemon'
 import { buildModulsApps } from './index.js'
 import { Anodemon } from './nodemon.js'
+import dotenv from 'dotenv'
 export async function defineAfloat(options: {
   build?: {
     input: string
     output: string
   }
+  dotenv?: dotenv.DotenvConfigOptions
   nodemon?: nodemon.Settings
 }) {
   for (const item in options.nodemon) {
     Anodemon[item] = options.nodemon[item]
+  }
+  if (options.dotenv) {
+    dotenv.config(options.dotenv)
+  } else {
+    // 智能增加.dev文件
+    dotenv.config()
   }
   if (options?.build?.input) {
     if (Array.isArray(Anodemon.watch)) {

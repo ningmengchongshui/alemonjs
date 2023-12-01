@@ -1,6 +1,6 @@
 {
   "name": "afloat",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "afloat",
   "author": "ningmengchongshui",
   "license": "GPL-2.0",
@@ -30,6 +30,7 @@
     "@types/progress": "^2.0.5",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
