@@ -1,60 +1,34 @@
-import nodemon from 'nodemon'
-import { buildModulsApps } from './index.js'
 import { Anodemon } from './nodemon.js'
-import dotenv from 'dotenv'
-export async function defineAfloat(options: {
-  build?: {
-    input: string
-    output: string
-  }
-  dotenv?: dotenv.DotenvConfigOptions
-  nodemon?: nodemon.Settings
+import { DotenvConfigOptions } from 'dotenv'
+import { RollupOptions } from 'rollup'
+import { Settings } from 'nodemon'
+import { Arollup } from './rollup.js'
+
+/**
+ * 初始化配置
+ * @param options
+ * @returns
+ */
+export function defineAfloat(options: {
+  directory?: string
+  rollup?: RollupOptions
+  dotenv?: DotenvConfigOptions
+  nodemon?: Settings
 }) {
-  for (const item in options.nodemon) {
-    Anodemon[item] = options.nodemon[item]
-  }
-  if (options.dotenv) {
-    dotenv.config(options.dotenv)
-  } else {
-    // 智能增加.dev文件
-    dotenv.config()
-  }
-  if (options?.build?.input) {
-    if (Array.isArray(Anodemon.watch)) {
-      Anodemon.watch.push(options?.build?.input)
-    }
+  const nodemon = options.nodemon
+  for (const item in nodemon) {
+    Anodemon[item] = nodemon[item]
   }
   if (Anodemon.script) {
     if (Array.isArray(Anodemon.watch)) {
       Anodemon.watch.push(Anodemon.script)
     }
   }
-  if (options?.build?.output) {
-    if (Array.isArray(Anodemon.ignore)) {
-      Anodemon.ignore.push(options.build.output)
-    }
+  options.nodemon = Anodemon
+  const rollupOptions = options.rollup
+  for (const item in rollupOptions) {
+    Arollup[item] = rollupOptions[item]
   }
-  if (options?.build?.input && options.build?.output) {
-    await buildModulsApps(options?.build)
-  }
-  // 配置 nodemon
-  nodemon(Anodemon)
-  // 监听启动事件
-  nodemon.on('start', () => {
-    console.log('[Afloat] start')
-  })
-  // 监听文件更改事件
-  nodemon.on('restart', async message => {
-    console.log('[Afloat] restart')
-    console.log(message)
-    if (options?.build?.input && options.build?.output) {
-      await buildModulsApps(options?.build)
-    }
-  })
-  // 监听退出事件
-  nodemon.on('quit', () => {
-    console.log('[Afloat] quit')
-    process.exit()
-  })
-  return Anodemon
+  options.rollup = Arollup
+  return options
 }

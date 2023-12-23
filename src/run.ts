@@ -8,7 +8,7 @@ import { join } from 'path'
  */
 export function commandRun(ars?: string[], file = 'alemon.config.ts') {
   if (!ars) {
-    ars = process.argv.splice(2)
+    ars = [...process.argv.splice(2)]
   }
   const msg = ars.join(' ')
   const files = msg.match(/(\S+\.js|\S+\.ts)/g) ?? [file]
@@ -18,9 +18,7 @@ export function commandRun(ars?: string[], file = 'alemon.config.ts') {
     if (!existsSync(join(process.cwd(), app))) {
       console.info('no file', app)
     } else {
-      const isTypeScript = app.endsWith('.ts')
-      const command = isTypeScript ? 'ts-node' : 'node'
-      const cmd = `${command} ${app} ${argsWithoutFiles}`
+      const cmd = `ts-node ${app} ${argsWithoutFiles}`
       const childProcess = spawn(cmd, { shell: true })
       childProcess.stdout.on('data', data => {
         process.stdout.write(data.toString())
