@@ -4,8 +4,7 @@ import { join, dirname } from 'path'
 import { rollup, RollupOptions } from 'rollup'
 import { config, type DotenvConfigOptions } from 'dotenv'
 
-const argv = [...process.argv]
-const arg = argv.splice(2)
+const argv = [...process.argv].splice(2)
 const cwd = process.cwd()
 
 function cpFile(tar: string, dist: string) {
@@ -43,7 +42,7 @@ if (options.dotenv) {
   config()
 }
 
-if (arg.includes('dev') && options.nodemon) {
+if (argv.includes('dev') && options.nodemon) {
   // 配置 nodemon
   nodemon(options.nodemon)
   // 监听启动事件
@@ -60,7 +59,7 @@ if (arg.includes('dev') && options.nodemon) {
     console.log('[Afloat] quit')
     process.exit()
   })
-} else if (arg.includes('build') && options.rollup) {
+} else if (argv.includes('build') && options.rollup) {
   // 使用 Rollup API 编译代码
   const bundle = await rollup(options.rollup)
   // 判断

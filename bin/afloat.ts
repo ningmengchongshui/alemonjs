@@ -1,11 +1,21 @@
 #!/usr/bin/env node
-/**
- * bin负责执行ts文件
- * 不再处理任何ndoe逻辑
- */
-import { commandRun } from '../lib/run.js'
+import { spawn } from 'child_process'
+import { dirname, join, resolve } from 'path'
+import { fileURLToPath } from 'url'
 const argv = [...process.argv.splice(2)]
+const currentFilePath = fileURLToPath(import.meta.url)
+const currentDirPath = dirname(currentFilePath)
+const cwd = resolve(currentDirPath)
+const app = join(cwd, '../lib/bin.js')
 if (argv.includes('dev') || argv.includes('build')) {
-  commandRun(argv, 'lib/bin.js')
+  const argsWithoutFiles = argv.join(' ').replace(/(\S+\.js|\S+\.ts)/g, '')
+  const childProcess = spawn(`npx ts-node ${app} ${argsWithoutFiles}`, {
+    shell: true
+  })
+  childProcess.stdout.on('data', data => {
+    process.stdout.write(data.toString())
+  })
+  childProcess.stderr.on('data', data => {
+    process.stderr.write(data.toString())
+  })
 }
-// 如果是 start 也就是后台运行
