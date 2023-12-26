@@ -1,5 +1,5 @@
 import { RollupOptions } from 'rollup'
-import { typescript, multiEntry } from './plugins.js'
+import { typescript, multiEntry, terser } from './plugins.js'
 
 // 入口
 const AInput = 'main.{ts,js}'
@@ -31,6 +31,7 @@ export const Arollup = {
     multiEntry({
       // 指定要匹配的文件路径模式
       include: [Aoutput]
-    })
+    }),
+    terser()
   ]
 } as RollupOptions
