@@ -1,28 +1,19 @@
-## Afloat
+## 阿柠檬机器人
 
-> 单元编译工具
+安装
 
-```sh
-npm init afloat
+```shell
+npm init alemonjs@latest -y
 ```
 
-```ts
-import { defineAfloat } from 'afloat'
-export default defineAfloat({
-  build: {
-    input: 'apps/**/*.{ts,js}',
-    output: 'alemon.app.js'
-  },
-  nodemon: {
-    watch: ['a.*.{ts,js}']
-  }
-})
+进入机器目录
+
+```shell
+npm run alemonb
 ```
 
-## 开源协议
+运行机器人
 
-GNU GPL 是使用最广泛的自由软件许可证,并有强烈的版权要求
-
-分发衍生作品时,作品的源代码必须在同一许可证下可用
-
-GNUGPL 有多种变体,每个变体都有不同的要求
+```shell
+npm run dev   
+```

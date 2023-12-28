@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "command": "npm run app kook",
+      "name": "AlemonJS kook Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run app qq",
+      "name": "AlemonJS qq Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run app villa",
+      "name": "AlemonJS villa Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run app ntqq",
+      "name": "AlemonJS ntqq Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run app one",
+      "name": "AlemonJS one Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run app discord",
+      "name": "AlemonJS discord Debug",
+      "request": "launch",
+      "type": "node-terminal"
+    }
+  ]
+}

@@ -1,16 +1,5 @@
+# node
 node_modules
-lib
-types
-bin/**/*d.ts
-bin/**/*.js
-alemon.app.js
-main.js
-*.log
 
-#脚本类
-utils/logs.js
-utils/logs.d.ts
-utils/run.js
-utils/run.d.ts
-utils/pkg.js
-utils/pkg.d.ts
+# bin
+bin/*.js

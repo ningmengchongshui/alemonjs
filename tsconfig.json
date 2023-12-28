@@ -3,27 +3,21 @@
     "baseUrl": "./",
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "ignoreDeprecations": "5.0",
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "preserveConstEnums": true,
-    "declaration": true,
-    "declarationDir": "types",
-    "outDir": "lib",
     "typeRoots": [
       "node_modules/@types"
     ]
   },
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  },
   "include": [
-    "src"
+    "bin/alemonjs.ts"
   ],
   "exclude": [
     "node_modules",
-    "lib",
-    "types"
+    "bin/template1",
+    "bin/plugins",
+    "bin/dev"
   ]
 }
