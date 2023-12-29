@@ -19,7 +19,6 @@ npm run dev
 ```sh
 |-- .vscode/     代码片段
 |-- apps/    开发应用
-|-- plugins/ 集成应用
 |-- a.db.config.ts        数据登录配置
 |-- a.login.config.ts     个人登录配置
 |-- afloat.config.ts      热开发配置
@@ -28,4 +27,36 @@ npm run dev
 |-- afloat.run.js         PM2运行调用
 |-- pm2.cmd.cjs           PM2指令解析
 |-- pm2.config.cjs        PM2启动
+```
+
+## 必要依赖
+
+- eslint
+
+```sh
+npm install eslint
+```
+
+```sh
+npm install @typescript-eslint/eslint-plugin eslint-plugin-node
+```
+
+```sh
+npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+```sh
+npm install eslint-plugin-prettier eslint-config-prettier
+```
+
+- prettier
+
+```sh
+npm install prettier
+```
+
+- update
+
+```sh
+npm install alemonjs@latest  afloat@latest -D
 ```

@@ -9,10 +9,10 @@
     "declaration": true,
     "outDir": "dist",
     "removeComments": true,
-    "preserveConstEnums": true, 
+    "preserveConstEnums": true,
     "ignoreDeprecations": "5.0",
-    "allowJs": false, 
-    "suppressImplicitAnyIndexErrors": true, 
+    "allowJs": false,
+    "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "node_modules/@types"
     ]
@@ -24,6 +24,7 @@
   "include": [
     "plugins",
     "apps",
+    "apps.ts",
     "main.ts",
     "a.db.config.ts",
     "a.login.config.ts",
@@ -32,15 +33,11 @@
   ],
   "exclude": [
     "node_modules",
-    ".nuxt",
     ".cache",
-    ".output",
     ".vscode",
-    ".apps",
     "dist",
     "config",
     "data",
     "logs",
-    "help"
   ]
 }

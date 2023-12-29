@@ -1,20 +1,8 @@
-import { APlugin, AMessage } from 'alemonjs'
-export class PluginName extends APlugin {
-  constructor() {
-    super({
-      dsc: '插件描述',
-      rule: [
-        {
-          reg: /正则表达式/,
-          fnc: '方法名',
-          dsc: '/正则',
-          doc: '这条正则的意思'
-        }
-      ]
-    })
-  }
-  async 方法名(e: AMessage) {
-    e.reply('回复内容')
-    return
-  }
-}
+export * from './apps/img/local.js'
+export * from './apps/img/qrcode.js'
+export * from './apps/other/isrecall.js'
+export * from './apps/other/people.js'
+export * from './apps/user/at.js'
+export * from './apps/user/conversation.js'
+export * from './apps/user/msg.js'
+export * from './apps/user/urlimg.js'

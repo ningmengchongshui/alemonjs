@@ -3,8 +3,8 @@
     "scope": "typescript",
     "prefix": "plugin",
     "body": [
-      "import { APlugin , AMessage } from 'alemonjs'",
-      "\nexport class ${1:PluginName} extends APlugin {",
+      "import { plugin , AMessage } from 'alemonjs'",
+      "export class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",
       "      dsc: '${2:插件描述}',",
@@ -18,20 +18,20 @@
       "      ]",
       "    })",
       "  }",
-      "  async ${4:方法名}(e: AMessage) {",
+      "  async ${4:方法名}(e: AMessage){",
       "    e.reply('${5:回复内容}')",
       "    return",
       "  }",
-      "}\n"
+      "}"
     ],
     "description": "plugin文件模板"
   },
-  "Plugin Javascript": {
+  "Plugin JavaScript": {
     "scope": "javascript",
     "prefix": "plugin",
     "body": [
-      "import { APlugin } from 'alemonjs'",
-      "\nexport class ${1:PluginName} extends APlugin {",
+      "import { plugin } from 'alemonjs'",
+      "export class ${1:PluginName} extends plugin {",
       "  constructor() {",
       "    super({",
       "      dsc: '${2:插件描述}',",
@@ -49,8 +49,26 @@
       "    e.reply('${5:回复内容}')",
       "    return",
       "  }",
-      "}\n"
+      "}"
     ],
     "description": "plugin文件模板"
+  },
+  "App JavaScript": {
+    "scope": "javascript",
+    "prefix": "createApp",
+    "body": [
+      "import { createApp } from 'alemonjs'",
+      "createApp(import.meta.url).use({}).mount()"
+    ],
+    "description": "APP 模板"
+  },
+  "App TypeScript": {
+    "scope": "typescript",
+    "prefix": "createApp",
+    "body": [
+      "import { createApp } from 'alemonjs'",
+      "createApp(import.meta.url).use({}).mount()"
+    ],
+    "description": "APP 模板"
   }
 }

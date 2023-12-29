@@ -1,6 +1,6 @@
 {
   "name": "create-alemonjs",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "description": "alemonjs",
   "author": "ningmengchongshui",
   "main": "bin/index.js",
@@ -17,8 +17,6 @@
     "typescript": "^5.2.2"
   },
   "files": [
-    "bin/dev",
-    "bin/plugins",
     "bin/template",
     "bin/text",
     "bin/alemonjs.js"
