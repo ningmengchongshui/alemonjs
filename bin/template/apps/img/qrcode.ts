@@ -1,8 +1,7 @@
-import { APlugin, AMessage, createQrcode } from 'alemonjs'
+import { APlugin, AMessage } from 'alemonjs'
 export class TestQrcode extends APlugin {
   constructor() {
     super({
-      dsc: '发送图片',
       rule: [
         {
           reg: /^(#|\/)?百度一下$/,
@@ -18,8 +17,8 @@ export class TestQrcode extends APlugin {
    * @returns
    */
   async baidu(e: AMessage) {
-    const img = await createQrcode('https://www.baidu.com/')
+    const img = await e.segment.qrcode('https://www.baidu.com/')
     if (typeof img != 'boolean') e.reply(['百度一下,你就知道', img])
-    return 
+    return
   }
 }

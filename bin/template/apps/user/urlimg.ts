@@ -24,7 +24,7 @@ export class TestUrl extends APlugin {
    */
   async getAlmanac(e: AMessage) {
     e.reply(e.segment.http('https://api.xingzhige.com/API/yshl/'))
-    return 
+    return
   }
 
   /**
@@ -33,6 +33,6 @@ export class TestUrl extends APlugin {
    */
   async getAvatar(e: AMessage) {
     e.reply(e.segment.http(e.user_avatar))
-    return 
+    return
   }
 }

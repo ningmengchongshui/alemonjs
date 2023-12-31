@@ -19,6 +19,6 @@ export class IsRecall extends APlugin {
    */
   async onrecall(e: AMessage) {
     console.info(e.typing, '触发撤回消息')
-    return 
+    return
   }
 }

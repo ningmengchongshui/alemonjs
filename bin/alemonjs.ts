@@ -12,6 +12,10 @@ interface options {
   cancel: boolean
 }
 
+const currentFilePath = fileURLToPath(import.meta.url)
+const currentDirPath = dirname(currentFilePath)
+const alemonCliPath = resolve(currentDirPath)
+
 async function createAlemon({ name, force, cancel }: options) {
   // 名字不存在
   if (!name) process.exit()
@@ -30,11 +34,6 @@ async function createAlemon({ name, force, cancel }: options) {
   // 换行
   console.info('\n')
   try {
-    // 复制模板
-    const currentFilePath = fileURLToPath(import.meta.url)
-    const currentDirPath = dirname(currentFilePath)
-    const alemonCliPath = resolve(currentDirPath)
-
     //  templatePath  --> dirPath
     const templatePath = join(alemonCliPath, 'template')
     console.info('Copying template...')
@@ -56,29 +55,8 @@ async function createAlemon({ name, force, cancel }: options) {
     // 自动加载依赖
     if (!cancel) {
       // 加载基础
-      const theArr = ['art-template', 'ioredis', 'mysql2', 'sequelize', 'pm2']
-      console.info(`npm install ${theArr.join(' ')} -D`)
+      console.info(`npm install`)
       execSync('npm install', { stdio: 'inherit' })
-
-      // 加载框架
-      console.info('npm install alemonjs@latest  afloat@latest -D')
-      execSync('npm install alemonjs@latest  afloat@latest -D', {
-        stdio: 'inherit'
-      })
-
-      // 加载开发依赖
-      const arr: string[] = [
-        'eslint',
-        '@typescript-eslint/eslint-plugin',
-        'eslint-plugin-node',
-        '@typescript-eslint/parser',
-        'eslint-plugin-prettier',
-        'eslint-config-prettier',
-        'prettier'
-      ]
-
-      console.info(`npm install ${arr.join(' ')} -D`)
-      execSync(`npm install ${arr.join(' ')} -D`, { stdio: 'inherit' })
     }
 
     console.info(`------------------------------------`)
@@ -89,24 +67,14 @@ async function createAlemon({ name, force, cancel }: options) {
     // 提示加载依赖
     if (cancel) {
       console.info(`------------------------------------`)
-      console.info(`rm -rf .npmrc  #国际网需删除.npmc`)
-      const theArr = ['art-template', 'ioredis', 'mysql2', 'sequelize', 'pm2']
-      console.info(`npm install ${theArr.join(' ')} -D`)
-      console.info('npm install alemonjs@latest  afloat@latest -D')
-      const arr: string[] = [
-        'eslint',
-        '@typescript-eslint/eslint-plugin',
-        'eslint-plugin-node',
-        '@typescript-eslint/parser',
-        'eslint-plugin-prettier',
-        'eslint-config-prettier',
-        'prettier'
-      ]
-      console.info(`npm install ${arr.join(' ')} -D`)
+      console.info(`rm -rf .npmrc  #国际环境需删除.npmc`)
+      console.info(`npm install`)
     }
 
     console.info(`------------------------------------`)
-    console.info(`npm run dev      #开发启动`)
+    console.info(`npm run dev      #开发模式`)
+    console.info(`npm run build    #打包应用`)
+    console.info(`npm run image    #图片调试`)
   } catch (error) {
     console.info(`${name} ${error}`)
     return

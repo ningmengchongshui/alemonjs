@@ -7,7 +7,7 @@ export class TestMessage extends APlugin {
           reg: /^(#|\/)?数组消息$/,
           fnc: 'getArrMsg',
           dsc: '/数组消息',
-          doc: '数组类型消息也是支持的'
+          doc: '支持数组类型消息'
         }
       ]
     })
@@ -19,6 +19,6 @@ export class TestMessage extends APlugin {
    */
   async getArrMsg(e: AMessage) {
     e.reply(['123\n', '456', '789'])
-    return 
+    return
   }
 }

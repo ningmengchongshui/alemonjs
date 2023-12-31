@@ -7,9 +7,7 @@ export class TestPeople extends APlugin {
       typing: 'CREATE',
       rule: [
         {
-          fnc: 'peopleAdd',
-          dsc: '成员加入',
-          doc: '成员加入'
+          fnc: 'peopleAdd'
         }
       ]
     })
@@ -20,7 +18,7 @@ export class TestPeople extends APlugin {
    */
   async peopleAdd(e: AMessage) {
     console.log(e.event, '成员加入')
-    return 
+    return
   }
 }
 
@@ -45,7 +43,7 @@ export class PeopleDelete extends APlugin {
    */
   async peopleDelete(e: AMessage) {
     console.log(e.event, '成员更新')
-    return 
+    return
   }
 }
 
@@ -70,6 +68,6 @@ export class PeopleUpdata extends APlugin {
    */
   async peopleUpdata(e: AMessage) {
     console.log(e.event, '成员退出')
-    return 
+    return
   }
 }

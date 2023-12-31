@@ -13,9 +13,7 @@
     "ignoreDeprecations": "5.0",
     "allowJs": false,
     "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "ts-node": {
     "esm": true,
@@ -29,7 +27,7 @@
     "a.db.config.ts",
     "a.login.config.ts",
     "afloat.config.ts",
-    "alemon.config.ts",
+    "alemon.config.ts"
   ],
   "exclude": [
     "node_modules",
@@ -38,6 +36,6 @@
     "dist",
     "config",
     "data",
-    "logs",
+    "logs"
   ]
 }

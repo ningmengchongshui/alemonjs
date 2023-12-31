@@ -11,5 +11,5 @@ export default defineAlemonConfig({
     state: process.argv.includes('ntqq')
   },
   redis,
-  mysql,
+  mysql
 })

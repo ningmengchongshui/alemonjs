@@ -10,8 +10,22 @@
 
 ## 使用方法
 
+- 开发模式
+
 ```ts
 npm run dev
+```
+
+- 打包应用
+
+```ts
+npm run build
+```
+
+- 图片调试
+
+```ts
+npm run image
 ```
 
 ## 目录
@@ -27,36 +41,4 @@ npm run dev
 |-- afloat.run.js         PM2运行调用
 |-- pm2.cmd.cjs           PM2指令解析
 |-- pm2.config.cjs        PM2启动
-```
-
-## 必要依赖
-
-- eslint
-
-```sh
-npm install eslint
-```
-
-```sh
-npm install @typescript-eslint/eslint-plugin eslint-plugin-node
-```
-
-```sh
-npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin
-```
-
-```sh
-npm install eslint-plugin-prettier eslint-config-prettier
-```
-
-- prettier
-
-```sh
-npm install prettier
-```
-
-- update
-
-```sh
-npm install alemonjs@latest  afloat@latest -D
 ```

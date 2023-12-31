@@ -1,8 +1,4 @@
-import {
-  APlugin,
-  AMessage,
-  Conversation,
-} from 'alemonjs'
+import { APlugin, AMessage, Conversation } from 'alemonjs'
 export class TestConversation extends APlugin {
   constructor() {
     super({
@@ -23,7 +19,7 @@ export class TestConversation extends APlugin {
    */
   async startCall(e: AMessage) {
     e.reply('好的,现在开始你的个人对话')
-    /** 
+    /**
      * **********
      * 设置对话机
      * **********
@@ -51,13 +47,12 @@ export class TestConversation extends APlugin {
       await Conversation.passing(e.user_id, state)
       return
     })
-    
-    
+
     // 设置状态
     await Conversation.passing(e.user_id, {
       step: 0, //会话次数
       data: e.msg, //携带的数据
-      fnc: () => { } //携带的方法
+      fnc: () => {} //携带的方法
     })
     return
   }

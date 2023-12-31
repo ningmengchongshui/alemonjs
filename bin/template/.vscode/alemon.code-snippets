@@ -70,5 +70,25 @@
       "createApp(import.meta.url).use({}).mount()"
     ],
     "description": "APP 模板"
+  },
+  "Vue Template": {
+    "scope": "vue",
+    "prefix": "template",
+    "body": [
+      "<script>",
+      "  createApp({",
+      "    setup: () => ({",
+      "      data: BOT_DATA",
+      "    })",
+      "  }).mount('#app')",
+      "</script>",
+      "<template>",
+      "  <div>",
+      "  </div>",
+      "</template>",
+      "<style>",
+      "</style>"
+    ],
+    "description": "APP 模板"
   }
 }
