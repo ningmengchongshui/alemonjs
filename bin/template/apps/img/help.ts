@@ -20,7 +20,7 @@ export class TestHelp extends APlugin {
    */
   async getHelp(e: AMessage) {
     const list = HELP.get(app.name)
-    const img = await obtainingImages('/pages/help.vue', [
+    const img = await obtainingImages('/public/pages/help.vue', [
       {
         group: '指令示范效果',
         list: list
