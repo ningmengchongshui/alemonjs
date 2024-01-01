@@ -26,12 +26,6 @@
       "type": "node-terminal"
     },
     {
-      "command": "npm run app one",
-      "name": "AlemonJS one Debug",
-      "request": "launch",
-      "type": "node-terminal"
-    },
-    {
       "command": "npm run app discord",
       "name": "AlemonJS discord Debug",
       "request": "launch",
