@@ -1,4 +1,4 @@
-import { APlugin, AMessage, getPluginHelp } from 'alemonjs'
+import { APlugin, AMessage, HELP } from 'alemonjs'
 import { obtainingImages } from '../../src/api.js'
 import { app } from '../../config.js'
 export class TestHelp extends APlugin {
@@ -19,9 +19,8 @@ export class TestHelp extends APlugin {
    * @returns
    */
   async getHelp(e: AMessage) {
-    const list = getPluginHelp(app.name)
-
-    const img = await obtainingImages('/public/pages/help.vue', [
+    const list = HELP.get(app.name)
+    const img = await obtainingImages('/pages/help.vue', [
       {
         group: '指令示范效果',
         list: list
