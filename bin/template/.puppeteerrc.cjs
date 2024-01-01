@@ -42,7 +42,8 @@ if (process.platform == 'win32' && existsSync(win32Edge)) {
     const arr = [
       '/usr/bin/chromium',
       '/snap/bin/chromium',
-      '/usr/bin/chromium-browser'
+      '/usr/bin/chromium-browser',
+      '/data/data/com.termux/files/usr/lib/chromium-browser'
     ]
     for (const item of arr) {
       if (existsSync(item)) {
