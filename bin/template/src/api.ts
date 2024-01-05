@@ -1,4 +1,4 @@
-import { createImage } from 'alemon-image'
+import { createImage } from 'alemonjs'
 import { app } from '../config.js'
 // 绑定@的位置
 const Image = createImage(app.cwd())
