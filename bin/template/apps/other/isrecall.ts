@@ -1,14 +1,11 @@
-import { APlugin, AMessage } from 'alemonjs'
+import { APlugin, AEvent } from 'alemonjs'
 export class IsRecall extends APlugin {
   constructor() {
     super({
-      dsc: '撤回消息',
       typing: 'DELETE',
       rule: [
         {
-          fnc: 'onrecall',
-          dsc: '撤回消息',
-          doc: '有人撤回就会触发'
+          fnc: 'onrecall'
         }
       ]
     })
@@ -17,7 +14,7 @@ export class IsRecall extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async onrecall(e: AMessage) {
+  async onrecall(e: AEvent) {
     console.info(e.typing, '触发撤回消息')
     return
   }

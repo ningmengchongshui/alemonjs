@@ -13,8 +13,8 @@
       <div class="body-point-font">{{ val.group }}</div>
     </div>
     <div v-for="item of val.list" class="body-box">
-      <div class="body-box-font-title">{{ item.dsc }}</div>
-      <div class="body-box-font-desc">{{ item.doc }}</div>
+      <div class="body-box-font-title">{{ item.priority }}</div>
+      <div class="body-box-font-desc">{{ item.func }}</div>
     </div>
   </div>
   <div class="body-buttom"></div>

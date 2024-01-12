@@ -1,13 +1,16 @@
 # Node dependencies
+
 node_modules
 
 # alemon dev/config
+
 /data/
 stats.html
 alemon.app.js
 dist
 
 # Logs
+
 log
 logs
 *.log

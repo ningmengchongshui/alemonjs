@@ -1,13 +1,11 @@
-import { APlugin, AMessage } from 'alemonjs'
+import { APlugin, AEvent } from 'alemonjs'
 export class TestLocal extends APlugin {
   constructor() {
     super({
       rule: [
         {
           reg: /^(#|\/)?柠檬图标$/,
-          fnc: 'sculpture',
-          dsc: '/柠檬图标',
-          doc: '看看定制的图标'
+          fnc: 'sculpture'
         }
       ]
     })
@@ -16,7 +14,7 @@ export class TestLocal extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async sculpture(e: AMessage) {
+  async sculpture(e: AEvent) {
     const img = e.segment.img('public/img/help/icon.jpg')
     if (typeof img != 'boolean') e.reply(img)
     return

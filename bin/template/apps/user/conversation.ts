@@ -1,59 +1,62 @@
-import { APlugin, AMessage, Conversation } from 'alemonjs'
+import { APlugin, AEvent } from 'alemonjs'
 export class TestConversation extends APlugin {
   constructor() {
     super({
-      dsc: '对话机示范',
+      // 对话机示范
       rule: [
         {
           reg: /^(#|\/)?你好呀$/,
-          fnc: 'startCall',
-          dsc: '/你好呀',
-          doc: '对话机开始触发'
+          fnc: 'startCall'
         }
       ]
     })
   }
+
+  state: {
+    [key: string]: number
+  } = {}
+
   /**
    * @param e 消息对象
    * @returns
    */
-  async startCall(e: AMessage) {
+  async startCall(e: AEvent) {
     e.reply('好的,现在开始你的个人对话')
     /**
      * **********
-     * 设置对话机
+     * 设置上下文
      * **********
      */
+    this.subscribe('reBack')
+    return
+  }
 
-    // 添加回调
-    Conversation.add(e.user_id, async (e: AMessage, state) => {
-      /* 对话次数 */
-      state.step += 1
-
-      /* 判断对话 */
-      if (state.step >= 3) {
-        await Conversation.remove(e.user_id)
-        setTimeout(() => {
-          /* 关闭对话 */
-          e.reply(`对话次数已达上限~对话关闭`)
-        }, 1000)
-        return
-      }
-
-      // 反馈状态
-      e.reply(`[${state.step}]${e.msg}`)
-
-      // 更新状态
-      await Conversation.passing(e.user_id, state)
+  async reBack(e: AEvent) {
+    if (/^^(#|\/)?关闭/.test(e.msg)) {
+      e.reply(`验证结束`)
+      // 关闭
+      delete this.state[e.user_id]
+      // 取消
+      this.cancel()
       return
-    })
+    }
 
-    // 设置状态
-    await Conversation.passing(e.user_id, {
-      step: 0, //会话次数
-      data: e.msg, //携带的数据
-      fnc: () => {} //携带的方法
-    })
+    // init
+    if (!this.state[e.user_id]) this.state[e.user_id] = 0
+    // ++
+    this.state[e.user_id] += 1
+
+    // v
+    if (this.state[e.user_id] > 3) {
+      e.reply(`验证失败`)
+      // 关闭
+      delete this.state[e.user_id]
+      // 取消
+      this.cancel()
+      return
+    }
+
+    e.reply(`[${this.state[e.user_id]}]请输入正确密码:${e.msg}`)
     return
   }
 }

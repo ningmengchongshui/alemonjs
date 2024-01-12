@@ -5,9 +5,7 @@ export class TestAt extends APlugin {
       rule: [
         {
           reg: /^(#|\/)?艾特一下$/,
-          fnc: 'AtOne',
-          dsc: '/艾特一下',
-          doc: '响应所有艾特'
+          fnc: 'AtOne'
         }
       ]
     })

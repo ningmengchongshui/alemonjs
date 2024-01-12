@@ -1,9 +1,9 @@
-import { APlugin, AMessage } from 'alemonjs'
+import { APlugin, AEvent } from 'alemonjs'
 export class TestPeople extends APlugin {
   constructor() {
     super({
-      dsc: '成员加入',
-      event: 'GUILD_MEMBERS',
+      // 成员加入
+      event: 'MEMBERS',
       typing: 'CREATE',
       rule: [
         {
@@ -16,7 +16,7 @@ export class TestPeople extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleAdd(e: AMessage) {
+  async peopleAdd(e: AEvent) {
     console.log(e.event, '成员加入')
     return
   }
@@ -25,14 +25,12 @@ export class TestPeople extends APlugin {
 export class PeopleDelete extends APlugin {
   constructor() {
     super({
-      dsc: '成员更新',
-      event: 'GUILD_MEMBERS',
+      // 成员更新
+      event: 'MEMBERS',
       typing: 'UPDATE',
       rule: [
         {
-          fnc: 'peopleDelete',
-          dsc: '成员更新',
-          doc: '成员更新'
+          fnc: 'peopleDelete'
         }
       ]
     })
@@ -41,7 +39,7 @@ export class PeopleDelete extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleDelete(e: AMessage) {
+  async peopleDelete(e: AEvent) {
     console.log(e.event, '成员更新')
     return
   }
@@ -50,14 +48,12 @@ export class PeopleDelete extends APlugin {
 export class PeopleUpdata extends APlugin {
   constructor() {
     super({
-      dsc: '成员退出',
-      event: 'GUILD_MEMBERS',
+      // 成员退出
+      event: 'MEMBERS',
       typing: 'DELETE',
       rule: [
         {
-          fnc: 'peopleUpdata',
-          dsc: '成员退出',
-          doc: '成员退出'
+          fnc: 'peopleUpdata'
         }
       ]
     })
@@ -66,7 +62,7 @@ export class PeopleUpdata extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async peopleUpdata(e: AMessage) {
+  async peopleUpdata(e: AEvent) {
     console.log(e.event, '成员退出')
     return
   }

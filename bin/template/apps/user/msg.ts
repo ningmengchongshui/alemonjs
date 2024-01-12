@@ -1,13 +1,11 @@
-import { APlugin, AMessage } from 'alemonjs'
+import { APlugin, AEvent } from 'alemonjs'
 export class TestMessage extends APlugin {
   constructor() {
     super({
       rule: [
         {
           reg: /^(#|\/)?数组消息$/,
-          fnc: 'getArrMsg',
-          dsc: '/数组消息',
-          doc: '支持数组类型消息'
+          fnc: 'getArrMsg'
         }
       ]
     })
@@ -17,7 +15,7 @@ export class TestMessage extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async getArrMsg(e: AMessage) {
+  async getArrMsg(e: AEvent) {
     e.reply(['123\n', '456', '789'])
     return
   }

@@ -41,8 +41,8 @@ async function createAlemon({ name, force, cancel }: options) {
 
     //  txtPath  --> textPath
     const txtPath = join(alemonCliPath, 'text')
-    copyFile(`${txtPath}/npmrc`, `${dirPath}/.npmrc`, err => {})
-    copyFile(`${txtPath}/gitignore`, `${dirPath}/.gitignore`, err => {})
+    copyFile(`${txtPath}/npmrc.log`, `${dirPath}/.npmrc`, err => {})
+    copyFile(`${txtPath}/gitignore.log`, `${dirPath}/.gitignore`, err => {})
 
     //  pluginsPath  --> dirPath
     // const pluginsPath = join(alemonCliPath, 'plugins')
