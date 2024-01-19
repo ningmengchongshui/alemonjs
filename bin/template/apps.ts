@@ -1,4 +1,3 @@
-export * from './apps/img/help.js'
 export * from './apps/img/local.js'
 export * from './apps/img/qrcode.js'
 export * from './apps/other/isrecall.js'

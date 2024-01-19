@@ -1,4 +1,6 @@
 import { APlugin, AEvent } from 'alemonjs'
+import { obtainingImages } from '../../src/api.js'
+import { app } from '../../config.js'
 export class TestLocal extends APlugin {
   constructor() {
     super({
@@ -6,6 +8,10 @@ export class TestLocal extends APlugin {
         {
           reg: /^(#|\/)?柠檬图标$/,
           fnc: 'sculpture'
+        },
+        {
+          reg: /^(#|\/)?柠檬帮助$/,
+          fnc: 'help'
         }
       ]
     })
@@ -17,6 +23,34 @@ export class TestLocal extends APlugin {
   async sculpture(e: AEvent) {
     const img = e.segment.img('public/img/help/icon.jpg')
     if (typeof img != 'boolean') e.reply(img)
+    return
+  }
+
+  /**
+   * @param e 消息对象
+   * @returns
+   */
+  async help(e: AEvent) {
+    const img = await obtainingImages('/public/pages/help.vue', [
+      {
+        group: '指令示范效果',
+        list: [
+          {
+            name: '/百度一下',
+            doc: '二维码'
+          },
+          {
+            name: '/你好呀',
+            doc: '上下文机制'
+          },
+          {
+            name: '/原神黄历',
+            doc: '网络图片'
+          }
+        ]
+      }
+    ])
+    if (img) e.reply(img)
     return
   }
 }
