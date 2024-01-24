@@ -6,7 +6,7 @@
 
 [KOOK 平台](https://developer.kookapp.cn/doc/)
 
-> 配置了解[https://alemonjs.com](https://alemonjs.com/alemon/v2.x/examples/introduction/config.html)
+> 配置了解[https://alemonjs.com](https://alemonjs.com/)
 
 ## 使用方法
 

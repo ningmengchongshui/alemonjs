@@ -70,7 +70,7 @@
     "prefix": "template",
     "body": [
       "<script>",
-      "  createApp({",
+      "  Vue.createApp({",
       "    setup: () => ({",
       "      data: BOT_DATA",
       "    })",

@@ -111,12 +111,12 @@ var Vue = (function (exports) {
         typeof globalThis !== 'undefined'
           ? globalThis
           : typeof self !== 'undefined'
-          ? self
-          : typeof window !== 'undefined'
-          ? window
-          : typeof global !== 'undefined'
-          ? global
-          : {})
+            ? self
+            : typeof window !== 'undefined'
+              ? window
+              : typeof global !== 'undefined'
+                ? global
+                : {})
     )
   }
 
@@ -359,12 +359,12 @@ var Vue = (function (exports) {
     return isString(val)
       ? val
       : val == null
-      ? ''
-      : isArray(val) ||
-        (isObject(val) &&
-          (val.toString === objectToString || !isFunction(val.toString)))
-      ? JSON.stringify(val, replacer, 2)
-      : String(val)
+        ? ''
+        : isArray(val) ||
+            (isObject(val) &&
+              (val.toString === objectToString || !isFunction(val.toString)))
+          ? JSON.stringify(val, replacer, 2)
+          : String(val)
   }
   const replacer = (_key, val) => {
     if (val && val.__v_isRef) {
@@ -861,8 +861,8 @@ var Vue = (function (exports) {
                 ? shallowReadonlyMap
                 : readonlyMap
               : shallow
-              ? shallowReactiveMap
-              : reactiveMap
+                ? shallowReactiveMap
+                : reactiveMap
             ).get(target) || // receiver is not the reactive proxy, but has the same prototype
           // this means the reciever is a user proxy of the reactive proxy
           Object.getPrototypeOf(target) === Object.getPrototypeOf(receiver)
@@ -1249,8 +1249,8 @@ var Vue = (function (exports) {
         ? shallowReadonlyInstrumentations
         : shallowInstrumentations
       : isReadonly
-      ? readonlyInstrumentations
-      : mutableInstrumentations
+        ? readonlyInstrumentations
+        : mutableInstrumentations
     return (target, key, receiver) => {
       if (key === '__v_isReactive') {
         return !isReadonly
@@ -3695,8 +3695,8 @@ var Vue = (function (exports) {
             oldValue === INITIAL_WATCHER_VALUE
               ? void 0
               : isMultiSource && oldValue[0] === INITIAL_WATCHER_VALUE
-              ? []
-              : oldValue,
+                ? []
+                : oldValue,
             onCleanup
           ])
           oldValue = newValue
@@ -4169,8 +4169,8 @@ var Vue = (function (exports) {
         vnode.component
         ? vnode.component.subTree
         : vnode.children
-        ? vnode.children[0]
-        : void 0
+          ? vnode.children[0]
+          : void 0
       : vnode
   }
   function setTransitionHooks(vnode, hooks) {
@@ -5378,8 +5378,8 @@ var Vue = (function (exports) {
         const get = isFunction(opt)
           ? opt.bind(publicThis, publicThis)
           : isFunction(opt.get)
-          ? opt.get.bind(publicThis, publicThis)
-          : NOOP
+            ? opt.get.bind(publicThis, publicThis)
+            : NOOP
         if (get === NOOP) {
           warn$1(`Computed property "${key}" has no getter.`)
         }
@@ -6980,8 +6980,8 @@ var Vue = (function (exports) {
         node.nodeType === 3 /* TEXT */
           ? `(text)`
           : isComment(node) && node.data === '['
-          ? `(start of fragment)`
-          : ``,
+            ? `(start of fragment)`
+            : ``,
         `
   - expected on client:`,
         vnode.type
@@ -7081,8 +7081,8 @@ var Vue = (function (exports) {
           ? ''
           : false
         : clientValue == null
-        ? false
-        : String(clientValue)
+          ? false
+          : String(clientValue)
       if (actual !== expected) {
         mismatchType = `attribute`
         mismatchKey = key
@@ -9393,14 +9393,14 @@ var Vue = (function (exports) {
     const shapeFlag = isString(type)
       ? 1
       : isSuspense(type)
-      ? 128
-      : isTeleport(type)
-      ? 64
-      : isObject(type)
-      ? 4
-      : isFunction(type)
-      ? 2
-      : 0
+        ? 128
+        : isTeleport(type)
+          ? 64
+          : isObject(type)
+            ? 4
+            : isFunction(type)
+              ? 2
+              : 0
     if (shapeFlag & 4 && isProxy(type)) {
       type = toRaw(type)
       warn$1(
@@ -10297,8 +10297,8 @@ var Vue = (function (exports) {
         namespace === 'svg'
           ? doc.createElementNS(svgNS, tag)
           : namespace === 'mathml'
-          ? doc.createElementNS(mathmlNS, tag)
-          : doc.createElement(tag, is ? { is } : void 0)
+            ? doc.createElementNS(mathmlNS, tag)
+            : doc.createElement(tag, is ? { is } : void 0)
       if (tag === 'select' && props && props.multiple != null) {
         el.setAttribute('multiple', props.multiple)
       }
@@ -10334,8 +10334,8 @@ var Vue = (function (exports) {
           namespace === 'svg'
             ? `<svg>${content}</svg>`
             : namespace === 'mathml'
-            ? `<math>${content}</math>`
-            : content
+              ? `<math>${content}</math>`
+              : content
         const template = templateContainer.content
         if (namespace === 'svg' || namespace === 'mathml') {
           const wrapper = template.firstChild
@@ -11017,8 +11017,8 @@ var Vue = (function (exports) {
       key[0] === '.'
         ? ((key = key.slice(1)), true)
         : key[0] === '^'
-        ? ((key = key.slice(1)), false)
-        : shouldSetAsProp(el, key, nextValue, isSVG)
+          ? ((key = key.slice(1)), false)
+          : shouldSetAsProp(el, key, nextValue, isSVG)
     ) {
       patchDOMProp(
         el,
@@ -13370,10 +13370,10 @@ var Vue = (function (exports) {
         raw === '.' || raw === ':'
           ? 'bind'
           : raw === '@'
-          ? 'on'
-          : raw === '#'
-          ? 'slot'
-          : raw.slice(2)
+            ? 'on'
+            : raw === '#'
+              ? 'slot'
+              : raw.slice(2)
       if (!inVPre && name === '') {
         emitError(26, start)
       }
@@ -13944,8 +13944,8 @@ var Vue = (function (exports) {
       currentOptions.parseMode === 'html'
         ? 1
         : currentOptions.parseMode === 'sfc'
-        ? 2
-        : 0
+          ? 2
+          : 0
     tokenizer.inXML = currentOptions.ns === 1 || currentOptions.ns === 2
     const delimiters = options == null ? void 0 : options.delimiters
     if (delimiters) {
@@ -14343,8 +14343,8 @@ var Vue = (function (exports) {
         const removalIndex = node
           ? list.indexOf(node)
           : context.currentNode
-          ? context.childIndex
-          : -1
+            ? context.childIndex
+            : -1
         if (removalIndex < 0) {
           throw new Error(`node being removed is not a child of current parent`)
         }
@@ -15452,10 +15452,10 @@ var Vue = (function (exports) {
           const slotOutlet = isSlotOutlet(node)
             ? node
             : isTemplate &&
-              node.children.length === 1 &&
-              isSlotOutlet(node.children[0])
-            ? node.children[0]
-            : null
+                node.children.length === 1 &&
+                isSlotOutlet(node.children[0])
+              ? node.children[0]
+              : null
           if (slotOutlet) {
             childBlock = slotOutlet.codegenNode
             if (isTemplate && keyProperty) {
@@ -15781,8 +15781,8 @@ var Vue = (function (exports) {
     const slotFlag = hasDynamicSlots
       ? 2
       : hasForwardedSlots(node.children)
-      ? 3
-      : 1
+        ? 3
+        : 1
     let slots = createObjectExpression(
       slotsProperties.concat(
         createObjectProperty(
@@ -17166,14 +17166,14 @@ var Vue = (function (exports) {
     return isStaticClick
       ? createSimpleExpression(event, true)
       : key.type !== 4
-      ? createCompoundExpression([
-          `(`,
-          key,
-          `) === "onClick" ? "${event}" : (`,
-          key,
-          `)`
-        ])
-      : key
+        ? createCompoundExpression([
+            `(`,
+            key,
+            `) === "onClick" ? "${event}" : (`,
+            key,
+            `)`
+          ])
+        : key
   }
   const transformOn = (dir, node, context) => {
     return transformOn$1(dir, node, context, baseResult => {
