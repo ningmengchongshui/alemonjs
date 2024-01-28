@@ -16,12 +16,13 @@ export class TestAt extends APlugin {
    * @returns
    */
   async AtOne(e: AMessage) {
-    e.reply([e.segment.at(e.user_id), '艾特一下'])
-    if (e.segment.atChannel && e.channel_id) {
-      e.reply(e.segment.atChannel(e.channel_id))
+    const segment = e.segment
+    e.reply([segment.at(e.user_id), '艾特一下'])
+    if (segment.atChannel && e.channel_id) {
+      e.reply(segment.atChannel(e.channel_id))
     }
-    if (e.segment.link) {
-      e.reply(e.segment.link('阿柠檬', 'https://alemonjs.com'))
+    if (segment.link) {
+      e.reply(segment.link('阿柠檬', 'https://alemonjs.com'))
     }
     return
   }

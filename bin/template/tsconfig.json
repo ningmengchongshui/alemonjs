@@ -25,10 +25,12 @@
     "plugins",
     "apps",
     "apps.ts",
+    "api.ts",
     "main.ts",
-    "a.login.config.ts",
+    "config.ts",
     "afloat.config.ts",
-    "alemon.config.ts"
+    "alemon.config.ts",
+    "alemon.login.ts"
   ],
   "exclude": [
     "node_modules",

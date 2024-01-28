@@ -1,6 +1,5 @@
 import { APlugin, AEvent } from 'alemonjs'
 import { obtainingImages } from '../../src/api.js'
-import { app } from '../../config.js'
 export class TestLocal extends APlugin {
   constructor() {
     super({
@@ -21,7 +20,8 @@ export class TestLocal extends APlugin {
    * @returns
    */
   async sculpture(e: AEvent) {
-    const img = e.segment.img('public/img/help/icon.jpg')
+    const segment = e.segment
+    const img = segment.img('public/img/help/icon.jpg')
     if (typeof img != 'boolean') e.reply(img)
     return
   }

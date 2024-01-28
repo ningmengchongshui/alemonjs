@@ -19,7 +19,8 @@ export class TestUrl extends APlugin {
    * @returns
    */
   async getAlmanac(e: AEvent) {
-    e.reply(e.segment.http('https://api.xingzhige.com/API/yshl/'))
+    const segment = e.segment
+    e.reply(segment.http('https://api.xingzhige.com/API/yshl/'))
     return
   }
 
@@ -28,7 +29,8 @@ export class TestUrl extends APlugin {
    * @returns
    */
   async getAvatar(e: AEvent) {
-    e.reply(e.segment.http(e.user_avatar))
+    const segment = e.segment
+    e.reply(segment.http(e.user_avatar))
     return
   }
 }

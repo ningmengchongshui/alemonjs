@@ -15,7 +15,8 @@ export class TestQrcode extends APlugin {
    * @returns
    */
   async baidu(e: AEvent) {
-    const img = await e.segment.qrcode('https://www.baidu.com/')
+    const segment = e.segment
+    const img = await segment.qrcode('https://www.baidu.com/')
     if (typeof img != 'boolean') e.reply(['百度一下,你就知道', img])
     return
   }

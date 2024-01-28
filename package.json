@@ -1,6 +1,6 @@
 {
   "name": "create-alemonjs",
-  "version": "1.2.0-rc.2",
+  "version": "1.2.0-rc.3",
   "description": "alemonjs",
   "author": "ningmengchongshui",
   "main": "bin/index.js",
