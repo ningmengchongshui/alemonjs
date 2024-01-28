@@ -24,13 +24,16 @@
   "include": [
     "plugins",
     "apps",
-    "apps.ts",
-    "api.ts",
+    "src/apps.ts",
+    "router.ts",
     "main.ts",
     "config.ts",
     "afloat.config.ts",
     "alemon.config.ts",
-    "alemon.login.ts"
+    "alemon.login.ts",
+    "src/apps/user",
+    "src/apps/other",
+    "src/apps/img"
   ],
   "exclude": [
     "node_modules",

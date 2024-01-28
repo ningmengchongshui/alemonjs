@@ -1,5 +1,5 @@
 import { APlugin, AEvent } from 'alemonjs'
-import { obtainingImages } from '../../src/api.js'
+import { obtainingImages } from '../../utils.js'
 export class TestLocal extends APlugin {
   constructor() {
     super({
