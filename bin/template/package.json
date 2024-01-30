@@ -10,20 +10,20 @@
     "dev": "afloat dev",
     "image": "afloat image",
     "build": "afloat build",
+    "start": "afloat pm2 startOrRestart pm2.config.cjs",
+    "stop": "afloat pm2 stop pm2.config.cjs",
+    "restart": "afloat pm2 restart pm2.config.cjs",
+    "delete": "afloat pm2 delete pm2.config.cjs",
+    "logs": "afloat pm2 logs",
+    "list": "afloat pm2 list",
+    "startup": "afloat pm2 startup",
+    "update": "afloat pm2 update",
+    "monit": "afloat pm2 monit",
+    "save": "afloat pm2 save",
+    "kill": "afloat pm2 kill",
     "format": "prettier --write .",
     "pull:l": "find . -type d -name '.git' -execdir git pull --all \\;",
-    "pull:w": "cd application && for /d %i in (*) do (echo Updating %i && cd %i && git pull && cd ..) ",
-    "start": "pm2 startOrRestart pm2.config.cjs",
-    "stop": "pm2 stop pm2.config.cjs",
-    "restart": "pm2 restart pm2.config.cjs",
-    "delete": "pm2 delete pm2.config.cjs",
-    "logs": "pm2 logs",
-    "list": "pm2 list",
-    "startup": "pm2 startup",
-    "update": "pm2 update",
-    "monit": "pm2 monit",
-    "save": "pm2 save",
-    "kill": "pm2 kill"
+    "pull:w": "cd application && for /d %i in (*) do (echo Updating %i && cd %i && git pull && cd ..) "
   },
   "dependencies": {
     "ioredis": "^5.3.2",
@@ -31,9 +31,8 @@
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
-    "afloat": "^1.2.0-rc.0",
-    "alemonjs": "^1.2.0-rc.19",
-    "pm2": "^5.3.0",
+    "afloat": "^1.2.0-rc.6",
+    "alemonjs": "^1.2.0-rc.22",
     "prettier": "^3.1.1"
   },
   "workspaces": [
