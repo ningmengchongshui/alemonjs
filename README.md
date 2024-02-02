@@ -15,5 +15,5 @@ npm run alemonb
 运行机器人
 
 ```shell
-npm run dev   
+npm run dev
 ```

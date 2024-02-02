@@ -1,5 +1,5 @@
-import { createImage } from 'alemonjs'
-import { app } from '../config.js'
+import { createImage, importPath } from 'alemonjs'
+const app = importPath(import.meta.url)
 // 绑定@的位置
 const Image = createImage(app.cwd())
 /**

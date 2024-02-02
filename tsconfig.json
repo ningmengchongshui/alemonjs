@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -15,9 +14,6 @@
     "bin/alemonjs.ts"
   ],
   "exclude": [
-    "node_modules",
-    "bin/template1",
-    "bin/plugins",
-    "bin/dev"
+    "node_modules"
   ]
 }

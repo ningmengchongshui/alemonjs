@@ -1,9 +1,9 @@
 <script>
-Vue.createApp({
-  setup: () => ({
-    data: BOT_DATA
-  })
-}).mount('#app')
+  Vue.createApp({
+    setup: () => ({
+      data: BOT_DATA
+    })
+  }).mount('#app')
 </script>
 
 <template>
@@ -31,19 +31,19 @@ Vue.createApp({
 </head>
 
 <style>
-.body-top {
-  background: url('@/img/help/top.jpg');
-}
+  .body-top {
+    background: url('@/img/help/top.jpg');
+  }
 
-.body-point {
-  background: url('@/img/help/point.jpg');
-}
+  .body-point {
+    background: url('@/img/help/point.jpg');
+  }
 
-.body-box {
-  background: url('@/img/help/box.jpg');
-}
+  .body-box {
+    background: url('@/img/help/box.jpg');
+  }
 
-.body-buttom {
-  background: url('@/img/help/buttom.jpg');
-}
+  .body-buttom {
+    background: url('@/img/help/buttom.jpg');
+  }
 </style>

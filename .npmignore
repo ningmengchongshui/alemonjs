@@ -1,6 +1,2 @@
-# node
-node_modules
-
-# bin
-bin/alemonjs.ts
-bin/README.md
+!.npmrc
+!.gitignore
