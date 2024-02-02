@@ -1,5 +1,5 @@
-import { APlugin, AEvent } from 'alemonjs'
-import { obtainingImages } from '../../utils.js'
+import { APlugin, type AEvent } from 'alemonjs'
+import { obtainingImages } from '../../utils/image.js'
 export class TestLocal extends APlugin {
   constructor() {
     super({

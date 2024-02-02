@@ -1,4 +1,4 @@
-import { APlugin, AEvent } from 'alemonjs'
+import { APlugin,  type AEvent } from 'alemonjs'
 export class TestMessage extends APlugin {
   constructor() {
     super({

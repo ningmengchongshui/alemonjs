@@ -1,7 +1,7 @@
 import { defineAfloat } from 'afloat'
 export default defineAfloat({
   nodemon: {
-    watch: ['a.*.{ts,js}', 'apps', 'apps.ts']
+    watch: ['alemon.*.{ts,js}', 'src']
     // env 自动识别 .env文件
   }
 })

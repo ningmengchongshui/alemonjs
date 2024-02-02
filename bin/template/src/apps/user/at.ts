@@ -1,4 +1,4 @@
-import { APlugin, AMessage } from 'alemonjs'
+import { APlugin, type AEvent } from 'alemonjs'
 export class TestAt extends APlugin {
   constructor() {
     super({
@@ -15,7 +15,7 @@ export class TestAt extends APlugin {
    * @param e 消息对象
    * @returns
    */
-  async AtOne(e: AMessage) {
+  async AtOne(e: AEvent) {
     const segment = e.segment
     e.reply([segment.at(e.user_id), '艾特一下'])
     if (segment.atChannel && e.channel_id) {

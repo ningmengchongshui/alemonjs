@@ -1,4 +1,4 @@
-import { APlugin, AEvent } from 'alemonjs'
+import { APlugin,type AEvent } from 'alemonjs'
 export class IsRecall extends APlugin {
   constructor() {
     super({
