@@ -1,6 +1,6 @@
 {
   "name": "create-alemonjs",
-  "version": "1.2.0-rc.7",
+  "version": "1.2.0-rc.8",
   "description": "alemonjs",
   "author": "ningmengchongshui",
   "main": "bin/index.js",
@@ -18,8 +18,7 @@
   },
   "files": [
     "bin/template",
-    "bin/template/.gitignore",
-    "bin/template/.npmrc",
+    "bin/cache",
     "bin/alemonjs.js"
   ],
   "bin": {

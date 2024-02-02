@@ -40,9 +40,13 @@ async function createAlemon({ name, force, cancel }: options) {
     cpSync(templatePath, dirPath, { recursive: true })
 
     //  txtPath  --> textPath
-    // const txtPath = join(alemonCliPath, 'text')
-    // copyFile(`${txtPath}/npmrc.log`, `${dirPath}/.npmrc`, err => {})
-    // copyFile(`${txtPath}/gitignore.log`, `${dirPath}/.gitignore`, err => {})
+    const txtPath = join(alemonCliPath, 'cache')
+
+    if (existsSync(`${txtPath}/npmrc.md`)) {
+      copyFile(`${txtPath}/npmrc.md`, `${dirPath}/.npmrc`, console.error)
+    }
+
+    // copyFile(`${txtPath}/gitignore.log`, `${dirPath}/.gitignore`,  console.error)
 
     //  pluginsPath  --> dirPath
     // const pluginsPath = join(alemonCliPath, 'plugins')
