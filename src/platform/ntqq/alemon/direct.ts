@@ -106,10 +106,10 @@ export async function directController(
   const content = Array.isArray(msg)
     ? msg.join('')
     : typeof msg === 'string'
-    ? msg
-    : typeof msg === 'number'
-    ? `${msg}`
-    : ''
+      ? msg
+      : typeof msg === 'number'
+        ? `${msg}`
+        : ''
 
   if (content == '') {
     return {
@@ -155,6 +155,42 @@ export async function directController(
       content,
       msg_id,
       msg_type: 0,
+      msg_seq: ClientNTQQ.getMsgSeq(msg_id)
+    })
+  }
+}
+
+export async function directControllerMarkdown(
+  msg: string | number | (string | number)[],
+  open_id: string,
+  msg_id: string
+): Promise<{
+  middle: any[]
+  backhaul: any
+}> {
+  const content = Array.isArray(msg)
+    ? msg.join('')
+    : typeof msg === 'string'
+      ? msg
+      : typeof msg === 'number'
+        ? `${msg}`
+        : ''
+
+  if (content == '') {
+    return {
+      middle: [],
+      backhaul: false
+    }
+  }
+
+  return {
+    middle: [],
+    backhaul: await ClientNTQQ.usersOpenMessages(open_id, {
+      markdown: {
+        content: content
+      },
+      msg_id,
+      msg_type: 2,
       msg_seq: ClientNTQQ.getMsgSeq(msg_id)
     })
   }

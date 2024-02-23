@@ -9,7 +9,7 @@ import { BotMessage } from '../bot.js'
 import { USER_DATA } from '../types.js'
 import { ABotConfig } from '../../../../config/index.js'
 
-import { directController } from '../direct.js'
+import { directController, directControllerMarkdown } from '../direct.js'
 
 export const C2C_MESSAGE_CREATE = async (event: USER_DATA) => {
   const masterID = ABotConfig.get('ntqq').masterID
@@ -52,6 +52,13 @@ export const C2C_MESSAGE_CREATE = async (event: USER_DATA) => {
     ): Promise<any> => {
       const msg_id = select?.msg_id ?? event.id
       return await directController(msg, open_id, msg_id)
+    },
+    replyMarkdown: async (
+      msg: string | number | (string | number)[],
+      select?: MessageBingdingOption
+    ): Promise<any> => {
+      const msg_id = select?.msg_id ?? event.id
+      return await directControllerMarkdown(msg, open_id, msg_id)
     }
   }
   APPS.responseMessage(e)
