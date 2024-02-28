@@ -8,8 +8,8 @@ import { segmentNTQQ } from '../segment.js'
 import { BotMessage } from '../bot.js'
 import { ABotConfig } from '../../../../config/index.js'
 import { GROUP_DATA } from '../types.js'
-import { replyController } from '../reply.js'
-import { directController } from '../direct.js'
+import { replyController, replyControllerMarkdown } from '../reply.js'
+import { directController, directControllerMarkdown } from '../direct.js'
 /**
  * 公私域合并
  * @param e
@@ -65,6 +65,23 @@ export const GROUP_AT_MESSAGE_CREATE = async (event: GROUP_DATA) => {
       }
       const group_id = select?.guild_id ?? event.group_id
       return await replyController(msg, group_id, msg_id)
+    },
+    /**
+     * 回复群聊的Markdown格式消息
+     * @param msg Markdown文本消息
+     * @param select 选择信息
+     * @returns
+     */
+    replyMarkdown: async (
+      msg: string | number | (string | number)[],
+      select?: MessageBingdingOption
+    ): Promise<any> => {
+      const msg_id = select?.msg_id ?? event.id
+      if (select?.open_id && select?.open_id != '') {
+        return await directControllerMarkdown(msg, select?.open_id, msg_id)
+      }
+      const group_id = select?.guild_id ?? event.group_id
+      return await replyControllerMarkdown(msg, group_id, msg_id)
     }
   }
 

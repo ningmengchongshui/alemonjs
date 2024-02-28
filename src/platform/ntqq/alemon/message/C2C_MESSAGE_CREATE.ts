@@ -24,6 +24,9 @@ export const C2C_MESSAGE_CREATE = async (event: USER_DATA) => {
     isMaster: Array.isArray(masterID)
       ? masterID.includes(event.author.id)
       : event.author.id == masterID,
+    /**
+     * user_open_id
+     */
     channel_id: event.author.user_openid,
     guild_name: '',
     guild_avatar: '',
@@ -39,6 +42,9 @@ export const C2C_MESSAGE_CREATE = async (event: USER_DATA) => {
     msg: event.content,
     msg_id: event.id,
     quote: '',
+    /**
+     * user_open_id
+     */
     open_id: open_id,
     //
     user_id: event.author.id,
@@ -53,6 +59,12 @@ export const C2C_MESSAGE_CREATE = async (event: USER_DATA) => {
       const msg_id = select?.msg_id ?? event.id
       return await directController(msg, open_id, msg_id)
     },
+    /**
+     * 回复Markdown文本信息
+     * @param msg Markdown文本消息
+     * @param select 选择信息
+     * @returns
+     */
     replyMarkdown: async (
       msg: string | number | (string | number)[],
       select?: MessageBingdingOption

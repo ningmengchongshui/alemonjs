@@ -344,6 +344,28 @@ export interface ReplyBase {
     middle: any[]
     backhaul: any
   }>
+  /**
+   * !注意!,目前只有ntqq可用,其他平台会报错;
+   * !Warning!,only for platforms of ntqq;
+   * Markdown消息发送机制
+   * @param content 消息
+   * @param select.quote 引用消息编号,默认无引用
+   * @param select.withdraw 撤回消息,默认不撤回
+   * 文件名会进行解析后得到正确文件后缀
+   */
+  replyMarkdown?(
+    /**
+     * Markdown消息内容
+     */
+    msg: string | number | (string | number)[],
+    /**
+     * 选择
+     */
+    select?: MessageBingdingOption
+  ): Promise<{
+    middle: any[]
+    backhaul: any
+  }>
 }
 
 export interface MessageBingdingOption {

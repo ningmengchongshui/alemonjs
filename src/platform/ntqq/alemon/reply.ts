@@ -114,10 +114,10 @@ export async function replyController(
   const content = Array.isArray(msg)
     ? msg.join('')
     : typeof msg === 'string'
-    ? msg
-    : typeof msg === 'number'
-    ? `${msg}`
-    : ''
+      ? msg
+      : typeof msg === 'number'
+        ? `${msg}`
+        : ''
 
   if (content == '') {
     return {
@@ -164,6 +164,42 @@ export async function replyController(
       content,
       msg_id,
       msg_type: 0,
+      msg_seq: ClientNTQQ.getMsgSeq(msg_id)
+    })
+  }
+}
+
+export async function replyControllerMarkdown(
+  msg: string | number | (string | number)[],
+  guild_id: string,
+  msg_id: string
+): Promise<{
+  middle: any[]
+  backhaul: any
+}> {
+  const content = Array.isArray(msg)
+    ? msg.join('')
+    : typeof msg === 'string'
+      ? msg
+      : typeof msg === 'number'
+        ? `${msg}`
+        : ''
+
+  if (content == '') {
+    return {
+      middle: [],
+      backhaul: false
+    }
+  }
+
+  return {
+    middle: [],
+    backhaul: await ClientNTQQ.groupOpenMessages(guild_id, {
+      markdown: {
+        content: content
+      },
+      msg_id,
+      msg_type: 2,
       msg_seq: ClientNTQQ.getMsgSeq(msg_id)
     })
   }
