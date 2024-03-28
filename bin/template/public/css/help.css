@@ -1,3 +1,8 @@
+html,
+body {
+  margin: 0;
+}
+
 .body-point-font {
   padding-left: 145px;
   padding-top: 33px;
@@ -24,19 +29,23 @@
 .body-top {
   height: 480px;
   background-size: 100% 100%;
+  background-image: url('../img/help/top.jpg');
 }
 
 .body-point {
   height: 100px;
   background-size: 100% 100%;
+  background-image: url('../img/help/point.jpg');
 }
 
 .body-box {
   height: 190px;
   background-size: 100% 100%;
+  background-image: url('../img/help/box.jpg');
 }
 
 .body-buttom {
   height: 120px;
+  background-image: url('../img/help/buttom.jpg');
   background-size: 100% 100%;
 }

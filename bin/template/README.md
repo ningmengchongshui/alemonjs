@@ -22,12 +22,6 @@ npm run dev
 npm run build
 ```
 
-- 图片调试
-
-```ts
-npm run image
-```
-
 ## 目录
 
 ```sh
@@ -38,7 +32,4 @@ npm run image
 |-- afloat.config.ts      热开发配置
 |-- alemon.config.ts      机器运行配置
 |-- main.ts               开发应用入口
-|-- afloat.run.js         PM2运行调用
-|-- pm2.cmd.cjs           PM2指令解析
-|-- pm2.config.cjs        PM2启动
 ```

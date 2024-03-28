@@ -14,12 +14,6 @@
       "type": "node-terminal"
     },
     {
-      "command": "npm run app villa",
-      "name": "AlemonJS villa Debug",
-      "request": "launch",
-      "type": "node-terminal"
-    },
-    {
       "command": "npm run app ntqq",
       "name": "AlemonJS ntqq Debug",
       "request": "launch",

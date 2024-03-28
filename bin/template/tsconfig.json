@@ -5,28 +5,24 @@
     "noImplicitAny": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "noEmit": false,
     "declaration": true,
     "outDir": "dist",
     "removeComments": true,
     "preserveConstEnums": true,
     "ignoreDeprecations": "5.0",
+    "jsx": "react",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
     "allowJs": false,
     "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "ts-node": {
     "esm": true,
+    "transpileOnly": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": [
-    "plugins",
-    "afloat.*.ts",
-    "alemon.*.ts",
-    "src",
-  ],
+  "include": ["plugins", "afloat.*.ts", "alemon.*.ts", "src"],
   "exclude": [
     "node_modules",
     ".cache",
