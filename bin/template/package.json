@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@types/react-dom": "^18.2.22",
-    "afloat": "^1.2.0-rc.10",
-    "alemonjs": "^1.2.0-rc.26",
+    "afloat": "^1.2.0-rc.13",
+    "alemonjs": "^1.2.0-rc.34",
     "prettier": "^3.1.1"
   },
   "workspaces": [
