@@ -64,25 +64,5 @@
       "createApp(import.meta.url).use({}).mount()"
     ],
     "description": "App TypeScript Template"
-  },
-  "Vue Template": {
-    "scope": "vue",
-    "prefix": "template",
-    "body": [
-      "<script>",
-      "  Vue.createApp({",
-      "    setup: () => ({",
-      "      data: BOT_DATA",
-      "    })",
-      "  }).mount('#app')",
-      "</script>",
-      "<template>",
-      "  <div>",
-      "  </div>",
-      "</template>",
-      "<style>",
-      "</style>"
-    ],
-    "description": "APP Template"
   }
 }

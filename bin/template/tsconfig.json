@@ -22,17 +22,11 @@
   },
   "include": [
     "plugins",
-    "afloat.*.ts",
-    "alemon.*.ts",
+    "afloat.*.{ts,tsx,js,jsx}",
+    "alemon.*.{ts,tsx,js,jsx}",
     "src"
   ],
   "exclude": [
     "node_modules",
-    ".cache",
-    ".vscode",
-    "dist",
-    "config",
-    "data",
-    "logs"
   ]
 }
