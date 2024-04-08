@@ -5,7 +5,7 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 const app = importPath(import.meta.url)
 // component
-import HelpComponent, { DataType } from './conponent/help.tsx'
+import HelpComponent, { DataType } from './conponent/help'
 // cwd
 const cwd = app.cwd()
 // dir

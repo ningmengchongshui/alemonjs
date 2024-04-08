@@ -7,6 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "app": "afloat app",
     "dev": "afloat dev",
     "image": "afloat image",
     "build": "afloat build",
@@ -21,9 +22,7 @@
     "monit": "afloat pm2 monit",
     "save": "afloat pm2 save",
     "kill": "afloat pm2 kill",
-    "format": "prettier --write .",
-    "pull:l": "find . -type d -name '.git' -execdir git pull --all \\;",
-    "pull:w": "cd application && for /d %i in (*) do (echo Updating %i && cd %i && git pull && cd ..) "
+    "format": "prettier --write ."
   },
   "dependencies": {
     "ioredis": "^5.3.2",
@@ -34,8 +33,8 @@
   },
   "devDependencies": {
     "@types/react-dom": "^18.2.22",
-    "afloat": "^1.2.0-rc.13",
-    "alemonjs": "^1.2.0-rc.34",
+    "afloat": "^1.2.0-rc.14",
+    "alemonjs": "^1.2.0-rc.36",
     "prettier": "^3.1.1"
   },
   "workspaces": [
