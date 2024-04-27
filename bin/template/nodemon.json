@@ -1,0 +1,16 @@
+{
+  "exec": "ts-node node_modules/alemonjs/dist/run.js",
+  "verbose": true,
+  "delay": 1000,
+  "restartable": "rs",
+  "execMap": {
+    "ts": "ts-node"
+  },
+  "ignore": ["node_modules"],
+  "watch": ["src", "alemon.*.{js,ts,tsx,jsx}"],
+  "env": {
+    "ALEMONJS_MESSAGE": "dev"
+  },
+  "ext": "js,ts,tsx,jsx",
+  "envDir": ""
+}

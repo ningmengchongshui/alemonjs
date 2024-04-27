@@ -1,5 +1,5 @@
 {
-  "name": "alemonjs",
+  "name": "alemonb",
   "version": "1.0.0",
   "description": "阿柠檬机器人",
   "author": "ningmengchongshui",
@@ -7,35 +7,35 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "app": "afloat app",
-    "dev": "afloat dev",
-    "image": "afloat image",
-    "build": "afloat build",
-    "start": "afloat pm2 startOrRestart pm2.config.cjs",
-    "stop": "afloat pm2 stop pm2.config.cjs",
-    "restart": "afloat pm2 restart pm2.config.cjs",
-    "delete": "afloat pm2 delete pm2.config.cjs",
-    "logs": "afloat pm2 logs",
-    "list": "afloat pm2 list",
-    "startup": "afloat pm2 startup",
-    "update": "afloat pm2 update",
-    "monit": "afloat pm2 monit",
-    "save": "afloat pm2 save",
-    "kill": "afloat pm2 kill",
+    "app": "alemonjs",
+    "dev": "nodemon -q",
+    "build": "rollup --config rollup.config.js",
+    "start": "pm2 startOrRestart pm2.config.cjs",
+    "stop": "pm2 stop pm2.config.cjs",
+    "delete": "pm2 delete pm2.config.cjs",
+    "pm2": "pm2",
     "format": "prettier --write ."
   },
   "dependencies": {
+    "alemonjs": "^1.2.1-rc.2",
     "ioredis": "^5.3.2",
     "mysql2": "^3.5.2",
-    "sequelize": "^6.32.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sequelize": "^6.32.1"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-multi-entry": "^6.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.3",
     "@types/react-dom": "^18.2.22",
-    "afloat": "^1.2.0-rc.14",
-    "alemonjs": "^1.2.0-rc.36",
-    "prettier": "^3.1.1"
+    "nodemon": "^3.0.1",
+    "pm2": "^5.3.0",
+    "prettier": "^3.2.5",
+    "rollup": "^4.16.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   },
   "workspaces": [
     "plugins/*"

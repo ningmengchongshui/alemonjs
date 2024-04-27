@@ -11,22 +11,13 @@
     "jsx": "react",
     "allowJs": false,
     "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "ts-node": {
     "esm": true,
     "transpileOnly": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": [
-    "plugins",
-    "afloat.*.{ts,tsx,js,jsx}",
-    "alemon.*.{ts,tsx,js,jsx}",
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-  ]
+  "include": ["plugins", "src", "alemon.*.{ts,tsx,js,jsx}"],
+  "exclude": ["node_modules"]
 }
