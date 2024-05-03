@@ -13,11 +13,14 @@
     "start": "pm2 startOrRestart pm2.config.cjs",
     "stop": "pm2 stop pm2.config.cjs",
     "delete": "pm2 delete pm2.config.cjs",
+    "kill": "pm2 kill",
+    "logs": "pm2 logs",
+    "monit": "pm2 monit",
     "pm2": "pm2",
     "format": "prettier --write ."
   },
   "dependencies": {
-    "alemonjs": "^1.2.1-rc.6",
+    "alemonjs": "^1.2.1-rc.7",
     "ioredis": "^5.3.2",
     "mysql2": "^3.5.2",
     "react": "^18.2.0",

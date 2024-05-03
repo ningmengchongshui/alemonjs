@@ -4,4 +4,3 @@ import * as rules from './rules'
 const app = createApp(import.meta.url)
 // app.use(api)
 app.use(rules).mount()
-console.log('[APP] 本地测试 启动')
