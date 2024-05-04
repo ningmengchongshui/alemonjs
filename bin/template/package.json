@@ -20,7 +20,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "alemonjs": "^1.2.1-rc.7",
+    "alemonjs": "^1.2.1-rc.9",
     "ioredis": "^5.3.2",
     "mysql2": "^3.5.2",
     "react": "^18.2.0",

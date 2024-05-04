@@ -1,23 +1,27 @@
 import typescript from '@rollup/plugin-typescript'
 import multiEntry from '@rollup/plugin-multi-entry'
-// import terser from '@rollup/plugin-terser'
-export default {
-  input: 'src/main.{ts,js,tsx,jsx}',
+const plugins = [typescript(), multiEntry()]
+const onwarn = (warning, warn) => {
+  if (warning.code === 'UNRESOLVED_IMPORT') return
+  warn(warning)
+}
+const config = [
+  {
+    input: 'src/main.{ts,js,tsx,jsx}',
+    file: 'dist/main.js'
+  },
+  {
+    input: 'index.ts',
+    file: 'dist/index.js'
+  }
+]
+export default config.map(item => ({
+  input: item.input,
   output: {
-    file: 'dist/index.js',
-    format: 'es',
+    file: item.file,
+    format: 'esm',
     sourcemap: false
   },
-  plugins: [
-    typescript(),
-    multiEntry()
-    // terser()
-    // 压缩
-  ],
-  onwarn: (warning, warn) => {
-    // 忽略与无法解析the导入相关the警告信息
-    if (warning.code === 'UNRESOLVED_IMPORT') return
-    // 继续使用默认the警告处理
-    warn(warning)
-  }
-}
+  plugins: plugins,
+  onwarn: onwarn
+}))

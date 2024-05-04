@@ -1,5 +1,5 @@
 {
-  "exec": "ts-node node_modules/alemonjs/dist/run.js",
+  "exec": "ts-node index.ts",
   "verbose": true,
   "delay": 1000,
   "restartable": "rs",
@@ -9,6 +9,7 @@
   "ignore": ["node_modules"],
   "watch": ["src", "alemon.*.{js,ts,tsx,jsx}"],
   "env": {
+    "NODE_ENV": "development",
     "ALEMONJS_MESSAGE": "dev"
   },
   "ext": "js,ts,tsx,jsx",
