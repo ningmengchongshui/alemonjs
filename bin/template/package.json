@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "阿柠檬机器人",
   "author": "ningmengchongshui",
-  "license": "GPL-2.0",
+  "license": "",
   "type": "module",
   "private": true,
   "scripts": {

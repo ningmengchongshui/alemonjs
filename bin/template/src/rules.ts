@@ -1,7 +1,5 @@
 export * from './apps/img/local'
 export * from './apps/img/qrcode'
-export * from './apps/other/isrecall'
-export * from './apps/other/people'
 export * from './apps/user/at'
 export * from './apps/user/conversation'
 export * from './apps/user/msg'

@@ -1,7 +1,3 @@
-/**
- * @type {import("pm2/pm2.config.cjs")}
- */
-
 const path = require('path')
 const fs = require('fs')
 const config = require('alemonjs/pm2.config.cjs')
@@ -15,4 +11,7 @@ if (fs.existsSync(dir)) {
   })
 }
 console.log('config', config)
+/**
+ * @type {import("pm2/pm2.config.cjs")}
+ */
 module.exports = config

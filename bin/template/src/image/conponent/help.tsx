@@ -10,7 +10,11 @@ export type DataType = {
   }[]
 }[]
 
-export default function App({ data }: { data: DataType }) {
+type Props = {
+  data: DataType
+}
+
+export default function App({ data }: Props) {
   return (
     <html>
       <head>
