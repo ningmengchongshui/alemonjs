@@ -18,6 +18,7 @@ export default function App({ data }: Props) {
   return (
     <html>
       <head>
+        <link rel="stylesheet" type="text/css" href="../css/output.css" />
         <link rel="stylesheet" type="text/css" href="../css/help.css" />
       </head>
       <body>
